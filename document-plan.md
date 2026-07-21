@@ -29,5 +29,5 @@
 - [x] Created first blueprint batch locally.
 - [x] Reviewed files for old-repo contamination.
 - [x] Loaded foundation and Command Center blueprints into GitHub.
-- [ ] Load every split page spec into GitHub.
+- [x] Loaded every recovered split page spec into GitHub.
 - [ ] Jordan reviews and approves Command Center.
