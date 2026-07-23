@@ -1,0 +1,12 @@
+{
+  "name": "@mcos/nayax-connector",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "probe": "node src/probe.mjs"
+  },
+  "engines": {
+    "node": ">=18"
+  }
+}
