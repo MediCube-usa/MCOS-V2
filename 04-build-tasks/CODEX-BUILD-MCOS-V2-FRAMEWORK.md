@@ -91,7 +91,7 @@ Do not stop the build for missing real values.
 ## Do Not Change
 
 - Do not use old MCOS repo as source of truth.
-- Do not bring OurVend into active architecture.
+- Do not copy the old OurVend dashboard architecture. Preserve OurVend only as the upstream compatibility service defined in `01-blueprints/machine-yunshu-ourvend-integration-boundary.md`.
 - Do not create a public marketing page.
 - Do not send or enable machine dispense/control commands.
 - Do not expose secrets.
@@ -100,7 +100,7 @@ Do not stop the build for missing real values.
 ## Hosting
 
 - Vercel hosts the site.
-- DigitalOcean hosts server/backend workloads later.
+- DigitalOcean hosts the isolated relay, capture, translator, and other backend workloads. Vercel does not host the persistent machine connection path.
 
 ## Acceptance Criteria
 
@@ -112,3 +112,12 @@ Do not stop the build for missing real values.
 - filler data is clearly labeled.
 - old repo overlap is absent from active code.
 - DigitalOcean/Vercel responsibility split is documented.
+
+## Machine Integration Build Boundary
+
+- Build the application and staging contracts before connecting a machine.
+- Implement relay/translator services as isolated backend components.
+- Keep dashboard availability out of the synchronous machine path.
+- Do not connect MCOS V1 to a machine.
+- First live integration is a one-machine transparent-relay canary.
+- Production dispense/control remains disabled.
