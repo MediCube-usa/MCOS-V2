@@ -27,7 +27,7 @@ Several older files also contain a now-superseded prohibition against an active 
   - [x] Vouchers vs Refunds/Customer Service
   - [x] Inventory vs Restocking vs Purchasing
   - [x] Machine Operations vs Screen Access vs Templates
-- [ ] Publish user roles, permissions, and approval model (draft complete; explicit sensitive-architecture approval required).
+- [x] Lock user roles, permissions, approval, and secret-management model.
 - [x] Lock canonical data entities and stable IDs.
 - [x] Lock event, audit, notification, and task models.
 - [x] Lock Vercel application vs DigitalOcean service boundaries.
@@ -62,7 +62,7 @@ Each completed page must include:
 
 ## P1 - Cross-System Blueprints Missing
 
-- [ ] Authentication, organizations, users, roles, and permissions
+- [x] Authentication, organizations, users, roles, permissions, and secret management
 - [x] Canonical entity/data model
 - [x] Event and audit-log model
 - [x] Notification and communications model
