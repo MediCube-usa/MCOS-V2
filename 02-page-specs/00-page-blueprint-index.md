@@ -26,7 +26,7 @@
 | 12 | Payments / Card Readers | Recovered detailed |
 | 13 | Vouchers / Impact / Redemption Ledger | Recovered detailed |
 | 14 | Screen Access / Digital Platform | Recovered detailed |
-| 15 | Warehouse / Supplier Purchasing | Recovered partial |
+| 15 | Warehouse / Supplier Purchasing | Locked P1 |
 | 16 | Reporting / Compliance / Billing / Payouts | Recovered partial |
 | 17 | Vouchers / Refunds / Customer Service | Recovered partial |
 | 18 | Marketing / Outreach / New School Integration | Recovered name only |
@@ -46,3 +46,15 @@ Jordan should review in order:
 6. Facility, documents, finance, payments, vouchers
 7. Screen Access
 8. Name-only pages that need expansion
+
+## 2026-08-04 Completion Update
+
+Warehouse / Supplier Purchasing is now locked with:
+
+- Winer LTD as primary supplier
+- reusable additional-supplier connector template
+- manual approval before every initial order
+- bundle/machine packaging allocation
+- shipment-to-restock timing
+- receiving exceptions and reconciliation
+- inventory/restocking/provider confirmation boundaries
