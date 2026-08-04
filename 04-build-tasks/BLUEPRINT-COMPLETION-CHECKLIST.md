@@ -37,7 +37,7 @@ Several older files also contain a now-superseded prohibition against an active 
 
 ## P1 - Page Blueprints Needing Expansion
 
-- [ ] Warehouse / Supplier Purchasing
+- [x] Warehouse / Supplier Purchasing
 - [ ] Reporting / Compliance / Billing / Payouts
 - [ ] Vouchers / Refunds / Customer Service
 - [ ] Marketing / Outreach / New School Integration
