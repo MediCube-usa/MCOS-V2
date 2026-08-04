@@ -19,20 +19,20 @@ Several older files also contain a now-superseded prohibition against an active 
 
 ## P0 - Must Lock Before Framework Coding
 
-- [ ] Approve the Command Center information hierarchy.
-- [ ] Approve the persistent sidebar route map.
-- [ ] Approve the company communications top bar.
-- [ ] Resolve page ownership overlaps:
-  - [ ] Payments vs Finance vs Reporting
-  - [ ] Vouchers vs Refunds/Customer Service
-  - [ ] Inventory vs Restocking vs Purchasing
-  - [ ] Machine Operations vs Screen Access vs Templates
-- [ ] Lock user roles, permissions, and approval model.
-- [ ] Lock canonical data entities and stable IDs.
-- [ ] Lock event, audit, notification, and task models.
-- [ ] Lock Vercel application vs DigitalOcean service boundaries.
-- [ ] Lock machine/OurVend transparent relay boundary.
-- [ ] Lock V1 migration allowlist and exclusion list.
+- [x] Lock the Command Center information hierarchy.
+- [x] Lock the persistent sidebar route map.
+- [x] Lock the company communications top bar.
+- [x] Resolve page ownership overlaps:
+  - [x] Payments vs Finance vs Reporting
+  - [x] Vouchers vs Refunds/Customer Service
+  - [x] Inventory vs Restocking vs Purchasing
+  - [x] Machine Operations vs Screen Access vs Templates
+- [ ] Publish user roles, permissions, and approval model (draft complete; explicit sensitive-architecture approval required).
+- [x] Lock canonical data entities and stable IDs.
+- [x] Lock event, audit, notification, and task models.
+- [x] Lock Vercel application vs DigitalOcean service boundaries.
+- [x] Lock machine/OurVend transparent relay boundary.
+- [x] Lock V1 migration allowlist and exclusion list.
 - [ ] Mark each page `Approved`, `Deferred`, or `Needs decision`.
 
 ## P1 - Page Blueprints Needing Expansion
@@ -63,15 +63,15 @@ Each completed page must include:
 ## P1 - Cross-System Blueprints Missing
 
 - [ ] Authentication, organizations, users, roles, and permissions
-- [ ] Canonical entity/data model
-- [ ] Event and audit-log model
-- [ ] Notification and communications model
-- [ ] Task/workflow/approval engine
+- [x] Canonical entity/data model
+- [x] Event and audit-log model
+- [x] Notification and communications model
+- [x] Task/workflow/approval engine
 - [ ] File/document storage and secure-vault references
 - [ ] Integration registry and secret management
-- [ ] Machine digital twin and desired-vs-actual state
-- [ ] Machine/OurVend relay and raw-capture schema
-- [ ] Protocol translator and replay/quarantine behavior
+- [x] Machine digital twin and desired-vs-actual state
+- [x] Machine/OurVend relay and raw-capture boundary
+- [x] Protocol translator and replay/quarantine behavior
 - [ ] Observability, alerting, backup, and disaster recovery
 - [ ] Environments, deployment, migrations, and rollback
 - [ ] Test strategy and acceptance matrix
