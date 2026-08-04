@@ -3,16 +3,39 @@
 Date: 2026-08-04  
 Status: VERIFIED PUBLIC CAPABILITIES / ACCOUNT ACCESS REQUIRED
 
-## Winer LTD
+## Weiner's LTD
 
-The exact MediCube Winer LTD portal could not be identified from public search. No verified public API, EDI specification, or customer-login URL was found for the supplier described by Jordan.
+Verified supplier:
 
-Decision:
+- storefront: https://weinersltd.com/
+- account portal: https://account.weinersltd.com/
+- registered customers may order online
+- weekly downloadable UPC catalog is available
+- live storefront must verify current price and availability
+- $100 minimum order
+- multiple shipping addresses and drop shipping supported
+- order notes support special requirements
+- normal processing is approximately 1-2 business days
+- continental U.S. ground transit is approximately 1-4 business days
+- shipping confirmation, tracking, and invoice/receipt are emailed
 
-- configure Winer as the primary supplier
-- begin with assisted portal ordering and mandatory human approval
-- do not invent an API
-- require the exact Winer login URL/account documentation before choosing portal automation, API, EDI, email PO, or catalog import
+No supported public ordering API was identified.
+
+MCOS decision:
+
+- Weiner's is primary supplier
+- agent imports the relevant catalog subset and prepares the cart/order draft
+- Jordan approves every order
+- approved orders use the registered account portal
+- portal credentials remain in the secret manager
+- MCOS captures confirmation, invoice, shipment, tracking, delivery, and exceptions
+- browser/order automation is not enabled until account behavior and supplier terms are verified
+
+Sources:
+
+- https://weinersltd.com/
+- https://weinersltd.com/pages/faq
+- https://weinersltd.com/pages/shipping-map
 
 ## Cantaloupe Seed Driver
 
@@ -58,16 +81,27 @@ MCOS decision:
 - keep the test observation-only and reversible
 - do not claim integration until a complete before/refill/after capture reconciles
 
-## One-Confirmation Rule
+## Universal Replenishment Decision
 
-Each machine/work order uses one primary field confirmation method. Other system messages are supporting evidence. MCOS reconciles them into one inventory transaction so Seed, MoMa, Yunshu, and manual updates cannot double-count the same refill.
+MCOS is the universal work-order and push-notification system. Yunshu is the universal compatible machine-side replenishment interface. Nayax, Cantaloupe, and Apriva do not determine the restocker workflow.
+
+The Yunshu handbook verifies:
+
+- Backstage -> Product Management -> Set Stock
+- single-slot stock revision
+- selected-slot batch revision
+- whole-layer replenishment
+- replenish-all-slots action
+
+The V2.5 evidence indicates product/inventory changes can be reported to the configured server. Live testing must prove the exact post-replenishment message and work-order reconciliation.
+
+Provider data remains supporting evidence and cannot double-count a Yunshu-confirmed refill.
 
 ## Required Next Evidence
 
-- exact Winer portal/login URL
-- Winer ordering/account guide or account-manager confirmation
-- whether Winer supports saved multi-destination addresses and package labels
-- sample Winer confirmation, tracking email, and invoice
+- MediCube Weiner's account access and saved shipping destinations
+- sample Weiner's confirmation, tracking email, and invoice
+- confirmation whether machine-separated packing/labels can be requested reliably
 - MediCube Cantaloupe plan level and Seed access
 - MediCube Nayax Core/MoMa permissions
 - one controlled Yunshu replenishment capture
