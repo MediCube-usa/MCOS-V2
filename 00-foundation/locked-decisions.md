@@ -109,3 +109,17 @@ Status: LOCKED
 Date: 2026-08-04
 
 Complete architecture, data contracts, workflows, and functional application behavior before final logo, color, and dashboard visual redesign.
+
+## Decision 18: Universal Restocking Workflow
+
+Status: LOCKED  
+Date: 2026-08-04
+
+MCOS sends every restock assignment and push notification. The restocker accepts the task in MCOS and uses the existing Yunshu Backstage Product Management -> Set Stock function at the machine. Nayax, Cantaloupe, Apriva, or other payment providers do not change the field protocol.
+
+## Decision 19: Weiner's LTD Primary Supplier
+
+Status: LOCKED  
+Date: 2026-08-04
+
+Weiner's LTD (`https://weinersltd.com/`) is the primary supplier. MCOS prepares the order from inventory demand, validates supplier and destination rules, and requires Jordan's manual approval before submission through the Weiner's account portal. Other suppliers use the shared supplier template.
