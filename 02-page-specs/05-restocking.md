@@ -75,29 +75,30 @@ Child machine stop:
 14. MCOS validates and posts inventory transactions.
 15. Mismatches create reconciliation tasks; they do not disappear.
 
-## Inventory Confirmation Method
+## Universal MCOS-to-Yunshu Field Protocol
 
-Each work order declares one primary method:
+The restocker uses one process at every compatible machine. Card-reader provider does not change the field workflow.
 
-- Yunshu/TCN screen replenishment operation, once verified
-- MCOS mobile restock form
-- Cantaloupe Seed Driver
-- Nayax MoMa
-- manual audited form
+1. MCOS push notification identifies the bundle, machines, delivery readiness, deadline, and urgency.
+2. Restocker accepts the work order in MCOS.
+3. Restocker picks up machine-labeled product packages.
+4. At each machine, restocker enters Yunshu Backstage.
+5. Open Product Management -> Set Stock.
+6. Select the slot and revise its stock, or use Batch Revision to:
+   - replenish all slots
+   - select multiple slots and modify them together
+   - replenish an entire tray/layer
+7. Follow the MCOS machine line for expected product, slot, active quantity, and backup quantity.
+8. Record remaining backup stock, exceptions, and required proof in MCOS.
+9. Finish the machine and continue through the bundle.
+10. Yunshu inventory-change reporting is matched to the MCOS work order.
+11. MCOS posts inventory only after validation/reconciliation.
 
-The restocker should not be required to update multiple systems for the same action. MCOS links provider/machine evidence and prevents duplicate posting.
+The handbook confirms that Yunshu exposes single-slot, selected-slot, whole-layer, and all-slot replenishment actions.
 
-### Cantaloupe
+Nayax MoMa, Cantaloupe Seed Driver, and Apriva tools are not required for the restocker. They may supply payment/provider evidence to MCOS when available. MCOS remains the universal assignment interface and Yunshu remains the universal machine-side stock interface.
 
-Seed Driver supports machine planograms, par/cap/pick/spoil/removed quantities, inventory updates, barcode scans, and photo/video accountability when available under the MediCube Seed account.
-
-### Nayax
-
-MoMa uses Nayax management credentials and can manage product maps, inventory, and picklists for Nayax-managed machines. Access/integration remains dependent on MediCube's granted Nayax permissions.
-
-### Yunshu/TCN
-
-The preferred common machine-side option is the existing Yunshu replenishment operation if live testing confirms that it reports the post-refill product/inventory change through the relay. It must be mapped to the MCOS work order before use as confirmation.
+If Yunshu does not report the expected result, the task becomes Awaiting Reconciliation and requires a count or investigation.
 
 ## Exception Handling
 
@@ -158,7 +159,7 @@ Restocking Agent Marcus:
 - proof missing
 - inventory mismatch
 - damaged/short/wrong product
-- provider/Yunshu confirmation unavailable
+- Yunshu confirmation unavailable
 
 ## Permissions
 
@@ -181,5 +182,5 @@ Restocker sees only assigned field-safe machine, facility, product, contact, acc
 - normal single-slot depletion does not automatically trigger service
 - critical items can override economics
 - delivery controls task readiness
-- one primary field confirmation method avoids duplicate entry
+- every compatible machine uses the same MCOS-to-Yunshu refill protocol
 - inventory posts only after validated completion
