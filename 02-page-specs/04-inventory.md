@@ -136,17 +136,25 @@ Output includes:
 - aim for economically aligned refill timing, not identical depletion
 - every slot/template change is a recommendation until approved and physically/remotely confirmed
 
-## Inventory Confirmation Sources
+## Universal Replenishment Confirmation
 
-One primary confirmation method is assigned per machine/work order:
+Yunshu/TCN is the required field replenishment interface for every compatible machine, regardless of whether its card reader is Nayax, Cantaloupe, Apriva, or another provider.
 
-1. Yunshu/TCN local replenishment confirmation when proven through the relay
-2. MCOS mobile restock form
-3. Cantaloupe Seed Driver for Cantaloupe-managed machines
-4. Nayax MoMa for Nayax-managed machines
-5. manual audited count
+MCOS workflow:
 
-Provider apps are evidence sources, not competing inventory masters. Duplicate updates reconcile through work-order ID, machine, product, slot, timestamp, and idempotency keys.
+1. MCOS calculates and sends one work order/push notification.
+2. Restocker accepts the assignment in MCOS.
+3. At the machine, restocker opens Yunshu Backstage.
+4. Restocker uses Product Management -> Set Stock.
+5. Restocker replenishes an individual slot, selected slots, an entire tray, or all slots as directed.
+6. Restocker records backup stock remaining in the MCOS work order.
+7. Yunshu reports the changed machine inventory through the proven relay/protocol.
+8. MCOS matches the report to the open work order and reconciles expected versus observed quantities.
+9. Mismatches create a count/exception task.
+
+Nayax, Cantaloupe, and Apriva are not restocker workflow dependencies. Their sales/inventory feeds may be supporting reconciliation evidence when available, but the restocker uses the same MCOS-to-Yunshu process at every location.
+
+If Yunshu reporting is temporarily unavailable, MCOS retains the submitted work order/proof as pending reconciliation; it does not silently declare the machine count verified.
 
 ## Data Owned
 
@@ -208,5 +216,5 @@ Inventory Agent Ava calculates recommendations, explains the math, reserves stoc
 - critical items bypass ordinary economic delay
 - $35 service cost is included
 - bundle and one-machine economics are supported
-- provider/Yunshu/manual updates cannot double-post inventory
+- Yunshu reports and supporting payment-provider data cannot double-post inventory
 - recommendations never silently change templates or place orders
