@@ -2,9 +2,9 @@
 
 ## Status
 
-Status: LOCKED DRAFT
+Status: LOCKED P0
 
-This is the first page to review and lock before build.
+The information hierarchy, navigation, department summary, alert, approval, communications, agent, and page-state contracts are locked in `01-blueprints/command-center-contracts.md`.
 
 ## Purpose
 
