@@ -13,11 +13,12 @@ Purchasing does not decide demand. Inventory produces recommendations; Purchasin
 
 ## Primary Supplier
 
-Primary supplier: Winer LTD.
+Primary supplier: Weiner's LTD.
 
 Required Winer supplier record:
 
-- exact customer portal/login URL
+- storefront: `https://weinersltd.com/`
+- customer account/login: `https://account.weinersltd.com/`
 - MediCube account reference
 - ordering method: API, EDI, CSV/email purchase order, or web portal
 - catalog and supplier SKU mapping
@@ -30,15 +31,32 @@ Required Winer supplier record:
 - support/account-manager contact
 - encrypted credential reference
 
-Until Winer confirms an API or supported automated ordering method, MCOS uses assisted ordering:
+Public Weiner's documentation confirms online account ordering, a downloadable weekly UPC catalog, a $100 minimum order, multiple shipping addresses/drop shipping, order notes, emailed confirmation/invoice, and emailed tracking. No supported ordering API has been verified. MCOS therefore begins with assisted ordering:
 
-1. Agent prepares a complete order draft.
-2. MCOS validates quantities, destinations, pricing, and packaging instructions.
-3. Jordan reviews and approves.
-4. Approved order is submitted through the Winer portal or approved order channel.
-5. Confirmation number and evidence are attached to the MCOS purchase order.
+1. Agent imports or refreshes the Weiner's product subset from the weekly UPC catalog, then verifies live price and availability on the storefront.
+2. Agent prepares a complete order draft.
+3. MCOS validates the $100 minimum, quantities, destinations, pricing, availability, shipping, and order notes.
+4. Jordan reviews and approves.
+5. Approved order is submitted through the Weiner's account portal.
+6. Confirmation number, invoice/receipt, and tracking evidence are attached to the MCOS purchase order.
 
 No agent may complete checkout, submit payment, or change shipping destination without a valid approval.
+
+## Verified Weiner's Operating Rules
+
+- wholesale storefront: `https://weinersltd.com/`
+- account portal: `https://account.weinersltd.com/`
+- online ordering available continuously for registered accounts
+- wholesale price and pack options displayed online
+- downloadable UPC catalog updates weekly; live site remains authority for price/availability
+- minimum order: $100
+- multiple shipping addresses and drop shipping supported
+- special quantity, expiration, packaging, and delivery requirements belong in order notes
+- normal processing: approximately 1-2 business days
+- normal continental U.S. ground transit: approximately 1-4 business days
+- tracking is emailed when requested/account email is supplied
+- invoice or credit-card receipt is emailed
+- availability can change between cart preparation and order processing
 
 ## Additional Supplier Template
 
@@ -102,7 +120,7 @@ MCOS must not duplicate an entire supplier website. It keeps a supplier catalog 
 
 - Order Recommendations
 - Approval Queue
-- Winer LTD
+- Weiner's LTD
 - Other Suppliers
 - Supplier Products
 - Draft Purchase Requests
@@ -246,7 +264,7 @@ Supplier credentials are secure references only. Order preparation, approval, su
 
 ## Acceptance Criteria
 
-- Winer can be configured without hard-coding its portal behavior
+- Weiner's storefront, account portal, weekly UPC catalog, minimum order, multiple destinations, and tracking workflow are configured
 - additional suppliers use the same template
 - no order submits without Jordan's approval
 - every line remains allocated to a bundle/machine/storage destination
