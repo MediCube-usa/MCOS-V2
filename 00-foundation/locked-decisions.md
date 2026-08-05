@@ -123,3 +123,66 @@ Status: LOCKED
 Date: 2026-08-04
 
 Weiner's LTD (`https://weinersltd.com/`) is the primary supplier. MCOS prepares the order from inventory demand, validates supplier and destination rules, and requires Jordan's manual approval before submission through the Weiner's account portal. Other suppliers use the shared supplier template.
+
+## Decision 20: Customer-Facing Boundary
+
+Status: LOCKED  
+Date: 2026-08-05
+
+`medicubehealth.net` is the customer-facing account, product/machine discovery, product-request, and support surface. MCOS V2 remains the private operating source of truth and is not exposed directly to customers.
+
+## Decision 21: No-App / No-Wallet Customer Access
+
+Status: LOCKED  
+Date: 2026-08-05
+
+Supported customer workflows do not require an installed app or digital wallet. A stable MediCube member number and PIN are the approved account direction, subject to production authentication, recovery, privacy, and abuse controls.
+
+## Decision 22: Maya Customer Care Boundary
+
+Status: LOCKED  
+Date: 2026-08-05
+
+Maya may identify cases, link evidence, draft remedies, communicate permitted status, and route work. Maya cannot invent dispense results, expose restricted data, approve its own refund/credit proposal, or close a case without recorded resolution evidence.
+
+## Decision 23: Refund and MediCube Credit Separation
+
+Status: LOCKED  
+Date: 2026-08-05
+
+Payment-provider refunds and immediate MediCube credits are separate remedies and separate transactions. Configured rules may allow fast internal credit, but duplicate value for the same loss is prohibited without an explicit corrective approval and reconciliation.
+
+## Decision 24: Product Request Threshold
+
+Status: LOCKED  
+Date: 2026-08-05
+
+One hundred verified customer votes creates a product-placement review task. It does not automatically purchase, place, price, or activate a product. Product, facility, supplier, economics, compliance, and machine-template reviews remain required.
+
+## Decision 25: Customer Machine/Product Mapping
+
+Status: LOCKED  
+Date: 2026-08-05
+
+Customer-facing views may map permitted facilities, machines, expected products, and sufficiently fresh availability. Sensitive placement instructions, internal stock, staff contacts, machine controls, and operational notes remain private.
+
+## Decision 26: Sponsored Product Benefits
+
+Status: LOCKED  
+Date: 2026-08-05
+
+Sponsored Product Benefits are funded, eligibility-controlled product entitlements owned by the Voucher/Impact domain. Campaigns may promote them; Payments, Campaigns, and Customer Care do not own eligibility or redemption evidence.
+
+## Decision 27: MediCube Campaigns Boundary
+
+Status: LOCKED  
+Date: 2026-08-05
+
+Marketing owns campaigns, approved outreach, promotions, coupons, competitions, and new-school communications. Campaign rules cannot override facility, compliance, product, pricing, voucher/benefit, inventory, finance, or machine-control ownership.
+
+## Decision 28: Original Seven-Department Count
+
+Status: LOCKED  
+Date: 2026-08-05
+
+The original seven-department completion count remains separate from Impact/Sponsored Product Benefits and Campaign workstreams. After the 2026-08-05 consolidation, Warehouse/Purchasing, Customer Care, and Marketing are complete as locked drafts: 3 of 7 complete, 4 remaining.
