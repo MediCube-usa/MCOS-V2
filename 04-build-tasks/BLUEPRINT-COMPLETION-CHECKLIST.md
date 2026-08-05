@@ -1,116 +1,89 @@
 # MCOS V2 Blueprint Completion Checklist
 
 Status: ACTIVE  
-Date: 2026-08-04  
-Build gate: application coding begins only after the P0 blueprint block is approved.
+Date: 2026-08-05  
+Build gate: application coding begins only after the P0 blueprint block and final page-status matrix are approved.
 
 ## Current Finding
 
-The repository is a good clean blueprint base, but it is not yet a complete approved build specification.
-
-It contains 21 page/block entries:
-
-- 14 recovered detailed
-- 3 recovered partial
-- 4 recovered name-only or name-plus-reference
-- 0 marked approved
-
-Several older files also contain a now-superseded prohibition against an active OurVend path. The new relay boundary preserves OurVend only as an upstream compatibility dependency while MCOS V2 becomes the operational source of truth.
+MCOS V2 is the clean blueprint source of truth. Core architecture is substantially locked, but the full master blueprint is not yet approved for application coding.
 
 ## P0 - Must Lock Before Framework Coding
 
-- [x] Lock the Command Center information hierarchy.
-- [x] Lock the persistent sidebar route map.
-- [x] Lock the company communications top bar.
-- [x] Resolve page ownership overlaps:
-  - [x] Payments vs Finance vs Reporting
-  - [x] Vouchers vs Refunds/Customer Service
-  - [x] Inventory vs Restocking vs Purchasing
-  - [x] Machine Operations vs Screen Access vs Templates
-- [x] Lock user roles, permissions, approval, and secret-management model.
-- [x] Lock canonical data entities and stable IDs.
-- [x] Lock event, audit, notification, and task models.
-- [x] Lock Vercel application vs DigitalOcean service boundaries.
-- [x] Lock machine/OurVend transparent relay boundary.
-- [x] Lock V1 migration allowlist and exclusion list.
-- [ ] Mark each page `Approved`, `Deferred`, or `Needs decision`.
+- [x] Command Center information hierarchy, navigation, communications, alerts, approvals, and state contracts
+- [x] Domain ownership boundaries
+- [x] User roles, permissions, approvals, and secret-management model
+- [x] Canonical entities, stable IDs, events, tasks, workflows, notifications, and audit
+- [x] Vercel application vs DigitalOcean persistent-service boundary
+- [x] Machine/Yunshu/OurVend transparent relay boundary
+- [x] V1 migration allowlist and exclusion rules
+- [ ] Mark every page `Approved`, `Deferred`, or `Needs decision`
+- [ ] Lock final master approval matrix
 
-## P1 - Page Blueprints Needing Expansion
+## Original Seven Department Blueprints
 
-- [x] Warehouse / Supplier Purchasing
-- [ ] Reporting / Compliance / Billing / Payouts
-- [ ] Vouchers / Refunds / Customer Service
-- [ ] Marketing / Outreach / New School Integration
+- [x] Warehouse / Supplier Purchasing — locked draft
+- [ ] Reporting / Compliance / Billing / Payouts — next
+- [x] Vouchers / Refunds / Customer Service / Maya — locked draft
+- [x] Marketing / Outreach / New School Integration / Campaigns — locked draft
 - [ ] Contacts / Central Company Directory
 - [ ] Calendar / Logistics
 - [ ] Maps / Machine Locator
 
-Each completed page must include:
+Progress: **3 of 7 completed as locked drafts; 4 remain.**
 
-- purpose and owner
-- entities/data owned
-- data read from other domains
-- table/list/detail states
-- actions and approval gates
-- alerts and notifications
-- empty/loading/error/offline states
-- filters/search/export
-- role permissions
-- audit events
-- Command Center summary contract
-- acceptance criteria
+Impact/Sponsored Product Benefits and Campaigns are recorded within the relevant page specs and are not separate additions to the original seven count.
 
-## P1 - Cross-System Blueprints Missing
+## Captured Customer / Impact / Campaign Decisions
 
-- [x] Authentication, organizations, users, roles, permissions, and secret management
-- [x] Canonical entity/data model
-- [x] Event and audit-log model
-- [x] Notification and communications model
-- [x] Task/workflow/approval engine
+- [x] `medicubehealth.net` customer-facing boundary
+- [x] no-app/no-wallet customer model
+- [x] member number and PIN direction
+- [x] Maya Customer Care authority boundary
+- [x] refund versus immediate MediCube-credit separation
+- [x] linked customer/machine/product/dispense/payment/voucher records
+- [x] product-request workflow with 100-vote placement-review trigger
+- [x] customer-safe machine/product mapping
+- [x] Sponsored Product Benefits ownership and redemption boundary
+- [x] Campaigns, promotions, coupons, competitions, and new-school communication boundary
+- [ ] configure refund/credit limits, PIN recovery, voting scope, coupon accounting, and competition review rules
+
+## Cross-System Blueprints Remaining
+
 - [ ] File/document storage and secure-vault references
-- [ ] Integration registry and secret management
-- [x] Machine digital twin and desired-vs-actual state
-- [x] Machine/OurVend relay and raw-capture boundary
-- [x] Protocol translator and replay/quarantine behavior
+- [ ] Integration registry completion and credential-reference operations
 - [ ] Observability, alerting, backup, and disaster recovery
 - [ ] Environments, deployment, migrations, and rollback
 - [ ] Test strategy and acceptance matrix
 - [ ] V1 archival and evidence-retention plan
+- [ ] Smart-lock classification only if it remains required by an approved machine/setup workflow
 
-## P2 - Build After Blueprint Approval
+## Build After Blueprint Approval
 
-- [ ] Create clean application scaffold in MCOS V2.
-- [ ] Implement identity, permissions, audit, and shared data contracts first.
-- [ ] Implement shell, sidebar, communications bar, and Command Center.
-- [ ] Implement department modules in approved dependency order.
-- [ ] Implement gateway/translator as isolated DigitalOcean services.
-- [ ] Import only reviewed V1 concepts or data.
-- [ ] Deploy staging.
-- [ ] Run static, unit, integration, security, and workflow tests.
-- [ ] Run one-machine shadow/canary relay test.
-- [ ] Keep MCOS V1 available as read-only reference until acceptance.
-- [ ] Cut over MCOS V2 application.
-- [ ] Archive V1 repositories/branches/deployments; do not delete until retention is approved.
+- [ ] Create clean MCOS V2 application scaffold
+- [ ] Implement identity, permissions, audit, and shared contracts
+- [ ] Implement shell, sidebar, communications bar, and Command Center
+- [ ] Implement approved departments in dependency order
+- [ ] Implement isolated gateway/translator services
+- [ ] Import only reviewed V1 concepts/data
+- [ ] Deploy staging and run verification
+- [ ] Run one-machine shadow/canary relay test
+- [ ] Cut over only after acceptance
+- [ ] Archive V1 only after retention approval; do not delete evidence
 
 ## Explicitly Deferred
 
-- final logo correction
-- final dashboard colors
-- final visual redesign and polish
+- final logo, colors, and visual polish
 - autonomous production machine commands
 - removal of OurVend
-- production dispense control
+- production dispense control before protocol proof
 
-Deferred items must not block architecture, data contracts, workflow completion, or safe staging deployment.
+## Next Completion Order
 
-## First Review Block
-
-Review and approve together:
-
-1. system boundaries and source-of-truth rules
-2. role/permission model
-3. core entity/data model
-4. Command Center and navigation
-5. machine digital twin and relay boundary
-
-This block prevents rework across every later page.
+1. Reporting / Compliance / Billing / Payouts
+2. Contacts
+3. Calendar / Logistics
+4. Maps / Machine Locator
+5. Secure Vault and Integration Registry
+6. Deployment, recovery, testing, and V1 archive plan
+7. Final approval matrix and master blueprint lock
