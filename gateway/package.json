@@ -1,0 +1,14 @@
+{
+  "name": "mcos-tcn-gateway",
+  "version": "0.1.0",
+  "private": true,
+  "description": "MCOS listener for the TCN/Yunshu V2.5 vending machine protocol",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "node --watch server.js"
+  },
+  "dependencies": {
+    "express": "^4.19.2"
+  }
+}
