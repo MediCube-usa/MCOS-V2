@@ -7,42 +7,50 @@
 - `Recovered partial`: saved conversation names the page and provides related rules, but the exact page still needs Jordan confirmation.
 - `Locked draft`: ready for Jordan review.
 - `Approved`: Jordan approved for build.
+- `Decisions captured`: settled 2026-08-11, page spec not yet rewritten to `01-blueprints/block-anatomy.md`.
+- `Rewritten`: spec now follows block anatomy and today's decisions.
 
 ## Pages
 
-| Order | Page / Block | Status |
-|---:|---|---|
-| 1 | Command Center / Main Dashboard | Recovered detailed, locked draft |
-| 2 | Agent Management | Recovered detailed |
-| 3 | Product Catalog | Recovered detailed |
-| 4 | Inventory | Recovered detailed |
-| 5 | Restocking | Recovered detailed |
-| 6 | Machine Operations | Recovered detailed |
-| 7 | Machine Setup & Distribution | Recovered detailed |
-| 8 | Machine Templates & Configuration | Recovered detailed |
-| 9 | Facilities | Recovered detailed |
-| 10 | Documents / Contracts / Compliance / Secure Vault | Recovered detailed |
-| 11 | Finance / Accounting / Payouts / QuickBooks | Recovered detailed |
-| 12 | Payments / Card Readers | Recovered detailed |
-| 13 | Vouchers / Impact / Redemption Ledger | Recovered detailed |
-| 14 | Screen Access / Digital Platform | Recovered detailed |
-| 15 | Warehouse / Supplier Purchasing | Recovered partial |
-| 16 | Reporting / Compliance / Billing / Payouts | Recovered partial |
-| 17 | Vouchers / Refunds / Customer Service | Recovered partial |
-| 18 | Marketing / Outreach / New School Integration | Recovered name only |
-| 19 | Contacts / Central Company Directory | Recovered name only |
-| 20 | Calendar / Logistics | Recovered name only plus top-bar references |
-| 21 | Maps / Machine Locator | Recovered name only plus machine/facility map references |
+Agent column from `01-blueprints/command-center-preview-spec.md`. Names are
+contested between the two sources — see conflict C2 in
+`04-build-tasks/2026-08-11-integration-map.md`.
+
+| Order | Page / Block | Agent | Status |
+|---:|---|---|---|
+| 1 | Command Center / Main Dashboard | ATLAS | Decisions captured |
+| 2 | Agent Management | — | Decisions captured |
+| 3 | Product Catalog & Sales | VESTA | Decisions captured, renamed |
+| 4 | Inventory | ORION | Decisions captured |
+| 5 | Restocking | MARCUS | Decisions captured, **model changed — rewrite first** |
+| 6 | Machine Operations | JEFF + 1 unnamed | Decisions captured, two agents |
+| 7 | Machine Setup & Distribution | DEREK | Decisions captured |
+| 8 | Machine Templates & Configuration | *unassigned* | Decisions captured, agent open |
+| 9 | Facilities | NOVA | Decisions captured, scope expanded |
+| 10 | Documents / Contracts / Compliance / Secure Vault | ARCHIVE | Decisions captured |
+| 11 | Finance / Accounting / Payouts / QuickBooks | LEDGER | Decisions captured, blocked on Q1 |
+| 12 | Payments / Card Readers | FINN | Decisions captured |
+| 13 | Vouchers / Impact / Redemption Ledger | — | Partly resolved, blocked on Q3 |
+| 14 | Screen Access / Digital Platform | — | Mostly folded into Marketing |
+| 15 | Warehouse / Supplier Purchasing | TESSA | Recovered partial — not covered 2026-08-11 |
+| 16 | Reporting / Compliance / Billing / Payouts | — | Assembly layer only, blocked on Q1 |
+| 17 | Vouchers / Refunds / Customer Service | — | Recovered partial, ready to walk |
+| 18 | Marketing / Outreach / New School Integration | MAYA | **Decisions captured** — was name only |
+| 19 | Contacts / Central Company Directory | LINK | **Decisions captured** — was name only |
+| 20 | Calendar / Logistics | — | **Decisions captured** — was name only |
+| 21 | Maps / Machine Locator | — | Still open, blocked on Q4 |
+
+## Filename Numbering
+
+File numbers stopped matching this order at 15, and blocks 18–21 currently share
+`15-recovered-name-only-pages.md`. Three of those four are now settled, so that
+file should be split and the folder renumbered in one deliberate pass. Detail in
+conflict C5 of the integration map.
 
 ## Next Review Flow
 
-Jordan should review in order:
-
-1. Command Center
-2. Site shell and top communication bar
-3. Agent Management
-4. Machine and setup pages
-5. Inventory/restocking/purchasing pages
-6. Facility, documents, finance, payments, vouchers
-7. Screen Access
-8. Name-only pages that need expansion
+1. Answer Q1 (Finance: execute payouts or only track them?) — it unblocks 11, 16, and 13.
+2. Rewrite Restocking. Its model changed most.
+3. Roll block by block against `01-blueprints/block-anatomy.md`.
+4. Split and renumber the name-only file once Marketing, Contacts, and Calendar are written.
+5. Settle agent naming (C2), then apply it everywhere at once.

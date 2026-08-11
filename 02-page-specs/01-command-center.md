@@ -98,8 +98,8 @@ Command Center Agent:
 - Google Calendar
 - Zoom/Google Meet
 - DigitalOcean services
-- Vercel deployment status
-- machine gateway
+- Supabase
+- machine job queue (`services/mcos-agent-api`)
 - agents
 
 ## Command Center Block

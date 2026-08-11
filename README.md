@@ -21,12 +21,16 @@ MCOS V2 starts with the private operating dashboard:
 - Page-by-page operational workspaces
 - Page agents
 - DigitalOcean server direction
-- Vercel site direction
+- Supabase data direction
 
 ## Hosting Direction
 
-- Vercel serves the MCOS V2 site.
-- DigitalOcean hosts server-side services that should not live inside Vercel.
+Locked 2026-08-11 (Decision 10). This replaces an earlier Vercel-serves-the-site direction.
+
+- DigitalOcean runs the server.
+- Supabase holds the data. It stays empty until the machine write loop is proven on a real machine.
+- GitHub holds blueprint and code.
+- **Vercel is out, permanently.**
 - Old MCOS/OurVend overlap is not part of this rebuild unless explicitly preserved as reference history.
 
 ## Blueprint Folders

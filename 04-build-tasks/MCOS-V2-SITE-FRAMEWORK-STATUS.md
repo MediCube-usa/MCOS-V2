@@ -1,5 +1,11 @@
 # MCOS V2 Site Framework Status
 
+> **Stale on hosting — flagged 2026-08-11.** This document predates Decision 10
+> and still describes Vercel as serving the MCOS V2 site. **Vercel is out,
+> permanently**; the stack is DigitalOcean (server) + Supabase (data) + GitHub.
+> The hosting sections below have not been rewritten yet — do not build from
+> them. See conflict C1 in `04-build-tasks/2026-08-11-integration-map.md`.
+
 Date: 2026-07-21
 
 ## Status

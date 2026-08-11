@@ -1,5 +1,11 @@
 # Codex Task: Build MCOS V2 Framework
 
+> **Stale on hosting — flagged 2026-08-11.** This document predates Decision 10
+> and still describes Vercel as serving the MCOS V2 site. **Vercel is out,
+> permanently**; the stack is DigitalOcean (server) + Supabase (data) + GitHub.
+> The hosting sections below have not been rewritten yet — do not build from
+> them. See conflict C1 in `04-build-tasks/2026-08-11-integration-map.md`.
+
 ## Objective
 
 Build the full MCOS V2 private dashboard framework from the approved blueprints.
