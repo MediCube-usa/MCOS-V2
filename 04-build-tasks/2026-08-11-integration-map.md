@@ -64,18 +64,20 @@ MediCube can present a real team to Aramark, schools, and partners. The preview
 is mostly codenames — ATLAS, VESTA, ORION, NOVA, LEDGER, FINN, ARCHIVE, LINK —
 with only MARCUS, JEFF, DEREK, TESSA, MAYA reading as people.
 
-Both cannot be right. Three coherent options:
+**Resolved 2026-08-11 as a deliberate deferral (Decision 17).** Jordan keeps the
+option to rename any agent later, so no block waits on this. Use the preview's
+names as the working set meanwhile, since it is the newer artifact.
 
-1. **All human names.** Matches the stated partner-facing reason. Means renaming
-   eight agents.
-2. **All codenames.** Matches the preview's look. Abandons the partner-facing
-   reason, or keeps human names only as external aliases.
-3. **Split deliberately** — human names for agents that talk to outsiders
-   (Restocking, Marketing, Contacts, Facilities), codenames for internal ones
-   (Finance, Documents, Inventory). Defensible, but the rule has to be written
-   down or it will drift.
+The deferral is only safe if the build honours it, so it carries a requirement:
+an agent's display name is a configuration field on the agent record, never
+hardcoded into a page, component, workflow, or message template. A rename must
+be one edit that propagates everywhere, including anywhere the name reaches an
+outside party.
 
-**Needs Jordan.** Everything else can proceed; this only blocks final naming.
+Still worth settling before launch, not before build: the capture's
+partner-facing reason for human names sits awkwardly with a roster that is
+mostly codenames. Options remain all-human, all-codename, or a written rule that
+outward-facing agents get human names and internal ones do not.
 
 ### C3. Restocking's existing spec is the wrong model
 
@@ -207,6 +209,19 @@ testing on the office machine while it is on the bench.
 **Q4. Maps — the field-safe versus sensitive split.** A restocker's map view must
 not carry financial data. Blocks the Maps block.
 
+**Q5. Where do the machine components ultimately live?** The agent API and the
+Android agent are new, clean, and have no tie to the old dashboard, but they sit
+in the old repository. MCOS 2 is meant to be built without inheriting that
+repo's patchwork, so their home is worth deciding rather than defaulting.
+
+Three options: leave them where they are and treat them purely as a service MCOS
+2 calls; move them into `MCOS-V2` as the go-forward system; or give them their
+own repository, since they serve machines rather than any one dashboard.
+
+No urgency — nothing breaks either way, and the office-machine test should not
+wait on it. Worth answering before MCOS 2 starts being coded, so the boundary is
+deliberate.
+
 ---
 
 ## Part 4 — Cross-cutting items
@@ -216,12 +231,19 @@ recurs across Catalog, Facilities, and Templates. It should be one shared
 reference, not redefined per block. Proposed home: `03-data-model/`, which the
 README plans but the repo does not yet have.
 
-**Machine job queue — already built.** The standing rule that every
-machine-facing action is create-job → pending → confirmed, picked up on the
-agent's next check-in, is not aspirational. The write side exists and is tested:
-`services/mcos-agent-api` in `Medicube-MCOS`, with the on-machine agent at
-`android/mcos-agent`. Block specs should reference it rather than inventing a
-mechanism.
+**Machine job queue — already built, and not old patchwork.** The standing rule
+that every machine-facing action is create-job → pending → confirmed, picked up
+on the agent's next check-in, is not aspirational. The write side exists and is
+tested: `services/mcos-agent-api`, with the on-machine agent at
+`android/mcos-agent`. Block specs should reference the mechanism rather than
+invent one.
+
+Both were built clean on 2026-08-11 with no dependency on the old dashboard —
+the API is a standalone service with its own store, and the agent is a
+dependency-free courier. They currently sit in the `Medicube-MCOS` repository
+only because that is where the machine work was already happening. That is a
+location, not an inheritance: MCOS 2 is not picking up old structure by using
+them. See Q5.
 
 **Screen Access (14).** The business half moved to Marketing. What remains is the
 technical delivery layer — relay plus on-machine agent — which now exists. This

@@ -62,6 +62,8 @@ Authority: `00-foundation/source-captures/2026-08-11-block-decisions.md`
 
 DigitalOcean runs the server. Supabase holds the data. GitHub holds blueprint and code. **Vercel is out, permanently.**
 
+**Reason, recorded so this is not re-argued later:** Vercel cannot carry the agent work a fully functional national site requires. Its functions start on a request and stop when that request returns, so nothing stays running between them. MCOS 2's agents are not request handlers — they poll, watch, hold state, run long tasks, and keep the machine job queue alive whether or not anyone has the site open. That needs a process that stays up, which is what DigitalOcean provides and Vercel does not.
+
 Supabase is the destination for MCOS 2 data, but stays empty until the machine write loop is proven on a real machine.
 
 ## Decision 11: ATLAS Is The Command Center Agent
@@ -121,3 +123,13 @@ Status: LOCKED
 Authority: `00-foundation/source-captures/2026-08-11-block-decisions.md`
 
 `dorm / gym / campus-general / VA-military-stadium` recurs across Product Catalog, Facilities, and Templates. It is defined once as a shared reference and read by every block that needs it. It is never redefined per block.
+
+## Decision 17: Agent Names Stay Changeable
+
+Status: LOCKED
+
+Every agent name in use — ATLAS, VESTA, ORION, MARCUS, JEFF, DEREK, NOVA, TESSA, FINN, LEDGER, ARCHIVE, LINK, MAYA — is provisional. Jordan keeps the option to rename any agent at any time, and that choice is deferred rather than open: no block is blocked waiting on it.
+
+This carries a build requirement. An agent's display name is a configuration field on the agent record, never hardcoded into a page, a component, a workflow, or a message template. Renaming an agent must be an edit in one place that propagates everywhere, including anywhere a name is shown to an outside party.
+
+Follows from Decision 13: an agent is configuration, and its name is part of that configuration.
