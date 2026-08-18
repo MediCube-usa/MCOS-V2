@@ -58,6 +58,36 @@ far has been strictly read-only for safety. Before writing any push code I need 
 5. **Authorization** — these are live partner machines. Confirm we build the write path, and
    whether each push should require an explicit per-push confirm before it goes out.
 
+### Nayax in the planogram/push path (Joe: "check planogram with nayax")
+- Nayax is the **card-reader / payment terminal** on the machines (per our specs, alongside
+  Cantaloupe/Preva). Joe flagged that the **planogram must be checked/synced with Nayax** too.
+- Likely meaning: on Nayax-equipped machines the product→selection→price list also has to
+  match in **Nayax** (Nayax Core / MoMa portal), so a real push may be
+  **MCOS → OurVend AND Nayax → machine**. This may BE "the strange way."
+- BLOCKER: MCOS currently has **no Nayax connection** — no login, credentials, or API. We can
+  reach OurVend (stored cookie) but not Nayax.
+- NEED FROM JOE:
+  1. Which machines use Nayax vs another reader (Cantaloupe/Preva)?
+  2. Does the planogram/price actually live in Nayax too, or is Nayax read-only telemetry?
+  3. Do we have a **Nayax portal login or API** we can connect the same way we did OurVend
+     (capture the session / get an API token)? Without that, MCOS can't read or push to Nayax.
+
+### CONFIRMED: Nayax Lynx API exists (from old Medicube-MCOS repo)
+- Real REST API: base `https://lynx.nayax.com/operational`, Bearer-token auth, `/v1/...`
+  endpoints. Code: `Medicube-MCOS/lib/integrations/nayax/lynx.ts` (+ probe route + agent).
+- Auth env vars: `NAYAX_API_TOKEN` (or `NAYAX_LYNX_TOKEN`), `NAYAX_API_BASE_URL`.
+- GAP 1 — token NOT in MCOS-V2: our Supabase `secrets` holds only `ourvend_cookie`. The Lynx
+  token lives as an env var in the OLD app's deployment. **MCOS-V2 is not connected to Lynx
+  yet.** To connect: store the Nayax token in `secrets` (same pattern as ourvend_cookie), and
+  the edge function / a new Lynx reader uses it.
+- GAP 2 — only `/v1/devices` was wired. No Lynx planogram/product-push endpoint built yet. In
+  the old app, planograms came from **OurVend SoltInfo**, not Nayax. Lynx does expose
+  product/machine-map endpoints on its API — to be wired once connected.
+- KEY QUESTION: is the planogram pushed to the machine via **Lynx** or via **OurVend**? That
+  decides where the write path is built.
+- ACTION: Joe to provide the Nayax Lynx API token so MCOS-V2 can connect and probe what
+  planogram/product data Lynx exposes for the account.
+
 ---
 
 ## What we already have (no new work needed)
