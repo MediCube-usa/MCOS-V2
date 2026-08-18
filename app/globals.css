@@ -22,9 +22,12 @@ body {
 }
 a { color: inherit; text-decoration: none; }
 
-/* HUD world-map network backdrop (behind everything) */
-.hud-backdrop { position: fixed; inset: 0; z-index: 0; pointer-events: none; opacity: .65; }
-.hud-backdrop svg { width: 100%; height: 100%; display: block; }
+/* HUD world-map concept backdrop (behind everything) */
+.hud-backdrop { position: fixed; inset: 0; z-index: 0; pointer-events: none; }
+.hud-backdrop img { width: 100%; height: 100%; object-fit: cover; opacity: .34; }
+.hud-veil { position: absolute; inset: 0; background:
+  radial-gradient(circle at 50% 36%, rgba(3,8,20,.30), rgba(3,8,20,.72) 78%),
+  linear-gradient(180deg, rgba(3,8,20,.45), rgba(3,8,20,.66)); }
 
 /* shell */
 .shell { position: relative; z-index: 1; display: grid; grid-template-columns: 264px 1fr; min-height: 100vh; }
@@ -52,21 +55,6 @@ a { color: inherit; text-decoration: none; }
 /* main */
 .main { position: relative; padding: 24px 30px 60px; overflow: hidden; }
 /* high-tech map/network backdrop — pure CSS, loads instant, readable over it */
-.main::before {
-  content: ""; position: fixed; inset: 0 0 0 264px; z-index: 0; pointer-events: none;
-  background:
-    radial-gradient(circle at 50% 36%, rgba(0,180,255,.08), transparent 46%),
-    radial-gradient(rgba(0,200,255,.09) 1px, transparent 1.5px) 0 0 / 28px 28px,
-    linear-gradient(180deg, rgba(3,8,20,.10), rgba(3,8,20,.40));
-}
-.main::after {
-  content: ""; position: fixed; inset: 0 0 0 264px; z-index: 0; pointer-events: none;
-  background:
-    repeating-linear-gradient(0deg, rgba(0,220,255,.045) 0 1px, transparent 1px 46px),
-    repeating-linear-gradient(90deg, rgba(0,220,255,.035) 0 1px, transparent 1px 58px);
-  mask: radial-gradient(circle at 52% 44%, #000 0 46%, transparent 78%);
-  -webkit-mask: radial-gradient(circle at 52% 44%, #000 0 46%, transparent 78%);
-}
 .main > * { position: relative; z-index: 1; }
 @media (max-width: 900px) { .main::before, .main::after { inset: 0; } }
 .topbar { display: flex; align-items: flex-start; justify-content: space-between; gap: 20px; flex-wrap: wrap; margin-bottom: 22px; }
