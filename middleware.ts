@@ -12,5 +12,5 @@ export function middleware(req: NextRequest) {
 
 // Gate everything except the login page, the login API, and static assets.
 export const config = {
-  matcher: ['/((?!login|api/login|_next/static|_next/image|favicon.ico).*)']
+  matcher: ['/((?!login|api/login|api/ourvend/ping|_next/static|_next/image|favicon.ico).*)']
 };
