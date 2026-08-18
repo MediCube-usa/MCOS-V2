@@ -232,6 +232,28 @@ a { color: inherit; text-decoration: none; }
 .sb-check-row input { accent-color: #ffb000; }
 .sb-remove { background: rgba(255,80,120,.12); color: #ff8095; border: 1px solid rgba(255,80,120,.3); border-radius: 7px; padding: 7px; font-size: 11.5px; font-weight: 700; cursor: pointer; }
 .sb-remove:hover { background: rgba(255,80,120,.24); }
+.sb-add select { background: rgba(2,13,34,.6); border: 1px solid var(--line); border-radius: 8px; padding: 9px 12px; color: #dbe6ff; font-size: 13px; }
+
+/* facilities */
+.facboard { margin-bottom: 14px; }
+.fac-list { display: flex; flex-direction: column; gap: 10px; }
+.fac-card { border: 1px solid var(--line); border-radius: 10px; background: var(--panel); }
+.fac-card.open { border-color: #4dff88; box-shadow: 0 0 22px -10px #4dff88; }
+.fac-top { display: flex; justify-content: space-between; align-items: center; gap: 12px; padding: 14px 16px; cursor: pointer; }
+.fac-name { font-size: 15.5px; font-weight: 800; color: #dbe6ff; }
+.fac-sub { font-size: 11.5px; color: var(--muted); margin-top: 3px; }
+.fac-status { font-size: 10px; font-weight: 800; letter-spacing: .5px; text-transform: uppercase; padding: 4px 10px; border-radius: 999px; }
+.fac-status.s-prospect { background: rgba(150,150,170,.16); color: #c8d0e0; }
+.fac-status.s-approved { background: rgba(255,176,0,.16); color: #ffc24d; }
+.fac-status.s-active { background: rgba(0,255,120,.14); color: #4dff9c; }
+.fac-status.s-paused { background: rgba(255,80,120,.14); color: #ff8095; }
+.fac-body { padding: 0 16px 16px; display: flex; flex-direction: column; gap: 14px; }
+.fac-body .pd-status { margin-top: 4px; }
+.fac-contacts { border-top: 1px solid var(--line); padding-top: 12px; }
+.fac-contact-row { display: grid; grid-template-columns: 1fr 1fr 1fr 1fr auto; gap: 6px; margin-bottom: 6px; }
+@media (max-width: 720px) { .fac-contact-row { grid-template-columns: 1fr 1fr; } }
+.fac-contact-row input { background: rgba(2,13,34,.6); border: 1px solid var(--line); border-radius: 7px; padding: 8px 10px; color: #dbe6ff; font-size: 12.5px; }
+.fac-contacts .pd-link { margin-top: 4px; }
 
 /* data tables */
 .tablewrap { overflow-x: auto; border: 1px solid var(--line); border-radius: 10px; background: var(--panel); }
