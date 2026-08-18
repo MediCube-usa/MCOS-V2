@@ -115,3 +115,18 @@ a { color: inherit; text-decoration: none; }
 .banner { border-radius: 10px; padding: 14px 18px; margin-bottom: 20px; font-size: 13.5px; font-weight: 600; }
 .banner.building { border: 1px solid rgba(255,176,0,.4); background: rgba(255,176,0,.08); color: #ffce7a; }
 .banner.shell { border: 1px solid rgba(150,150,170,.4); background: rgba(150,150,170,.08); color: #c8d0e0; }
+
+/* data tables */
+.tablewrap { overflow-x: auto; border: 1px solid var(--line); border-radius: 10px; background: var(--panel); }
+.dtable { border-collapse: collapse; width: 100%; font-size: 13px; }
+.dtable th, .dtable td { text-align: left; padding: 9px 13px; border-bottom: 1px solid rgba(111,228,255,.1); white-space: nowrap; }
+.dtable th { font-size: 10.5px; letter-spacing: .6px; text-transform: uppercase; color: var(--muted); font-weight: 800; background: rgba(0,20,45,.5); }
+.dtable tbody tr:hover { background: rgba(0,180,255,.05); }
+.dtable tbody tr:last-child td { border-bottom: none; }
+.dtable a { color: var(--cyan); font-weight: 700; }
+.mono { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; }
+.num { font-variant-numeric: tabular-nums; }
+.chip { font-size: 10px; font-weight: 800; letter-spacing: .4px; text-transform: uppercase; padding: 2px 7px; border-radius: 5px; }
+.chip-live { background: rgba(0,255,120,.14); color: #4dff9c; }
+.chip-empty { background: rgba(150,150,170,.16); color: #b9c2d6; }
+.chip-warn { background: rgba(255,176,0,.16); color: #ffc24d; }
