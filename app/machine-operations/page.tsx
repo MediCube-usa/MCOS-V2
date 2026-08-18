@@ -2,6 +2,7 @@ import Link from 'next/link';
 import { Sidebar } from '@/components/Sidebar';
 import { FLEET } from '@/lib/fleet';
 import { ScopeMap } from '@/components/ScopeMap';
+import { RefreshOurVend } from '@/components/RefreshOurVend';
 
 export default function MachineOperations() {
   const machines = FLEET.machines;
@@ -21,11 +22,13 @@ export default function MachineOperations() {
             Showing the 2026-08-17 snapshot ({machines.length} machines, {withProduct} with product loaded). Live auto-refresh wires in once the OurVend login is captured.
           </div>
 
-          <div className="pills" style={{ justifyContent: 'flex-start', marginBottom: 18 }}>
+          <div className="pills" style={{ justifyContent: 'flex-start', marginBottom: 14 }}>
             <div className="pill">{machines.length} machines</div>
             <div className="pill">{withProduct} loaded</div>
             <div className="pill">{groups.length} groups</div>
           </div>
+
+          <RefreshOurVend />
 
           <div className="tablewrap">
             <table className="dtable">

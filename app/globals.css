@@ -288,6 +288,10 @@ a { color: inherit; text-decoration: none; }
 .con-body { padding: 0 15px 15px; display: flex; flex-direction: column; gap: 12px; }
 .con-body select { background: #0a1626; border: 1px solid var(--line); border-radius: 8px; padding: 9px 12px; color: #dbe6ff; font-size: 13.5px; }
 
+/* ourvend refresh */
+.ov-refresh { display: flex; align-items: center; gap: 12px; flex-wrap: wrap; margin-bottom: 18px; }
+.ov-refresh-msg { font-size: 12.5px; font-weight: 700; color: #ffc2f6; }
+
 /* product catalog */
 .catboard { margin-bottom: 14px; }
 .cat-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 12px; }
