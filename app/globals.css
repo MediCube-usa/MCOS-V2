@@ -288,6 +288,26 @@ a { color: inherit; text-decoration: none; }
 .con-body { padding: 0 15px 15px; display: flex; flex-direction: column; gap: 12px; }
 .con-body select { background: #0a1626; border: 1px solid var(--line); border-radius: 8px; padding: 9px 12px; color: #dbe6ff; font-size: 13.5px; }
 
+/* product catalog */
+.catboard { margin-bottom: 14px; }
+.cat-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 12px; }
+.cat-card { border: 1px solid var(--line); border-radius: 10px; background: var(--panel); overflow: hidden; }
+.cat-card.open { border-color: #00ffaa; box-shadow: 0 0 22px -10px #00ffaa; grid-column: 1 / -1; }
+.cat-top { display: flex; gap: 12px; padding: 12px; cursor: pointer; align-items: center; }
+.cat-thumb { width: 64px; height: 64px; flex: none; border-radius: 8px; background: #08122a; border: 1px solid var(--line); display: flex; align-items: center; justify-content: center; overflow: hidden; }
+.cat-thumb img { width: 100%; height: 100%; object-fit: cover; }
+.cat-thumb.lg { width: 120px; height: 120px; }
+.cat-noimg { font-size: 9px; color: var(--muted); text-align: center; }
+.cat-info { flex: 1; min-width: 0; }
+.cat-name { font-size: 14px; font-weight: 800; color: #eaf2ff; }
+.cat-price { font-size: 13px; font-weight: 800; color: #4dffb0; margin-top: 1px; }
+.cat-desc { font-size: 11.5px; color: var(--muted); margin-top: 3px; overflow: hidden; text-overflow: ellipsis; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; }
+.cat-machines { font-size: 10px; color: #7fbfa8; margin-top: 4px; font-weight: 700; }
+.cat-body { padding: 0 14px 14px; display: flex; flex-direction: column; gap: 12px; }
+.cat-edit-img { display: flex; align-items: center; gap: 14px; }
+.cat-body select, .cat-body input, .cat-body textarea { background: #08122a; }
+.cat-onlist { font-size: 11.5px; color: var(--muted); }
+
 /* templates */
 .tplboard { margin-bottom: 14px; }
 .tpl-card { border: 1px solid var(--line); border-radius: 10px; background: var(--panel); }

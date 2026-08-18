@@ -30,6 +30,18 @@ export async function dbUpdate<T extends object>(table: string, match: string, p
   if (!r.ok) throw new Error(`update ${table} ${r.status} ${await r.text()}`);
 }
 
+export async function uploadToBucket(bucket: string, name: string, file: File): Promise<string> {
+  const ext = (file.name.split('.').pop() || 'jpg').toLowerCase();
+  const path = `${name}-${Date.now()}.${ext}`;
+  const r = await fetch(`${SUPABASE_URL}/storage/v1/object/${bucket}/${path}`, {
+    method: 'POST',
+    headers: { ...headers, 'Content-Type': file.type || 'image/jpeg', 'x-upsert': 'true' },
+    body: file
+  });
+  if (!r.ok) throw new Error(`upload ${r.status} ${await r.text()}`);
+  return `${SUPABASE_URL}/storage/v1/object/public/${bucket}/${path}`;
+}
+
 export async function dbDelete(table: string, match: string): Promise<void> {
   const r = await fetch(`${SUPABASE_URL}/rest/v1/${table}?${match}`, {
     method: 'DELETE',
