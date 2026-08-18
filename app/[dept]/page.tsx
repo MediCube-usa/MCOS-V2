@@ -1,0 +1,85 @@
+import Link from 'next/link';
+import { notFound } from 'next/navigation';
+import { Sidebar } from '@/components/Sidebar';
+import { DEPARTMENTS, getDepartment } from '@/lib/departments';
+
+export function generateStaticParams() {
+  return DEPARTMENTS.filter((d) => d.id !== 'command-center').map((d) => ({ dept: d.id }));
+}
+
+// Real starter content for the departments whose data layer already works.
+// Everything else gets an honest scaffold so nothing looks more finished than it is.
+const READY_SECTIONS: Record<string, { h: string; p: string }[]> = {
+  'machine-operations': [
+    { h: 'Fleet roster', p: '14 machines across ASU, UNLV, CSUDH, Murad, plus 4 unassigned. Read live from OurVend.' },
+    { h: 'Per-machine detail', p: 'Status, slot layout, prices, stock — every slot, read and (proven) writable through OurVend.' },
+    { h: 'Price & slot changes', p: 'Change a price or product from here. Every change is confirmed against the machine sync flag before it counts as done.' },
+    { h: 'Sync status', p: 'The DsiIsDownLoad marker shows, per slot, whether a change has reached the machine yet.' }
+  ],
+  'inventory': [
+    { h: 'Live stock', p: 'Current count and capacity for every slot on every machine, one pull.' },
+    { h: 'Low-stock signals', p: 'Flags slots below threshold. Note: capacity is a factory default on several machines — real capacities needed before percentage alerts are trustworthy.' },
+    { h: 'Reorder logic', p: 'Bundles need location-wide before triggering a purchase, not one random low slot.' }
+  ],
+  'product-catalog-sales': [
+    { h: 'Catalog', p: '44 products pulled from the live fleet — GUID, name, both prices, image path, which machines carry each.' },
+    { h: 'Add product', p: 'OurVend add-product form is mapped (code, name, specs, price, supplier, type + image). Ready to wire.' },
+    { h: 'Sales', p: 'Individual transaction records available — machine, slot, product, amount charged. Customers pay the Machine Price (evidenced).' }
+  ],
+  'restocking': [
+    { h: 'Task queue', p: 'Restock tasks from inventory need through assignment, arrival, refill, proof, close.' },
+    { h: 'Refiller dispatch', p: 'Assign a refiller and send the work order.' },
+    { h: 'App features (coming)', p: 'Push notification to the refiller and a one-time access code to open the machine — placeholders below, your dev builds the delivery.' }
+  ]
+};
+
+export default async function DepartmentPage({ params }: { params: Promise<{ dept: string }> }) {
+  const { dept } = await params;
+  const d = getDepartment(dept);
+  if (!d || d.id === 'command-center') notFound();
+
+  const sections = READY_SECTIONS[d.id] ?? [];
+
+  return (
+    <div className="shell">
+      <Sidebar active={d.id} />
+      <main className="main">
+        <div className="deptpage" style={{ ['--c' as string]: d.color }}>
+          <div className="crumb"><Link href="/">Command Center</Link> / {d.group}</div>
+          <h1>{d.name}</h1>
+          <p className="blurb">{d.blurb}</p>
+
+          {d.status === 'building' && (
+            <div className="banner building">⚙ In development — this page is scaffolded. Structure is here; the working sections get built out next.</div>
+          )}
+          {d.status === 'shell' && (
+            <div className="banner shell">◱ Shell only — parked on purpose. Added later; no details built yet.</div>
+          )}
+
+          {sections.map((s) => (
+            <div className="section" key={s.h}>
+              <h3>{s.h}</h3>
+              <p>{s.p}</p>
+            </div>
+          ))}
+
+          {d.id === 'restocking' && (
+            <div className="section">
+              <h3>Refiller actions</h3>
+              <p>These sit where your dev&apos;s notification and access system will plug in.</p>
+              <span className="ph-btn">🔔 Notify refiller <span className="ph-tag">coming</span></span>
+              <span className="ph-btn">🔒 Send access code <span className="ph-tag">coming</span></span>
+            </div>
+          )}
+
+          {d.status === 'building' && (
+            <div className="section">
+              <h3>Owner</h3>
+              <p>{d.hasAgent ? `Agent: ${d.agent} (live logic)` : `Agent badge: ${d.agent} — the Command Center agent (Atlas) reaches in here until a dedicated one is needed.`}</p>
+            </div>
+          )}
+        </div>
+      </main>
+    </div>
+  );
+}
