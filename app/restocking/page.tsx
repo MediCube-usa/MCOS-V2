@@ -1,6 +1,7 @@
 import Link from 'next/link';
 import { Sidebar } from '@/components/Sidebar';
 import { FLEET, neverSynced } from '@/lib/fleet';
+import { ScopeMap } from '@/components/ScopeMap';
 
 const STAGES = ['Drafted','Assigned','Confirmed','En route','At machine','Access sent','Refilled','Proof','Closed'];
 
@@ -69,6 +70,9 @@ export default function Restocking() {
             <h3>Refiller records, proof & training <span className="ph-tag">next</span></h3>
             <p>Assigned refiller, arrival confirmation, photo proof, door-closed check, and training videos attach here once refiller contacts and the mobile flow are added.</p>
           </div>
+
+          <h2 className="scope-heading">Full department scope</h2>
+          <ScopeMap id="restocking" />
         </div>
       </main>
     </div>

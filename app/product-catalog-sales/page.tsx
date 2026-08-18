@@ -1,6 +1,7 @@
 import Link from 'next/link';
 import { Sidebar } from '@/components/Sidebar';
 import { FLEET, neverSynced } from '@/lib/fleet';
+import { ScopeMap } from '@/components/ScopeMap';
 
 export default function ProductCatalog() {
   // Derive the catalog from every stocked slot across the fleet, keyed by product GUID.
@@ -64,6 +65,9 @@ export default function ProductCatalog() {
           <p className="blurb" style={{ marginTop: 14, fontSize: 12.5 }}>
             <b>*</b> marks a product charged different prices on different machines. Your partner has been adjusting these — nothing here is changed, only shown, so you can review.
           </p>
+
+          <h2 className="scope-heading">Full department scope</h2>
+          <ScopeMap id="product-catalog-sales" />
         </div>
       </main>
     </div>

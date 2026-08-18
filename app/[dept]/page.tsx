@@ -2,6 +2,7 @@ import Link from 'next/link';
 import { notFound } from 'next/navigation';
 import { Sidebar } from '@/components/Sidebar';
 import { DEPARTMENTS, getDepartment } from '@/lib/departments';
+import { ScopeMap } from '@/components/ScopeMap';
 
 export function generateStaticParams() {
   return DEPARTMENTS.filter((d) => d.id !== 'command-center').map((d) => ({ dept: d.id }));
@@ -50,10 +51,10 @@ export default async function DepartmentPage({ params }: { params: Promise<{ dep
           <p className="blurb">{d.blurb}</p>
 
           {d.status === 'building' && (
-            <div className="banner building">⚙ In development — this page is scaffolded. Structure is here; the working sections get built out next.</div>
+            <div className="banner building">⚙ In development — scope is mapped below so the whole team sees what belongs here. Working sections get built out next.</div>
           )}
           {d.status === 'shell' && (
-            <div className="banner shell">◱ Shell only — parked on purpose. Added later; no details built yet.</div>
+            <div className="banner shell">◱ Shell only — parked on purpose. Scope is mapped below so nobody builds it elsewhere by mistake; no details built yet.</div>
           )}
 
           {sections.map((s) => (
@@ -72,12 +73,13 @@ export default async function DepartmentPage({ params }: { params: Promise<{ dep
             </div>
           )}
 
-          {d.status === 'building' && (
-            <div className="section">
-              <h3>Owner</h3>
-              <p>{d.hasAgent ? `Agent: ${d.agent} (live logic)` : `Agent badge: ${d.agent} — the Command Center agent (Atlas) reaches in here until a dedicated one is needed.`}</p>
-            </div>
-          )}
+          {/* Full scope map — shown on every department so the whole plan is visible. */}
+          <ScopeMap id={d.id} />
+
+          <div className="section owner-line">
+            <h3>Owner</h3>
+            <p>{d.hasAgent ? `Agent: ${d.agent} (live logic)` : `Agent badge: ${d.agent} — the Command Center agent (Atlas) reaches in here until a dedicated one is earned.`}</p>
+          </div>
         </div>
       </main>
     </div>

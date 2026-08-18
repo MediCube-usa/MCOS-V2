@@ -1,6 +1,7 @@
 import Link from 'next/link';
 import { Sidebar } from '@/components/Sidebar';
 import { FLEET, neverSynced } from '@/lib/fleet';
+import { ScopeMap } from '@/components/ScopeMap';
 
 export default function Inventory() {
   const machines = FLEET.machines;
@@ -98,6 +99,9 @@ export default function Inventory() {
             <h3>Reorder logic <span className="ph-tag">next</span></h3>
             <p>Bundles need location-wide before triggering a purchase, not one random low slot — accounts for restock cost, shipping, velocity, and contract type. Wires up once real capacities and sales velocity are flowing.</p>
           </div>
+
+          <h2 className="scope-heading">Full department scope</h2>
+          <ScopeMap id="inventory" />
         </div>
       </main>
     </div>

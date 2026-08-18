@@ -1,6 +1,7 @@
 import Link from 'next/link';
 import { Sidebar } from '@/components/Sidebar';
 import { FLEET } from '@/lib/fleet';
+import { ScopeMap } from '@/components/ScopeMap';
 
 export default function MachineOperations() {
   const machines = FLEET.machines;
@@ -48,6 +49,9 @@ export default function MachineOperations() {
               </tbody>
             </table>
           </div>
+
+          <h2 className="scope-heading">Full department scope</h2>
+          <ScopeMap id="machine-operations" />
         </div>
       </main>
     </div>
