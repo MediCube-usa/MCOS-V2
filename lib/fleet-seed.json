@@ -1,1 +1,2168 @@
-{"capturedAt":"2026-08-17","source":"OurVend live read (snapshot)","machines":[{"machineId":"2210280082","label":"UNLV Tonopah Hall","group":"UNLV","stockedSlots":36,"totalStock":3245,"slots":[{"machineId":"2210280082","slot":1,"barcode":"80CB1BAE-3EEB-4E5E-8F01-07CF94690D6C","product":"Tide Pods","machinePrice":"9.99","userPrice":"9.99","capacity":99,"stock":98},{"machineId":"2210280082","slot":3,"barcode":"0CBCF854-1E37-4984-AAFB-B27F078B84A6","product":"Neutrogena Wipes","machinePrice":"4.99","userPrice":"4.99","capacity":99,"stock":6},{"machineId":"2210280082","slot":5,"barcode":"A0EBD2F3-F774-4C4D-906C-87C8A3577466","product":"Platex Tampon","machinePrice":"5.99","userPrice":"5.99","capacity":99,"stock":6},{"machineId":"2210280082","slot":7,"barcode":"8E819408-34BC-4D5D-8824-6ED6E4309627","product":"Neosporin","machinePrice":"19.99","userPrice":"10.99","capacity":99,"stock":6},{"machineId":"2210280082","slot":9,"barcode":"588BD03A-5F2C-4622-B3FE-D76773A2C555","product":"First Aid Kit","machinePrice":"15.99","userPrice":"3.99","capacity":99,"stock":99},{"machineId":"2210280082","slot":11,"barcode":"AC9D9631-8F92-4080-A61E-D1F630412792","product":"NyQuil","machinePrice":"12.99","userPrice":"12.99","capacity":99,"stock":99},{"machineId":"2210280082","slot":13,"barcode":"F5CA2A17-DB9F-4D07-94DF-CD876A9D8692","product":"DayQuil","machinePrice":"12.99","userPrice":"12.99","capacity":99,"stock":99},{"machineId":"2210280082","slot":15,"barcode":"D50B8918-F18E-4BFE-BE67-973901BDDF27","product":"Advil","machinePrice":"6.99","userPrice":"5.99","capacity":99,"stock":96},{"machineId":"2210280082","slot":17,"barcode":"2E2D9BE7-5041-47C7-8311-CB61A9889A03","product":"Tylenol","machinePrice":"6.99","userPrice":"5.99","capacity":99,"stock":96},{"machineId":"2210280082","slot":19,"barcode":"4EE270DA-B465-4390-86BE-A95E7BA28FAB","product":"Pepto Bismol","machinePrice":"5.99","userPrice":"5.99","capacity":99,"stock":98},{"machineId":"2210280082","slot":21,"barcode":"44F158F1-5435-4A0C-99F7-6C5DCFEBBDD5","product":"Neuro Gum","machinePrice":"7.99","userPrice":"7.99","capacity":99,"stock":98},{"machineId":"2210280082","slot":23,"barcode":"F1B0E9CE-F1AD-4DB4-8C3B-09F21DE14675","product":"Benadryl","machinePrice":"6.99","userPrice":"6.99","capacity":99,"stock":97},{"machineId":"2210280082","slot":25,"barcode":"D8530876-64D0-440E-884A-2757E5CAB26F","product":"My Choice","machinePrice":"17.99","userPrice":"18.99","capacity":99,"stock":99},{"machineId":"2210280082","slot":27,"barcode":"6D836B89-C8E2-4CC3-B755-1C961F921421","product":"PlanB","machinePrice":"17.99","userPrice":"46.99","capacity":99,"stock":99},{"machineId":"2210280082","slot":29,"barcode":"B7AF5623-58AE-43CF-B1D9-8F2AABF3F2B3","product":"Trojan Condoms","machinePrice":"5.99","userPrice":"5.99","capacity":99,"stock":96},{"machineId":"2210280082","slot":31,"barcode":"9834F0D7-7346-4884-9249-FB546C58FA42","product":"ReNu","machinePrice":"5.99","userPrice":"5.99","capacity":99,"stock":99},{"machineId":"2210280082","slot":32,"barcode":"2CCCCA89-9AAF-462B-9BFB-1842958EECF2","product":"Degree Womens","machinePrice":"5.99","userPrice":"6.99","capacity":99,"stock":97},{"machineId":"2210280082","slot":34,"barcode":"1AEAC229-E5E0-42AE-8C55-1F30930390FB","product":"Visine","machinePrice":"4.99","userPrice":"4.99","capacity":99,"stock":99},{"machineId":"2210280082","slot":35,"barcode":"9CC402DB-49BC-43BC-B9B1-DED72D7BB0FB","product":"Pantene Shampoo","machinePrice":"3.99","userPrice":"4.99","capacity":99,"stock":98},{"machineId":"2210280082","slot":36,"barcode":"E305D802-3F9C-4A81-BD8B-9A1A68112737","product":"Pantene Conditioner","machinePrice":"3.99","userPrice":"4.99","capacity":99,"stock":98},{"machineId":"2210280082","slot":37,"barcode":"44558426-0ADD-4DF5-9270-D1CB80DEB673","product":"Excedrin","machinePrice":"3.99","userPrice":"3.99","capacity":99,"stock":98},{"machineId":"2210280082","slot":39,"barcode":"F0C7F359-A00D-44CC-A50E-24CCF79996CF","product":"Cottenelle Wipes","machinePrice":"2.99","userPrice":"3.99","capacity":99,"stock":99},{"machineId":"2210280082","slot":41,"barcode":"5BCB9DD3-5AFD-48FE-8D1B-909D2110C956","product":"Coppertone Sunscreen","machinePrice":"3.99","userPrice":"4.99","capacity":99,"stock":98},{"machineId":"2210280082","slot":43,"barcode":"23586033-330B-414C-9324-A1757C00B824","product":"Emergen-C","machinePrice":"3.99","userPrice":"3.99","capacity":99,"stock":99},{"machineId":"2210280082","slot":44,"barcode":"D13098D1-D3A5-4BBC-9237-9D25AA792690","product":"Aveeno","machinePrice":"3.99","userPrice":"6.99","capacity":99,"stock":99},{"machineId":"2210280082","slot":45,"barcode":"DC3A1389-2FF7-4ECC-9E62-6DC4EA066D45","product":"K-Y Jelly","machinePrice":"5.99","userPrice":"5.99","capacity":99,"stock":96},{"machineId":"2210280082","slot":46,"barcode":"4C7B4F10-73EA-4A8C-913E-CF149353BC84","product":"Colgate Toothpaste","machinePrice":"3.99","userPrice":"3.99","capacity":99,"stock":97},{"machineId":"2210280082","slot":47,"barcode":"751A1090-A7FB-4FAB-B29E-E0565B7EFBB9","product":"Always Pads","machinePrice":"3.99","userPrice":"3.99","capacity":99,"stock":98},{"machineId":"2210280082","slot":48,"barcode":"6E07025F-92EC-4787-BB05-98A570A3961C","product":"Olay Bodywash","machinePrice":"3.99","userPrice":"4.99","capacity":99,"stock":98},{"machineId":"2210280082","slot":49,"barcode":"169A0B86-22B9-4213-B8B7-58CDD10FACBE","product":"Simply Venus","machinePrice":"4.99","userPrice":"4.99","capacity":99,"stock":99},{"machineId":"2210280082","slot":50,"barcode":"C363F80A-3F59-401C-9090-EF5CB5E25992","product":"Gillette Sensor Razor","machinePrice":"2.99","userPrice":"2.99","capacity":99,"stock":97},{"machineId":"2210280082","slot":51,"barcode":"74B3A776-CF23-4C07-BCFA-925C9A02090E","product":"Bounce Dryer Sheets","machinePrice":"3.99","userPrice":"4.99","capacity":99,"stock":99},{"machineId":"2210280082","slot":53,"barcode":"80CB1BAE-3EEB-4E5E-8F01-07CF94690D6C","product":"Tide Pods","machinePrice":"9.99","userPrice":"9.99","capacity":99,"stock":93},{"machineId":"2210280082","slot":55,"barcode":"6B125AEE-5449-4B90-BBAD-B47B9747C9FB","product":"Lubriderm","machinePrice":"6.99","userPrice":"6.99","capacity":99,"stock":98},{"machineId":"2210280082","slot":57,"barcode":"B6A6E06F-DC47-48CF-A709-093825C0C711","product":"Halls","machinePrice":"5.99","userPrice":"6.99","capacity":99,"stock":97},{"machineId":"2210280082","slot":59,"barcode":"1E63A4DD-3E0C-4F40-AB0E-34F8F18092FB","product":"Claritin","machinePrice":"3.49","userPrice":"3.99","capacity":99,"stock":97}]},{"machineId":"2404260016","label":"UNLV Dayton Complex","group":"UNLV","stockedSlots":0,"totalStock":0,"slots":[]},{"machineId":"2303220332","label":"ASU West Glendale","group":"ASU","stockedSlots":39,"totalStock":377,"slots":[{"machineId":"2303220332","slot":1,"barcode":"44558426-0ADD-4DF5-9270-D1CB80DEB673","product":"Excedrin","machinePrice":"3.99","userPrice":"3.99","capacity":10,"stock":10},{"machineId":"2303220332","slot":3,"barcode":"0CBCF854-1E37-4984-AAFB-B27F078B84A6","product":"Neutrogena Wipes","machinePrice":"4.99","userPrice":"4.99","capacity":12,"stock":12},{"machineId":"2303220332","slot":5,"barcode":"A0EBD2F3-F774-4C4D-906C-87C8A3577466","product":"Platex Tampon","machinePrice":"5.99","userPrice":"5.99","capacity":6,"stock":6},{"machineId":"2303220332","slot":7,"barcode":"8E819408-34BC-4D5D-8824-6ED6E4309627","product":"Neosporin","machinePrice":"10.99","userPrice":"10.99","capacity":12,"stock":12},{"machineId":"2303220332","slot":9,"barcode":"588BD03A-5F2C-4622-B3FE-D76773A2C555","product":"First Aid Kit","machinePrice":"3.99","userPrice":"3.99","capacity":10,"stock":10},{"machineId":"2303220332","slot":11,"barcode":"AC9D9631-8F92-4080-A61E-D1F630412792","product":"NyQuil","machinePrice":"12.99","userPrice":"12.99","capacity":12,"stock":12},{"machineId":"2303220332","slot":13,"barcode":"F5CA2A17-DB9F-4D07-94DF-CD876A9D8692","product":"DayQuil","machinePrice":"12.99","userPrice":"12.99","capacity":12,"stock":12},{"machineId":"2303220332","slot":15,"barcode":"D50B8918-F18E-4BFE-BE67-973901BDDF27","product":"Advil","machinePrice":"6.99","userPrice":"5.99","capacity":12,"stock":11},{"machineId":"2303220332","slot":17,"barcode":"2E2D9BE7-5041-47C7-8311-CB61A9889A03","product":"Tylenol","machinePrice":"6.99","userPrice":"5.99","capacity":12,"stock":11},{"machineId":"2303220332","slot":19,"barcode":"4EE270DA-B465-4390-86BE-A95E7BA28FAB","product":"Pepto Bismol","machinePrice":"5.99","userPrice":"5.99","capacity":12,"stock":12},{"machineId":"2303220332","slot":21,"barcode":"23586033-330B-414C-9324-A1757C00B824","product":"Emergen-C","machinePrice":"3.99","userPrice":"3.99","capacity":12,"stock":12},{"machineId":"2303220332","slot":23,"barcode":"F1B0E9CE-F1AD-4DB4-8C3B-09F21DE14675","product":"Benadryl","machinePrice":"6.99","userPrice":"6.99","capacity":12,"stock":12},{"machineId":"2303220332","slot":25,"barcode":"1E63A4DD-3E0C-4F40-AB0E-34F8F18092FB","product":"Claritin","machinePrice":"3.99","userPrice":"3.99","capacity":15,"stock":15},{"machineId":"2303220332","slot":27,"barcode":"C86A6EC3-5A43-4346-9622-40CC4211AB53","product":"Neuro Mint","machinePrice":"6.99","userPrice":"6.99","capacity":10,"stock":9},{"machineId":"2303220332","slot":31,"barcode":"9834F0D7-7346-4884-9249-FB546C58FA42","product":"ReNu","machinePrice":"5.99","userPrice":"5.99","capacity":6,"stock":6},{"machineId":"2303220332","slot":32,"barcode":"2CCCCA89-9AAF-462B-9BFB-1842958EECF2","product":"Degree Womens","machinePrice":"6.99","userPrice":"6.99","capacity":8,"stock":8},{"machineId":"2303220332","slot":33,"barcode":"3E9E96BB-7C6C-4128-B01C-73446BAA8576","product":"AXE Solid","machinePrice":"6.99","userPrice":"6.99","capacity":8,"stock":8},{"machineId":"2303220332","slot":34,"barcode":"1AEAC229-E5E0-42AE-8C55-1F30930390FB","product":"Visine","machinePrice":"4.99","userPrice":"4.99","capacity":10,"stock":10},{"machineId":"2303220332","slot":35,"barcode":"E305D802-3F9C-4A81-BD8B-9A1A68112737","product":"Pantene Conditioner","machinePrice":"4.99","userPrice":"4.99","capacity":10,"stock":10},{"machineId":"2303220332","slot":36,"barcode":"9CC402DB-49BC-43BC-B9B1-DED72D7BB0FB","product":"Pantene Shampoo","machinePrice":"4.99","userPrice":"4.99","capacity":10,"stock":10},{"machineId":"2303220332","slot":37,"barcode":"8FF90692-3F91-48C0-997C-7C0607DE7D19","product":"Liquid IV","machinePrice":"2.99","userPrice":"2.99","capacity":12,"stock":12},{"machineId":"2303220332","slot":38,"barcode":"8FF90692-3F91-48C0-997C-7C0607DE7D19","product":"Liquid IV","machinePrice":"2.99","userPrice":"2.99","capacity":12,"stock":12},{"machineId":"2303220332","slot":39,"barcode":"5BCB9DD3-5AFD-48FE-8D1B-909D2110C956","product":"Coppertone Sunscreen","machinePrice":"4.99","userPrice":"4.99","capacity":8,"stock":8},{"machineId":"2303220332","slot":40,"barcode":"3A41CBEB-2037-4F84-8F2C-E7D560908A9F","product":"Gillette Shaving Cream","machinePrice":"3.99","userPrice":"3.99","capacity":8,"stock":8},{"machineId":"2303220332","slot":41,"barcode":"6E07025F-92EC-4787-BB05-98A570A3961C","product":"Olay Bodywash","machinePrice":"4.99","userPrice":"4.99","capacity":7,"stock":7},{"machineId":"2303220332","slot":42,"barcode":"D13098D1-D3A5-4BBC-9237-9D25AA792690","product":"Aveeno","machinePrice":"6.99","userPrice":"6.99","capacity":12,"stock":12},{"machineId":"2303220332","slot":43,"barcode":"4182A52B-8F3E-4F0A-BA5C-B13D0060EBDD","product":"Band Aid","machinePrice":"2.99","userPrice":"2.99","capacity":10,"stock":10},{"machineId":"2303220332","slot":44,"barcode":"8540D0EC-4B92-4C39-A567-86A412307F46","product":"Banana Boat Sunscreen","machinePrice":"2.99","userPrice":"2.99","capacity":8,"stock":8},{"machineId":"2303220332","slot":45,"barcode":"DC3A1389-2FF7-4ECC-9E62-6DC4EA066D45","product":"K-Y Jelly","machinePrice":"5.99","userPrice":"5.99","capacity":4,"stock":3},{"machineId":"2303220332","slot":46,"barcode":"4C7B4F10-73EA-4A8C-913E-CF149353BC84","product":"Colgate Toothpaste","machinePrice":"3.99","userPrice":"3.99","capacity":8,"stock":8},{"machineId":"2303220332","slot":47,"barcode":"751A1090-A7FB-4FAB-B29E-E0565B7EFBB9","product":"Always Pads","machinePrice":"3.99","userPrice":"3.99","capacity":4,"stock":4},{"machineId":"2303220332","slot":48,"barcode":"F0C7F359-A00D-44CC-A50E-24CCF79996CF","product":"Cottenelle Wipes","machinePrice":"3.99","userPrice":"3.99","capacity":12,"stock":12},{"machineId":"2303220332","slot":49,"barcode":"169A0B86-22B9-4213-B8B7-58CDD10FACBE","product":"Simply Venus","machinePrice":"4.99","userPrice":"3.99","capacity":12,"stock":12},{"machineId":"2303220332","slot":50,"barcode":"C363F80A-3F59-401C-9090-EF5CB5E25992","product":"Gillette Sensor Razor","machinePrice":"2.99","userPrice":"3.99","capacity":12,"stock":12},{"machineId":"2303220332","slot":51,"barcode":"80CB1BAE-3EEB-4E5E-8F01-07CF94690D6C","product":"Tide Pods","machinePrice":"4.99","userPrice":"9.99","capacity":6,"stock":6},{"machineId":"2303220332","slot":53,"barcode":"E6798BDF-2140-4C89-AF4A-776471A3C243","product":"Bounce Dryer2","machinePrice":"2.49","userPrice":"2.49","capacity":10,"stock":10},{"machineId":"2303220332","slot":55,"barcode":"80CB1BAE-3EEB-4E5E-8F01-07CF94690D6C","product":"Tide Pods","machinePrice":"9.99","userPrice":"9.99","capacity":5,"stock":5},{"machineId":"2303220332","slot":57,"barcode":"6B125AEE-5449-4B90-BBAD-B47B9747C9FB","product":"Lubriderm","machinePrice":"6.99","userPrice":"6.99","capacity":10,"stock":10},{"machineId":"2303220332","slot":59,"barcode":"B6A6E06F-DC47-48CF-A709-093825C0C711","product":"Halls","machinePrice":"6.99","userPrice":"6.99","capacity":10,"stock":10}]},{"machineId":"2307120156","label":"ASU Noble Library","group":"ASU","stockedSlots":38,"totalStock":7562,"slots":[{"machineId":"2307120156","slot":1,"barcode":"44558426-0ADD-4DF5-9270-D1CB80DEB673","product":"Excedrin","machinePrice":"3.99","userPrice":"3.99","capacity":199,"stock":199},{"machineId":"2307120156","slot":3,"barcode":"0CBCF854-1E37-4984-AAFB-B27F078B84A6","product":"Neutrogena Wipes","machinePrice":"4.99","userPrice":"4.99","capacity":199,"stock":199},{"machineId":"2307120156","slot":5,"barcode":"A0EBD2F3-F774-4C4D-906C-87C8A3577466","product":"Platex Tampon","machinePrice":"5.99","userPrice":"5.99","capacity":199,"stock":199},{"machineId":"2307120156","slot":7,"barcode":"8E819408-34BC-4D5D-8824-6ED6E4309627","product":"Neosporin","machinePrice":"10.99","userPrice":"10.99","capacity":199,"stock":199},{"machineId":"2307120156","slot":9,"barcode":"588BD03A-5F2C-4622-B3FE-D76773A2C555","product":"First Aid Kit","machinePrice":"3.99","userPrice":"3.99","capacity":199,"stock":199},{"machineId":"2307120156","slot":11,"barcode":"AC9D9631-8F92-4080-A61E-D1F630412792","product":"NyQuil","machinePrice":"12.99","userPrice":"12.99","capacity":199,"stock":199},{"machineId":"2307120156","slot":13,"barcode":"F5CA2A17-DB9F-4D07-94DF-CD876A9D8692","product":"DayQuil","machinePrice":"12.99","userPrice":"12.99","capacity":199,"stock":199},{"machineId":"2307120156","slot":15,"barcode":"D50B8918-F18E-4BFE-BE67-973901BDDF27","product":"Advil","machinePrice":"6.99","userPrice":"6.99","capacity":199,"stock":199},{"machineId":"2307120156","slot":17,"barcode":"2E2D9BE7-5041-47C7-8311-CB61A9889A03","product":"Tylenol","machinePrice":"6.99","userPrice":"6.99","capacity":199,"stock":199},{"machineId":"2307120156","slot":19,"barcode":"4EE270DA-B465-4390-86BE-A95E7BA28FAB","product":"Pepto Bismol","machinePrice":"5.99","userPrice":"5.99","capacity":199,"stock":199},{"machineId":"2307120156","slot":21,"barcode":"23586033-330B-414C-9324-A1757C00B824","product":"Emergen-C","machinePrice":"3.99","userPrice":"3.99","capacity":199,"stock":199},{"machineId":"2307120156","slot":23,"barcode":"F1B0E9CE-F1AD-4DB4-8C3B-09F21DE14675","product":"Benadryl","machinePrice":"6.99","userPrice":"6.99","capacity":199,"stock":199},{"machineId":"2307120156","slot":25,"barcode":"1E63A4DD-3E0C-4F40-AB0E-34F8F18092FB","product":"Claritin","machinePrice":"19.99","userPrice":"3.99","capacity":199,"stock":199},{"machineId":"2307120156","slot":27,"barcode":"C86A6EC3-5A43-4346-9622-40CC4211AB53","product":"Neuro Mint","machinePrice":"7.99","userPrice":"7.99","capacity":199,"stock":199},{"machineId":"2307120156","slot":29,"barcode":"44F158F1-5435-4A0C-99F7-6C5DCFEBBDD5","product":"Neuro Gum","machinePrice":"7.99","userPrice":"7.99","capacity":199,"stock":199},{"machineId":"2307120156","slot":31,"barcode":"9834F0D7-7346-4884-9249-FB546C58FA42","product":"ReNu","machinePrice":"6.99","userPrice":"6.99","capacity":199,"stock":199},{"machineId":"2307120156","slot":32,"barcode":"2CCCCA89-9AAF-462B-9BFB-1842958EECF2","product":"Degree Womens","machinePrice":"6.99","userPrice":"6.99","capacity":199,"stock":199},{"machineId":"2307120156","slot":34,"barcode":"1AEAC229-E5E0-42AE-8C55-1F30930390FB","product":"Visine","machinePrice":"4.99","userPrice":"4.99","capacity":199,"stock":199},{"machineId":"2307120156","slot":35,"barcode":"9CC402DB-49BC-43BC-B9B1-DED72D7BB0FB","product":"Pantene Shampoo","machinePrice":"4.99","userPrice":"4.99","capacity":199,"stock":199},{"machineId":"2307120156","slot":36,"barcode":"E305D802-3F9C-4A81-BD8B-9A1A68112737","product":"Pantene Conditioner","machinePrice":"4.99","userPrice":"4.99","capacity":199,"stock":199},{"machineId":"2307120156","slot":37,"barcode":"AAB19005-0C6B-4648-854C-3CAED612BA55","product":"Zena SuperGreens","machinePrice":"2.99","userPrice":"1.99","capacity":199,"stock":199},{"machineId":"2307120156","slot":38,"barcode":"5BCB9DD3-5AFD-48FE-8D1B-909D2110C956","product":"Coppertone Sunscreen","machinePrice":"4.99","userPrice":"4.99","capacity":199,"stock":199},{"machineId":"2307120156","slot":39,"barcode":"8FF90692-3F91-48C0-997C-7C0607DE7D19","product":"Liquid IV","machinePrice":"4.99","userPrice":"2.99","capacity":199,"stock":199},{"machineId":"2307120156","slot":40,"barcode":"3A41CBEB-2037-4F84-8F2C-E7D560908A9F","product":"Gillette Shaving Cream","machinePrice":"3.99","userPrice":"3.99","capacity":199,"stock":199},{"machineId":"2307120156","slot":41,"barcode":"6E07025F-92EC-4787-BB05-98A570A3961C","product":"Olay Bodywash","machinePrice":"4.99","userPrice":"4.99","capacity":199,"stock":199},{"machineId":"2307120156","slot":42,"barcode":"D13098D1-D3A5-4BBC-9237-9D25AA792690","product":"Aveeno","machinePrice":"6.99","userPrice":"6.99","capacity":199,"stock":199},{"machineId":"2307120156","slot":44,"barcode":"8540D0EC-4B92-4C39-A567-86A412307F46","product":"Banana Boat Sunscreen","machinePrice":"3.99","userPrice":"2.99","capacity":199,"stock":199},{"machineId":"2307120156","slot":45,"barcode":"DC3A1389-2FF7-4ECC-9E62-6DC4EA066D45","product":"K-Y Jelly","machinePrice":"5.99","userPrice":"5.99","capacity":199,"stock":199},{"machineId":"2307120156","slot":46,"barcode":"4C7B4F10-73EA-4A8C-913E-CF149353BC84","product":"Colgate Toothpaste","machinePrice":"3.99","userPrice":"3.99","capacity":199,"stock":199},{"machineId":"2307120156","slot":47,"barcode":"751A1090-A7FB-4FAB-B29E-E0565B7EFBB9","product":"Always Pads","machinePrice":"3.99","userPrice":"3.99","capacity":199,"stock":199},{"machineId":"2307120156","slot":48,"barcode":"F0C7F359-A00D-44CC-A50E-24CCF79996CF","product":"Cottenelle Wipes","machinePrice":"3.99","userPrice":"3.99","capacity":199,"stock":199},{"machineId":"2307120156","slot":49,"barcode":"169A0B86-22B9-4213-B8B7-58CDD10FACBE","product":"Simply Venus","machinePrice":"4.99","userPrice":"4.99","capacity":199,"stock":199},{"machineId":"2307120156","slot":50,"barcode":"C363F80A-3F59-401C-9090-EF5CB5E25992","product":"Gillette Sensor Razor","machinePrice":"2.99","userPrice":"2.99","capacity":199,"stock":199},{"machineId":"2307120156","slot":51,"barcode":"BFD6DCC9-CC36-4B53-9019-F16A26231F40","product":"Irish Spring Body Soap","machinePrice":"6.99","userPrice":"3.99","capacity":199,"stock":199},{"machineId":"2307120156","slot":53,"barcode":"80CB1BAE-3EEB-4E5E-8F01-07CF94690D6C","product":"Tide Pods","machinePrice":"9.99","userPrice":"9.99","capacity":199,"stock":199},{"machineId":"2307120156","slot":55,"barcode":"E6798BDF-2140-4C89-AF4A-776471A3C243","product":"Bounce Dryer2","machinePrice":"3.99","userPrice":"2.99","capacity":199,"stock":199},{"machineId":"2307120156","slot":57,"barcode":"6B125AEE-5449-4B90-BBAD-B47B9747C9FB","product":"Lubriderm","machinePrice":"7.99","userPrice":"6.99","capacity":199,"stock":199},{"machineId":"2307120156","slot":59,"barcode":"B6A6E06F-DC47-48CF-A709-093825C0C711","product":"Halls","machinePrice":"6.99","userPrice":"6.99","capacity":199,"stock":199}]},{"machineId":"2307130211","label":"ASU PolyTech South","group":"ASU","stockedSlots":40,"totalStock":7956,"slots":[{"machineId":"2307130211","slot":1,"barcode":"44558426-0ADD-4DF5-9270-D1CB80DEB673","product":"Excedrin","machinePrice":"3.99","userPrice":"3.99","capacity":199,"stock":199},{"machineId":"2307130211","slot":3,"barcode":"0CBCF854-1E37-4984-AAFB-B27F078B84A6","product":"Neutrogena Wipes","machinePrice":"4.99","userPrice":"4.99","capacity":199,"stock":199},{"machineId":"2307130211","slot":5,"barcode":"A0EBD2F3-F774-4C4D-906C-87C8A3577466","product":"Platex Tampon","machinePrice":"5.99","userPrice":"5.99","capacity":199,"stock":199},{"machineId":"2307130211","slot":7,"barcode":"8E819408-34BC-4D5D-8824-6ED6E4309627","product":"Neosporin","machinePrice":"10.99","userPrice":"10.99","capacity":199,"stock":199},{"machineId":"2307130211","slot":9,"barcode":"588BD03A-5F2C-4622-B3FE-D76773A2C555","product":"First Aid Kit","machinePrice":"3.99","userPrice":"3.99","capacity":199,"stock":199},{"machineId":"2307130211","slot":11,"barcode":"AC9D9631-8F92-4080-A61E-D1F630412792","product":"NyQuil","machinePrice":"12.99","userPrice":"12.99","capacity":199,"stock":199},{"machineId":"2307130211","slot":13,"barcode":"F5CA2A17-DB9F-4D07-94DF-CD876A9D8692","product":"DayQuil","machinePrice":"12.99","userPrice":"12.99","capacity":199,"stock":199},{"machineId":"2307130211","slot":15,"barcode":"D50B8918-F18E-4BFE-BE67-973901BDDF27","product":"Advil","machinePrice":"6.99","userPrice":"6.99","capacity":199,"stock":199},{"machineId":"2307130211","slot":17,"barcode":"2E2D9BE7-5041-47C7-8311-CB61A9889A03","product":"Tylenol","machinePrice":"6.99","userPrice":"6.99","capacity":199,"stock":199},{"machineId":"2307130211","slot":19,"barcode":"4EE270DA-B465-4390-86BE-A95E7BA28FAB","product":"Pepto Bismol","machinePrice":"5.99","userPrice":"5.99","capacity":199,"stock":199},{"machineId":"2307130211","slot":21,"barcode":"23586033-330B-414C-9324-A1757C00B824","product":"Emergen-C","machinePrice":"3.99","userPrice":"3.99","capacity":199,"stock":199},{"machineId":"2307130211","slot":23,"barcode":"F1B0E9CE-F1AD-4DB4-8C3B-09F21DE14675","product":"Benadryl","machinePrice":"6.99","userPrice":"6.99","capacity":199,"stock":199},{"machineId":"2307130211","slot":25,"barcode":"1E63A4DD-3E0C-4F40-AB0E-34F8F18092FB","product":"Claritin","machinePrice":"3.99","userPrice":"3.99","capacity":199,"stock":199},{"machineId":"2307130211","slot":27,"barcode":"C86A6EC3-5A43-4346-9622-40CC4211AB53","product":"Neuro Mint","machinePrice":"7.99","userPrice":"7.99","capacity":199,"stock":199},{"machineId":"2307130211","slot":29,"barcode":"44F158F1-5435-4A0C-99F7-6C5DCFEBBDD5","product":"Neuro Gum","machinePrice":"7.99","userPrice":"7.99","capacity":199,"stock":198},{"machineId":"2307130211","slot":31,"barcode":"9834F0D7-7346-4884-9249-FB546C58FA42","product":"ReNu","machinePrice":"5.99","userPrice":"6.99","capacity":199,"stock":199},{"machineId":"2307130211","slot":32,"barcode":"2CCCCA89-9AAF-462B-9BFB-1842958EECF2","product":"Degree Womens","machinePrice":"6.99","userPrice":"6.99","capacity":199,"stock":199},{"machineId":"2307130211","slot":33,"barcode":"3E9E96BB-7C6C-4128-B01C-73446BAA8576","product":"AXE Solid","machinePrice":"6.99","userPrice":"6.99","capacity":199,"stock":199},{"machineId":"2307130211","slot":34,"barcode":"1AEAC229-E5E0-42AE-8C55-1F30930390FB","product":"Visine","machinePrice":"4.99","userPrice":"4.99","capacity":199,"stock":197},{"machineId":"2307130211","slot":35,"barcode":"9CC402DB-49BC-43BC-B9B1-DED72D7BB0FB","product":"Pantene Shampoo","machinePrice":"4.99","userPrice":"4.99","capacity":199,"stock":199},{"machineId":"2307130211","slot":36,"barcode":"E305D802-3F9C-4A81-BD8B-9A1A68112737","product":"Pantene Conditioner","machinePrice":"4.99","userPrice":"4.99","capacity":199,"stock":199},{"machineId":"2307130211","slot":37,"barcode":"AAB19005-0C6B-4648-854C-3CAED612BA55","product":"Zena SuperGreens","machinePrice":"2.99","userPrice":"2.99","capacity":199,"stock":199},{"machineId":"2307130211","slot":38,"barcode":"5BCB9DD3-5AFD-48FE-8D1B-909D2110C956","product":"Coppertone Sunscreen","machinePrice":"4.99","userPrice":"4.99","capacity":199,"stock":199},{"machineId":"2307130211","slot":39,"barcode":"8FF90692-3F91-48C0-997C-7C0607DE7D19","product":"Liquid IV","machinePrice":"2.99","userPrice":"2.99","capacity":199,"stock":199},{"machineId":"2307130211","slot":40,"barcode":"3A41CBEB-2037-4F84-8F2C-E7D560908A9F","product":"Gillette Shaving Cream","machinePrice":"3.99","userPrice":"3.99","capacity":199,"stock":199},{"machineId":"2307130211","slot":41,"barcode":"6E07025F-92EC-4787-BB05-98A570A3961C","product":"Olay Bodywash","machinePrice":"4.99","userPrice":"4.99","capacity":199,"stock":199},{"machineId":"2307130211","slot":42,"barcode":"D13098D1-D3A5-4BBC-9237-9D25AA792690","product":"Aveeno","machinePrice":"6.99","userPrice":"6.99","capacity":199,"stock":199},{"machineId":"2307130211","slot":43,"barcode":"4182A52B-8F3E-4F0A-BA5C-B13D0060EBDD","product":"Band Aid","machinePrice":"3.99","userPrice":"2.99","capacity":199,"stock":199},{"machineId":"2307130211","slot":44,"barcode":"8540D0EC-4B92-4C39-A567-86A412307F46","product":"Banana Boat Sunscreen","machinePrice":"3.99","userPrice":"2.99","capacity":199,"stock":199},{"machineId":"2307130211","slot":45,"barcode":"DC3A1389-2FF7-4ECC-9E62-6DC4EA066D45","product":"K-Y Jelly","machinePrice":"6.99","userPrice":"5.99","capacity":199,"stock":199},{"machineId":"2307130211","slot":46,"barcode":"4C7B4F10-73EA-4A8C-913E-CF149353BC84","product":"Colgate Toothpaste","machinePrice":"3.99","userPrice":"3.99","capacity":199,"stock":199},{"machineId":"2307130211","slot":47,"barcode":"751A1090-A7FB-4FAB-B29E-E0565B7EFBB9","product":"Always Pads","machinePrice":"3.99","userPrice":"3.99","capacity":199,"stock":199},{"machineId":"2307130211","slot":48,"barcode":"F0C7F359-A00D-44CC-A50E-24CCF79996CF","product":"Cottenelle Wipes","machinePrice":"3.99","userPrice":"3.99","capacity":199,"stock":199},{"machineId":"2307130211","slot":49,"barcode":"169A0B86-22B9-4213-B8B7-58CDD10FACBE","product":"Simply Venus","machinePrice":"4.99","userPrice":"4.99","capacity":199,"stock":199},{"machineId":"2307130211","slot":50,"barcode":"C363F80A-3F59-401C-9090-EF5CB5E25992","product":"Gillette Sensor Razor","machinePrice":"2.99","userPrice":"2.99","capacity":199,"stock":198},{"machineId":"2307130211","slot":51,"barcode":"BFD6DCC9-CC36-4B53-9019-F16A26231F40","product":"Irish Spring Body Soap","machinePrice":"3.99","userPrice":"3.99","capacity":199,"stock":199},{"machineId":"2307130211","slot":53,"barcode":"80CB1BAE-3EEB-4E5E-8F01-07CF94690D6C","product":"Tide Pods","machinePrice":"9.99","userPrice":"9.99","capacity":199,"stock":199},{"machineId":"2307130211","slot":55,"barcode":"E6798BDF-2140-4C89-AF4A-776471A3C243","product":"Bounce Dryer2","machinePrice":"3.99","userPrice":"2.99","capacity":199,"stock":199},{"machineId":"2307130211","slot":57,"barcode":"6B125AEE-5449-4B90-BBAD-B47B9747C9FB","product":"Lubriderm","machinePrice":"7.99","userPrice":"6.99","capacity":199,"stock":199},{"machineId":"2307130211","slot":59,"barcode":"B6A6E06F-DC47-48CF-A709-093825C0C711","product":"Halls","machinePrice":"6.99","userPrice":"6.99","capacity":199,"stock":199}]},{"machineId":"2307130307","label":"ASU Breezeway Main Campus","group":"ASU","stockedSlots":40,"totalStock":7960,"slots":[{"machineId":"2307130307","slot":1,"barcode":"44558426-0ADD-4DF5-9270-D1CB80DEB673","product":"Excedrin","machinePrice":"2.99","userPrice":"3.99","capacity":199,"stock":199},{"machineId":"2307130307","slot":3,"barcode":"0CBCF854-1E37-4984-AAFB-B27F078B84A6","product":"Neutrogena Wipes","machinePrice":"4.99","userPrice":"4.99","capacity":199,"stock":199},{"machineId":"2307130307","slot":5,"barcode":"A0EBD2F3-F774-4C4D-906C-87C8A3577466","product":"Platex Tampon","machinePrice":"5.99","userPrice":"5.99","capacity":199,"stock":199},{"machineId":"2307130307","slot":7,"barcode":"8E819408-34BC-4D5D-8824-6ED6E4309627","product":"Neosporin","machinePrice":"10.99","userPrice":"10.99","capacity":199,"stock":199},{"machineId":"2307130307","slot":9,"barcode":"588BD03A-5F2C-4622-B3FE-D76773A2C555","product":"First Aid Kit","machinePrice":"4.99","userPrice":"3.99","capacity":199,"stock":199},{"machineId":"2307130307","slot":11,"barcode":"AC9D9631-8F92-4080-A61E-D1F630412792","product":"NyQuil","machinePrice":"12.99","userPrice":"12.99","capacity":199,"stock":199},{"machineId":"2307130307","slot":13,"barcode":"F5CA2A17-DB9F-4D07-94DF-CD876A9D8692","product":"DayQuil","machinePrice":"12.99","userPrice":"12.99","capacity":199,"stock":199},{"machineId":"2307130307","slot":15,"barcode":"D50B8918-F18E-4BFE-BE67-973901BDDF27","product":"Advil","machinePrice":"6.99","userPrice":"6.99","capacity":199,"stock":199},{"machineId":"2307130307","slot":17,"barcode":"2E2D9BE7-5041-47C7-8311-CB61A9889A03","product":"Tylenol","machinePrice":"6.99","userPrice":"6.99","capacity":199,"stock":199},{"machineId":"2307130307","slot":19,"barcode":"4EE270DA-B465-4390-86BE-A95E7BA28FAB","product":"Pepto Bismol","machinePrice":"5.99","userPrice":"5.99","capacity":199,"stock":199},{"machineId":"2307130307","slot":21,"barcode":"23586033-330B-414C-9324-A1757C00B824","product":"Emergen-C","machinePrice":"3.99","userPrice":"3.99","capacity":199,"stock":199},{"machineId":"2307130307","slot":23,"barcode":"F1B0E9CE-F1AD-4DB4-8C3B-09F21DE14675","product":"Benadryl","machinePrice":"6.99","userPrice":"6.99","capacity":199,"stock":199},{"machineId":"2307130307","slot":25,"barcode":"1E63A4DD-3E0C-4F40-AB0E-34F8F18092FB","product":"Claritin","machinePrice":"19.99","userPrice":"3.99","capacity":199,"stock":199},{"machineId":"2307130307","slot":27,"barcode":"C86A6EC3-5A43-4346-9622-40CC4211AB53","product":"Neuro Mint","machinePrice":"7.99","userPrice":"7.99","capacity":199,"stock":199},{"machineId":"2307130307","slot":29,"barcode":"44F158F1-5435-4A0C-99F7-6C5DCFEBBDD5","product":"Neuro Gum","machinePrice":"7.99","userPrice":"7.99","capacity":199,"stock":199},{"machineId":"2307130307","slot":31,"barcode":"9834F0D7-7346-4884-9249-FB546C58FA42","product":"ReNu","machinePrice":"6.99","userPrice":"6.99","capacity":199,"stock":199},{"machineId":"2307130307","slot":32,"barcode":"2CCCCA89-9AAF-462B-9BFB-1842958EECF2","product":"Degree Womens","machinePrice":"6.99","userPrice":"6.99","capacity":199,"stock":199},{"machineId":"2307130307","slot":33,"barcode":"3E9E96BB-7C6C-4128-B01C-73446BAA8576","product":"AXE Solid","machinePrice":"2.99","userPrice":"6.99","capacity":199,"stock":199},{"machineId":"2307130307","slot":34,"barcode":"1AEAC229-E5E0-42AE-8C55-1F30930390FB","product":"Visine","machinePrice":"4.99","userPrice":"4.99","capacity":199,"stock":199},{"machineId":"2307130307","slot":35,"barcode":"9CC402DB-49BC-43BC-B9B1-DED72D7BB0FB","product":"Pantene Shampoo","machinePrice":"3.99","userPrice":"4.99","capacity":199,"stock":199},{"machineId":"2307130307","slot":36,"barcode":"E305D802-3F9C-4A81-BD8B-9A1A68112737","product":"Pantene Conditioner","machinePrice":"3.99","userPrice":"4.99","capacity":199,"stock":199},{"machineId":"2307130307","slot":37,"barcode":"AAB19005-0C6B-4648-854C-3CAED612BA55","product":"Zena SuperGreens","machinePrice":"2.99","userPrice":"2.99","capacity":199,"stock":199},{"machineId":"2307130307","slot":38,"barcode":"5BCB9DD3-5AFD-48FE-8D1B-909D2110C956","product":"Coppertone Sunscreen","machinePrice":"3.99","userPrice":"4.99","capacity":199,"stock":199},{"machineId":"2307130307","slot":39,"barcode":"8FF90692-3F91-48C0-997C-7C0607DE7D19","product":"Liquid IV","machinePrice":"2.99","userPrice":"2.99","capacity":199,"stock":199},{"machineId":"2307130307","slot":40,"barcode":"3A41CBEB-2037-4F84-8F2C-E7D560908A9F","product":"Gillette Shaving Cream","machinePrice":"3.99","userPrice":"3.99","capacity":199,"stock":199},{"machineId":"2307130307","slot":41,"barcode":"6E07025F-92EC-4787-BB05-98A570A3961C","product":"Olay Bodywash","machinePrice":"3.99","userPrice":"4.99","capacity":199,"stock":199},{"machineId":"2307130307","slot":42,"barcode":"D13098D1-D3A5-4BBC-9237-9D25AA792690","product":"Aveeno","machinePrice":"6.99","userPrice":"6.99","capacity":199,"stock":199},{"machineId":"2307130307","slot":43,"barcode":"4182A52B-8F3E-4F0A-BA5C-B13D0060EBDD","product":"Band Aid","machinePrice":"2.99","userPrice":"2.99","capacity":199,"stock":199},{"machineId":"2307130307","slot":44,"barcode":"8540D0EC-4B92-4C39-A567-86A412307F46","product":"Banana Boat Sunscreen","machinePrice":"3.99","userPrice":"2.99","capacity":199,"stock":199},{"machineId":"2307130307","slot":45,"barcode":"DC3A1389-2FF7-4ECC-9E62-6DC4EA066D45","product":"K-Y Jelly","machinePrice":"6.99","userPrice":"5.99","capacity":199,"stock":199},{"machineId":"2307130307","slot":46,"barcode":"4C7B4F10-73EA-4A8C-913E-CF149353BC84","product":"Colgate Toothpaste","machinePrice":"3.99","userPrice":"3.99","capacity":199,"stock":199},{"machineId":"2307130307","slot":47,"barcode":"751A1090-A7FB-4FAB-B29E-E0565B7EFBB9","product":"Always Pads","machinePrice":"3.99","userPrice":"3.99","capacity":199,"stock":199},{"machineId":"2307130307","slot":48,"barcode":"F0C7F359-A00D-44CC-A50E-24CCF79996CF","product":"Cottenelle Wipes","machinePrice":"3.99","userPrice":"3.99","capacity":199,"stock":199},{"machineId":"2307130307","slot":49,"barcode":"169A0B86-22B9-4213-B8B7-58CDD10FACBE","product":"Simply Venus","machinePrice":"4.99","userPrice":"4.99","capacity":199,"stock":199},{"machineId":"2307130307","slot":50,"barcode":"C363F80A-3F59-401C-9090-EF5CB5E25992","product":"Gillette Sensor Razor","machinePrice":"2.99","userPrice":"2.99","capacity":199,"stock":199},{"machineId":"2307130307","slot":51,"barcode":"BFD6DCC9-CC36-4B53-9019-F16A26231F40","product":"Irish Spring Body Soap","machinePrice":"3.99","userPrice":"3.99","capacity":199,"stock":199},{"machineId":"2307130307","slot":53,"barcode":"80CB1BAE-3EEB-4E5E-8F01-07CF94690D6C","product":"Tide Pods","machinePrice":"9.99","userPrice":"9.99","capacity":199,"stock":199},{"machineId":"2307130307","slot":55,"barcode":"E6798BDF-2140-4C89-AF4A-776471A3C243","product":"Bounce Dryer2","machinePrice":"3.99","userPrice":"2.99","capacity":199,"stock":199},{"machineId":"2307130307","slot":57,"barcode":"6B125AEE-5449-4B90-BBAD-B47B9747C9FB","product":"Lubriderm","machinePrice":"7.99","userPrice":"6.99","capacity":199,"stock":199},{"machineId":"2307130307","slot":59,"barcode":"B6A6E06F-DC47-48CF-A709-093825C0C711","product":"Halls","machinePrice":"6.99","userPrice":"6.99","capacity":199,"stock":199}]},{"machineId":"2404090021","label":"ASU Downtown City Center","group":"ASU","stockedSlots":10,"totalStock":1990,"slots":[{"machineId":"2404090021","slot":1,"barcode":"44558426-0ADD-4DF5-9270-D1CB80DEB673","product":"Excedrin","machinePrice":"2.99","userPrice":"3.99","capacity":199,"stock":199},{"machineId":"2404090021","slot":3,"barcode":"0CBCF854-1E37-4984-AAFB-B27F078B84A6","product":"Neutrogena Wipes","machinePrice":"4.99","userPrice":"4.99","capacity":199,"stock":199},{"machineId":"2404090021","slot":5,"barcode":"A0EBD2F3-F774-4C4D-906C-87C8A3577466","product":"Platex Tampon","machinePrice":"5.99","userPrice":"5.99","capacity":199,"stock":199},{"machineId":"2404090021","slot":7,"barcode":"8E819408-34BC-4D5D-8824-6ED6E4309627","product":"Neosporin","machinePrice":"10.99","userPrice":"10.99","capacity":199,"stock":199},{"machineId":"2404090021","slot":9,"barcode":"588BD03A-5F2C-4622-B3FE-D76773A2C555","product":"First Aid Kit","machinePrice":"3.99","userPrice":"3.99","capacity":199,"stock":199},{"machineId":"2404090021","slot":11,"barcode":"AC9D9631-8F92-4080-A61E-D1F630412792","product":"NyQuil","machinePrice":"12.99","userPrice":"12.99","capacity":199,"stock":199},{"machineId":"2404090021","slot":13,"barcode":"F5CA2A17-DB9F-4D07-94DF-CD876A9D8692","product":"DayQuil","machinePrice":"12.99","userPrice":"12.99","capacity":199,"stock":199},{"machineId":"2404090021","slot":15,"barcode":"D50B8918-F18E-4BFE-BE67-973901BDDF27","product":"Advil","machinePrice":"6.99","userPrice":"6.99","capacity":199,"stock":199},{"machineId":"2404090021","slot":17,"barcode":"2E2D9BE7-5041-47C7-8311-CB61A9889A03","product":"Tylenol","machinePrice":"6.99","userPrice":"6.99","capacity":199,"stock":199},{"machineId":"2404090021","slot":19,"barcode":"4EE270DA-B465-4390-86BE-A95E7BA28FAB","product":"Pepto Bismol","machinePrice":"5.99","userPrice":"5.99","capacity":199,"stock":199}]},{"machineId":"2404090022","label":"ASU Hayden Library","group":"ASU","stockedSlots":0,"totalStock":0,"slots":[]},{"machineId":"2602080991","label":"Murad","group":"Murad","stockedSlots":0,"totalStock":0,"slots":[]},{"machineId":"2602080907","label":"CSUDH Front Hall","group":"CSUDH","stockedSlots":1,"totalStock":98,"slots":[{"machineId":"2602080907","slot":1,"barcode":"80CB1BAE-3EEB-4E5E-8F01-07CF94690D6C","product":"Tide Pods","machinePrice":"10","userPrice":"9.99","capacity":99,"stock":98}]},{"machineId":"2407100037","label":"Unassigned (no group)","group":"\u2014","stockedSlots":0,"totalStock":0,"slots":[]},{"machineId":"2407100158","label":"Unassigned (no group)","group":"\u2014","stockedSlots":0,"totalStock":0,"slots":[]},{"machineId":"2602080924","label":"Unassigned (no group)","group":"\u2014","stockedSlots":0,"totalStock":0,"slots":[]},{"machineId":"2602080931","label":"Unassigned (no group)","group":"\u2014","stockedSlots":0,"totalStock":0,"slots":[]}]}
+{
+  "capturedAt": "2026-08-17",
+  "source": "OurVend live read (snapshot)",
+  "machines": [
+    {
+      "machineId": "2210280082",
+      "label": "UNLV Tonopah Hall",
+      "group": "UNLV",
+      "stockedSlots": 36,
+      "totalStock": 3155,
+      "slots": [
+        {
+          "machineId": "2210280082",
+          "slot": 1,
+          "barcode": "80CB1BAE-3EEB-4E5E-8F01-07CF94690D6C",
+          "product": "Tide Pods",
+          "machinePrice": "9.99",
+          "userPrice": "9.99",
+          "capacity": 99,
+          "stock": 98
+        },
+        {
+          "machineId": "2210280082",
+          "slot": 3,
+          "barcode": "0CBCF854-1E37-4984-AAFB-B27F078B84A6",
+          "product": "Neutrogena Wipes",
+          "machinePrice": "4.99",
+          "userPrice": "4.99",
+          "capacity": 99,
+          "stock": 6
+        },
+        {
+          "machineId": "2210280082",
+          "slot": 5,
+          "barcode": "A0EBD2F3-F774-4C4D-906C-87C8A3577466",
+          "product": "Platex Tampon",
+          "machinePrice": "5.99",
+          "userPrice": "5.99",
+          "capacity": 14,
+          "stock": 8
+        },
+        {
+          "machineId": "2210280082",
+          "slot": 7,
+          "barcode": "8E819408-34BC-4D5D-8824-6ED6E4309627",
+          "product": "Neosporin",
+          "machinePrice": "19.99",
+          "userPrice": "19.99",
+          "capacity": 99,
+          "stock": 7
+        },
+        {
+          "machineId": "2210280082",
+          "slot": 9,
+          "barcode": "588BD03A-5F2C-4622-B3FE-D76773A2C555",
+          "product": "First Aid Kit",
+          "machinePrice": "15.99",
+          "userPrice": "3.99",
+          "capacity": 99,
+          "stock": 7
+        },
+        {
+          "machineId": "2210280082",
+          "slot": 11,
+          "barcode": "AC9D9631-8F92-4080-A61E-D1F630412792",
+          "product": "NyQuil",
+          "machinePrice": "12.99",
+          "userPrice": "12.99",
+          "capacity": 99,
+          "stock": 99
+        },
+        {
+          "machineId": "2210280082",
+          "slot": 13,
+          "barcode": "F5CA2A17-DB9F-4D07-94DF-CD876A9D8692",
+          "product": "DayQuil",
+          "machinePrice": "12.99",
+          "userPrice": "12.99",
+          "capacity": 99,
+          "stock": 99
+        },
+        {
+          "machineId": "2210280082",
+          "slot": 15,
+          "barcode": "D50B8918-F18E-4BFE-BE67-973901BDDF27",
+          "product": "Advil ",
+          "machinePrice": "6.99",
+          "userPrice": "5.99",
+          "capacity": 99,
+          "stock": 96
+        },
+        {
+          "machineId": "2210280082",
+          "slot": 17,
+          "barcode": "2E2D9BE7-5041-47C7-8311-CB61A9889A03",
+          "product": "Tylenol",
+          "machinePrice": "6.99",
+          "userPrice": "5.99",
+          "capacity": 99,
+          "stock": 95
+        },
+        {
+          "machineId": "2210280082",
+          "slot": 19,
+          "barcode": "4EE270DA-B465-4390-86BE-A95E7BA28FAB",
+          "product": "Pepto Bismol",
+          "machinePrice": "5.99",
+          "userPrice": "5.99",
+          "capacity": 99,
+          "stock": 98
+        },
+        {
+          "machineId": "2210280082",
+          "slot": 21,
+          "barcode": "44F158F1-5435-4A0C-99F7-6C5DCFEBBDD5",
+          "product": "Neuro Gum",
+          "machinePrice": "7.99",
+          "userPrice": "7.99",
+          "capacity": 99,
+          "stock": 98
+        },
+        {
+          "machineId": "2210280082",
+          "slot": 23,
+          "barcode": "F1B0E9CE-F1AD-4DB4-8C3B-09F21DE14675",
+          "product": "Benadryl",
+          "machinePrice": "6.99",
+          "userPrice": "6.99",
+          "capacity": 99,
+          "stock": 97
+        },
+        {
+          "machineId": "2210280082",
+          "slot": 25,
+          "barcode": "D8530876-64D0-440E-884A-2757E5CAB26F",
+          "product": "My Choice",
+          "machinePrice": "17.99",
+          "userPrice": "18.99",
+          "capacity": 99,
+          "stock": 99
+        },
+        {
+          "machineId": "2210280082",
+          "slot": 27,
+          "barcode": "6D836B89-C8E2-4CC3-B755-1C961F921421",
+          "product": "PlanB",
+          "machinePrice": "17.99",
+          "userPrice": "46.99",
+          "capacity": 99,
+          "stock": 99
+        },
+        {
+          "machineId": "2210280082",
+          "slot": 29,
+          "barcode": "B7AF5623-58AE-43CF-B1D9-8F2AABF3F2B3",
+          "product": "Trojan Condoms",
+          "machinePrice": "5.99",
+          "userPrice": "5.99",
+          "capacity": 99,
+          "stock": 96
+        },
+        {
+          "machineId": "2210280082",
+          "slot": 31,
+          "barcode": "9834F0D7-7346-4884-9249-FB546C58FA42",
+          "product": "ReNu",
+          "machinePrice": "5.99",
+          "userPrice": "5.99",
+          "capacity": 99,
+          "stock": 99
+        },
+        {
+          "machineId": "2210280082",
+          "slot": 32,
+          "barcode": "2CCCCA89-9AAF-462B-9BFB-1842958EECF2",
+          "product": "Degree Womens",
+          "machinePrice": "5.99",
+          "userPrice": "6.99",
+          "capacity": 99,
+          "stock": 97
+        },
+        {
+          "machineId": "2210280082",
+          "slot": 34,
+          "barcode": "1AEAC229-E5E0-42AE-8C55-1F30930390FB",
+          "product": "Visine",
+          "machinePrice": "4.99",
+          "userPrice": "4.99",
+          "capacity": 99,
+          "stock": 99
+        },
+        {
+          "machineId": "2210280082",
+          "slot": 35,
+          "barcode": "9CC402DB-49BC-43BC-B9B1-DED72D7BB0FB",
+          "product": "Pantene Shampoo",
+          "machinePrice": "3.99",
+          "userPrice": "4.99",
+          "capacity": 99,
+          "stock": 98
+        },
+        {
+          "machineId": "2210280082",
+          "slot": 36,
+          "barcode": "E305D802-3F9C-4A81-BD8B-9A1A68112737",
+          "product": "Pantene Conditioner",
+          "machinePrice": "3.99",
+          "userPrice": "4.99",
+          "capacity": 99,
+          "stock": 98
+        },
+        {
+          "machineId": "2210280082",
+          "slot": 37,
+          "barcode": "44558426-0ADD-4DF5-9270-D1CB80DEB673",
+          "product": "Excedrin",
+          "machinePrice": "3.99",
+          "userPrice": "3.99",
+          "capacity": 99,
+          "stock": 98
+        },
+        {
+          "machineId": "2210280082",
+          "slot": 39,
+          "barcode": "F0C7F359-A00D-44CC-A50E-24CCF79996CF",
+          "product": "Cottenelle Wipes",
+          "machinePrice": "2.99",
+          "userPrice": "3.99",
+          "capacity": 99,
+          "stock": 99
+        },
+        {
+          "machineId": "2210280082",
+          "slot": 41,
+          "barcode": "5BCB9DD3-5AFD-48FE-8D1B-909D2110C956",
+          "product": "Coppertone Sunscreen",
+          "machinePrice": "3.99",
+          "userPrice": "4.99",
+          "capacity": 99,
+          "stock": 98
+        },
+        {
+          "machineId": "2210280082",
+          "slot": 43,
+          "barcode": "23586033-330B-414C-9324-A1757C00B824",
+          "product": "Emergen-C",
+          "machinePrice": "3.99",
+          "userPrice": "3.99",
+          "capacity": 99,
+          "stock": 99
+        },
+        {
+          "machineId": "2210280082",
+          "slot": 44,
+          "barcode": "D13098D1-D3A5-4BBC-9237-9D25AA792690",
+          "product": "Aveeno",
+          "machinePrice": "3.99",
+          "userPrice": "6.99",
+          "capacity": 99,
+          "stock": 99
+        },
+        {
+          "machineId": "2210280082",
+          "slot": 45,
+          "barcode": "DC3A1389-2FF7-4ECC-9E62-6DC4EA066D45",
+          "product": "K-Y Jelly",
+          "machinePrice": "5.99",
+          "userPrice": "5.99",
+          "capacity": 99,
+          "stock": 96
+        },
+        {
+          "machineId": "2210280082",
+          "slot": 46,
+          "barcode": "4C7B4F10-73EA-4A8C-913E-CF149353BC84",
+          "product": "Colgate Toothpaste",
+          "machinePrice": "3.99",
+          "userPrice": "3.99",
+          "capacity": 99,
+          "stock": 97
+        },
+        {
+          "machineId": "2210280082",
+          "slot": 47,
+          "barcode": "751A1090-A7FB-4FAB-B29E-E0565B7EFBB9",
+          "product": "Always Pads",
+          "machinePrice": "3.99",
+          "userPrice": "3.99",
+          "capacity": 99,
+          "stock": 98
+        },
+        {
+          "machineId": "2210280082",
+          "slot": 48,
+          "barcode": "6E07025F-92EC-4787-BB05-98A570A3961C",
+          "product": "Olay Bodywash",
+          "machinePrice": "3.99",
+          "userPrice": "4.99",
+          "capacity": 99,
+          "stock": 98
+        },
+        {
+          "machineId": "2210280082",
+          "slot": 49,
+          "barcode": "169A0B86-22B9-4213-B8B7-58CDD10FACBE",
+          "product": "Simply Venus ",
+          "machinePrice": "4.99",
+          "userPrice": "4.99",
+          "capacity": 99,
+          "stock": 99
+        },
+        {
+          "machineId": "2210280082",
+          "slot": 50,
+          "barcode": "C363F80A-3F59-401C-9090-EF5CB5E25992",
+          "product": "Gillette Sensor Razor",
+          "machinePrice": "2.99",
+          "userPrice": "2.99",
+          "capacity": 99,
+          "stock": 97
+        },
+        {
+          "machineId": "2210280082",
+          "slot": 51,
+          "barcode": "74B3A776-CF23-4C07-BCFA-925C9A02090E",
+          "product": "Bounce Dryer Sheets",
+          "machinePrice": "3.99",
+          "userPrice": "4.99",
+          "capacity": 99,
+          "stock": 99
+        },
+        {
+          "machineId": "2210280082",
+          "slot": 53,
+          "barcode": "80CB1BAE-3EEB-4E5E-8F01-07CF94690D6C",
+          "product": "Tide Pods",
+          "machinePrice": "9.99",
+          "userPrice": "9.99",
+          "capacity": 99,
+          "stock": 93
+        },
+        {
+          "machineId": "2210280082",
+          "slot": 55,
+          "barcode": "6B125AEE-5449-4B90-BBAD-B47B9747C9FB",
+          "product": "Lubriderm",
+          "machinePrice": "6.99",
+          "userPrice": "6.99",
+          "capacity": 99,
+          "stock": 98
+        },
+        {
+          "machineId": "2210280082",
+          "slot": 57,
+          "barcode": "B6A6E06F-DC47-48CF-A709-093825C0C711",
+          "product": "Halls",
+          "machinePrice": "5.99",
+          "userPrice": "6.99",
+          "capacity": 99,
+          "stock": 97
+        },
+        {
+          "machineId": "2210280082",
+          "slot": 59,
+          "barcode": "1E63A4DD-3E0C-4F40-AB0E-34F8F18092FB",
+          "product": "Claritin",
+          "machinePrice": "3.49",
+          "userPrice": "3.99",
+          "capacity": 99,
+          "stock": 97
+        }
+      ]
+    },
+    {
+      "machineId": "2404260016",
+      "label": "UNLV Dayton Complex",
+      "group": "UNLV",
+      "stockedSlots": 0,
+      "totalStock": 0,
+      "slots": []
+    },
+    {
+      "machineId": "2303220332",
+      "label": "ASU West Glendale",
+      "group": "ASU",
+      "stockedSlots": 39,
+      "totalStock": 377,
+      "slots": [
+        {
+          "machineId": "2303220332",
+          "slot": 1,
+          "barcode": "44558426-0ADD-4DF5-9270-D1CB80DEB673",
+          "product": "Excedrin",
+          "machinePrice": "3.99",
+          "userPrice": "3.99",
+          "capacity": 10,
+          "stock": 10
+        },
+        {
+          "machineId": "2303220332",
+          "slot": 3,
+          "barcode": "0CBCF854-1E37-4984-AAFB-B27F078B84A6",
+          "product": "Neutrogena Wipes",
+          "machinePrice": "4.99",
+          "userPrice": "4.99",
+          "capacity": 12,
+          "stock": 12
+        },
+        {
+          "machineId": "2303220332",
+          "slot": 5,
+          "barcode": "A0EBD2F3-F774-4C4D-906C-87C8A3577466",
+          "product": "Platex Tampon",
+          "machinePrice": "5.99",
+          "userPrice": "5.99",
+          "capacity": 6,
+          "stock": 6
+        },
+        {
+          "machineId": "2303220332",
+          "slot": 7,
+          "barcode": "8E819408-34BC-4D5D-8824-6ED6E4309627",
+          "product": "Neosporin",
+          "machinePrice": "10.99",
+          "userPrice": "10.99",
+          "capacity": 12,
+          "stock": 12
+        },
+        {
+          "machineId": "2303220332",
+          "slot": 9,
+          "barcode": "588BD03A-5F2C-4622-B3FE-D76773A2C555",
+          "product": "First Aid Kit",
+          "machinePrice": "3.99",
+          "userPrice": "3.99",
+          "capacity": 10,
+          "stock": 10
+        },
+        {
+          "machineId": "2303220332",
+          "slot": 11,
+          "barcode": "AC9D9631-8F92-4080-A61E-D1F630412792",
+          "product": "NyQuil",
+          "machinePrice": "12.99",
+          "userPrice": "12.99",
+          "capacity": 12,
+          "stock": 12
+        },
+        {
+          "machineId": "2303220332",
+          "slot": 13,
+          "barcode": "F5CA2A17-DB9F-4D07-94DF-CD876A9D8692",
+          "product": "DayQuil",
+          "machinePrice": "12.99",
+          "userPrice": "12.99",
+          "capacity": 12,
+          "stock": 12
+        },
+        {
+          "machineId": "2303220332",
+          "slot": 15,
+          "barcode": "D50B8918-F18E-4BFE-BE67-973901BDDF27",
+          "product": "Advil",
+          "machinePrice": "6.99",
+          "userPrice": "5.99",
+          "capacity": 12,
+          "stock": 11
+        },
+        {
+          "machineId": "2303220332",
+          "slot": 17,
+          "barcode": "2E2D9BE7-5041-47C7-8311-CB61A9889A03",
+          "product": "Tylenol",
+          "machinePrice": "6.99",
+          "userPrice": "5.99",
+          "capacity": 12,
+          "stock": 11
+        },
+        {
+          "machineId": "2303220332",
+          "slot": 19,
+          "barcode": "4EE270DA-B465-4390-86BE-A95E7BA28FAB",
+          "product": "Pepto Bismol",
+          "machinePrice": "5.99",
+          "userPrice": "5.99",
+          "capacity": 12,
+          "stock": 12
+        },
+        {
+          "machineId": "2303220332",
+          "slot": 21,
+          "barcode": "23586033-330B-414C-9324-A1757C00B824",
+          "product": "Emergen-C",
+          "machinePrice": "3.99",
+          "userPrice": "3.99",
+          "capacity": 12,
+          "stock": 12
+        },
+        {
+          "machineId": "2303220332",
+          "slot": 23,
+          "barcode": "F1B0E9CE-F1AD-4DB4-8C3B-09F21DE14675",
+          "product": "Benadryl",
+          "machinePrice": "6.99",
+          "userPrice": "6.99",
+          "capacity": 12,
+          "stock": 12
+        },
+        {
+          "machineId": "2303220332",
+          "slot": 25,
+          "barcode": "1E63A4DD-3E0C-4F40-AB0E-34F8F18092FB",
+          "product": "Claritin",
+          "machinePrice": "3.99",
+          "userPrice": "3.99",
+          "capacity": 15,
+          "stock": 15
+        },
+        {
+          "machineId": "2303220332",
+          "slot": 27,
+          "barcode": "C86A6EC3-5A43-4346-9622-40CC4211AB53",
+          "product": "Neuro Mint",
+          "machinePrice": "6.99",
+          "userPrice": "6.99",
+          "capacity": 10,
+          "stock": 9
+        },
+        {
+          "machineId": "2303220332",
+          "slot": 31,
+          "barcode": "9834F0D7-7346-4884-9249-FB546C58FA42",
+          "product": "ReNu",
+          "machinePrice": "5.99",
+          "userPrice": "5.99",
+          "capacity": 6,
+          "stock": 6
+        },
+        {
+          "machineId": "2303220332",
+          "slot": 32,
+          "barcode": "2CCCCA89-9AAF-462B-9BFB-1842958EECF2",
+          "product": "Degree Womens",
+          "machinePrice": "6.99",
+          "userPrice": "6.99",
+          "capacity": 8,
+          "stock": 8
+        },
+        {
+          "machineId": "2303220332",
+          "slot": 33,
+          "barcode": "3E9E96BB-7C6C-4128-B01C-73446BAA8576",
+          "product": "AXE Solid",
+          "machinePrice": "6.99",
+          "userPrice": "6.99",
+          "capacity": 8,
+          "stock": 8
+        },
+        {
+          "machineId": "2303220332",
+          "slot": 34,
+          "barcode": "1AEAC229-E5E0-42AE-8C55-1F30930390FB",
+          "product": "Visine",
+          "machinePrice": "4.99",
+          "userPrice": "4.99",
+          "capacity": 10,
+          "stock": 10
+        },
+        {
+          "machineId": "2303220332",
+          "slot": 35,
+          "barcode": "E305D802-3F9C-4A81-BD8B-9A1A68112737",
+          "product": "Pantene Conditioner",
+          "machinePrice": "4.99",
+          "userPrice": "4.99",
+          "capacity": 10,
+          "stock": 10
+        },
+        {
+          "machineId": "2303220332",
+          "slot": 36,
+          "barcode": "9CC402DB-49BC-43BC-B9B1-DED72D7BB0FB",
+          "product": "Pantene Shampoo",
+          "machinePrice": "4.99",
+          "userPrice": "4.99",
+          "capacity": 10,
+          "stock": 10
+        },
+        {
+          "machineId": "2303220332",
+          "slot": 37,
+          "barcode": "8FF90692-3F91-48C0-997C-7C0607DE7D19",
+          "product": "Liquid IV",
+          "machinePrice": "2.99",
+          "userPrice": "2.99",
+          "capacity": 12,
+          "stock": 12
+        },
+        {
+          "machineId": "2303220332",
+          "slot": 38,
+          "barcode": "8FF90692-3F91-48C0-997C-7C0607DE7D19",
+          "product": "Liquid IV",
+          "machinePrice": "2.99",
+          "userPrice": "2.99",
+          "capacity": 12,
+          "stock": 12
+        },
+        {
+          "machineId": "2303220332",
+          "slot": 39,
+          "barcode": "5BCB9DD3-5AFD-48FE-8D1B-909D2110C956",
+          "product": "Coppertone Sunscreen",
+          "machinePrice": "4.99",
+          "userPrice": "4.99",
+          "capacity": 8,
+          "stock": 8
+        },
+        {
+          "machineId": "2303220332",
+          "slot": 40,
+          "barcode": "3A41CBEB-2037-4F84-8F2C-E7D560908A9F",
+          "product": "Gillette Shaving Cream",
+          "machinePrice": "3.99",
+          "userPrice": "3.99",
+          "capacity": 8,
+          "stock": 8
+        },
+        {
+          "machineId": "2303220332",
+          "slot": 41,
+          "barcode": "6E07025F-92EC-4787-BB05-98A570A3961C",
+          "product": "Olay Bodywash",
+          "machinePrice": "4.99",
+          "userPrice": "4.99",
+          "capacity": 7,
+          "stock": 7
+        },
+        {
+          "machineId": "2303220332",
+          "slot": 42,
+          "barcode": "D13098D1-D3A5-4BBC-9237-9D25AA792690",
+          "product": "Aveeno",
+          "machinePrice": "6.99",
+          "userPrice": "6.99",
+          "capacity": 12,
+          "stock": 12
+        },
+        {
+          "machineId": "2303220332",
+          "slot": 43,
+          "barcode": "4182A52B-8F3E-4F0A-BA5C-B13D0060EBDD",
+          "product": "Band Aid",
+          "machinePrice": "2.99",
+          "userPrice": "2.99",
+          "capacity": 10,
+          "stock": 10
+        },
+        {
+          "machineId": "2303220332",
+          "slot": 44,
+          "barcode": "8540D0EC-4B92-4C39-A567-86A412307F46",
+          "product": "Banana Boat Sunscreen",
+          "machinePrice": "2.99",
+          "userPrice": "2.99",
+          "capacity": 8,
+          "stock": 8
+        },
+        {
+          "machineId": "2303220332",
+          "slot": 45,
+          "barcode": "DC3A1389-2FF7-4ECC-9E62-6DC4EA066D45",
+          "product": "K-Y Jelly",
+          "machinePrice": "5.99",
+          "userPrice": "5.99",
+          "capacity": 4,
+          "stock": 3
+        },
+        {
+          "machineId": "2303220332",
+          "slot": 46,
+          "barcode": "4C7B4F10-73EA-4A8C-913E-CF149353BC84",
+          "product": "Colgate Toothpaste",
+          "machinePrice": "3.99",
+          "userPrice": "3.99",
+          "capacity": 8,
+          "stock": 8
+        },
+        {
+          "machineId": "2303220332",
+          "slot": 47,
+          "barcode": "751A1090-A7FB-4FAB-B29E-E0565B7EFBB9",
+          "product": "Always Pads",
+          "machinePrice": "3.99",
+          "userPrice": "3.99",
+          "capacity": 4,
+          "stock": 4
+        },
+        {
+          "machineId": "2303220332",
+          "slot": 48,
+          "barcode": "F0C7F359-A00D-44CC-A50E-24CCF79996CF",
+          "product": "Cottenelle Wipes",
+          "machinePrice": "3.99",
+          "userPrice": "3.99",
+          "capacity": 12,
+          "stock": 12
+        },
+        {
+          "machineId": "2303220332",
+          "slot": 49,
+          "barcode": "169A0B86-22B9-4213-B8B7-58CDD10FACBE",
+          "product": "Simply Venus",
+          "machinePrice": "4.99",
+          "userPrice": "3.99",
+          "capacity": 12,
+          "stock": 12
+        },
+        {
+          "machineId": "2303220332",
+          "slot": 50,
+          "barcode": "C363F80A-3F59-401C-9090-EF5CB5E25992",
+          "product": "Gillette Sensor Razor",
+          "machinePrice": "2.99",
+          "userPrice": "3.99",
+          "capacity": 12,
+          "stock": 12
+        },
+        {
+          "machineId": "2303220332",
+          "slot": 51,
+          "barcode": "80CB1BAE-3EEB-4E5E-8F01-07CF94690D6C",
+          "product": "Tide Pods",
+          "machinePrice": "4.99",
+          "userPrice": "9.99",
+          "capacity": 6,
+          "stock": 6
+        },
+        {
+          "machineId": "2303220332",
+          "slot": 53,
+          "barcode": "E6798BDF-2140-4C89-AF4A-776471A3C243",
+          "product": "Bounce Dryer2",
+          "machinePrice": "2.49",
+          "userPrice": "2.49",
+          "capacity": 10,
+          "stock": 10
+        },
+        {
+          "machineId": "2303220332",
+          "slot": 55,
+          "barcode": "80CB1BAE-3EEB-4E5E-8F01-07CF94690D6C",
+          "product": "Tide Pods",
+          "machinePrice": "9.99",
+          "userPrice": "9.99",
+          "capacity": 5,
+          "stock": 5
+        },
+        {
+          "machineId": "2303220332",
+          "slot": 57,
+          "barcode": "6B125AEE-5449-4B90-BBAD-B47B9747C9FB",
+          "product": "Lubriderm",
+          "machinePrice": "6.99",
+          "userPrice": "6.99",
+          "capacity": 10,
+          "stock": 10
+        },
+        {
+          "machineId": "2303220332",
+          "slot": 59,
+          "barcode": "B6A6E06F-DC47-48CF-A709-093825C0C711",
+          "product": "Halls",
+          "machinePrice": "6.99",
+          "userPrice": "6.99",
+          "capacity": 10,
+          "stock": 10
+        }
+      ]
+    },
+    {
+      "machineId": "2307120156",
+      "label": "ASU Noble Library",
+      "group": "ASU",
+      "stockedSlots": 38,
+      "totalStock": 7562,
+      "slots": [
+        {
+          "machineId": "2307120156",
+          "slot": 1,
+          "barcode": "44558426-0ADD-4DF5-9270-D1CB80DEB673",
+          "product": "Excedrin",
+          "machinePrice": "3.99",
+          "userPrice": "3.99",
+          "capacity": 199,
+          "stock": 199
+        },
+        {
+          "machineId": "2307120156",
+          "slot": 3,
+          "barcode": "0CBCF854-1E37-4984-AAFB-B27F078B84A6",
+          "product": "Neutrogena Wipes",
+          "machinePrice": "4.99",
+          "userPrice": "4.99",
+          "capacity": 199,
+          "stock": 199
+        },
+        {
+          "machineId": "2307120156",
+          "slot": 5,
+          "barcode": "A0EBD2F3-F774-4C4D-906C-87C8A3577466",
+          "product": "Platex Tampon",
+          "machinePrice": "5.99",
+          "userPrice": "5.99",
+          "capacity": 199,
+          "stock": 199
+        },
+        {
+          "machineId": "2307120156",
+          "slot": 7,
+          "barcode": "8E819408-34BC-4D5D-8824-6ED6E4309627",
+          "product": "Neosporin",
+          "machinePrice": "10.99",
+          "userPrice": "10.99",
+          "capacity": 199,
+          "stock": 199
+        },
+        {
+          "machineId": "2307120156",
+          "slot": 9,
+          "barcode": "588BD03A-5F2C-4622-B3FE-D76773A2C555",
+          "product": "First Aid Kit",
+          "machinePrice": "3.99",
+          "userPrice": "3.99",
+          "capacity": 199,
+          "stock": 199
+        },
+        {
+          "machineId": "2307120156",
+          "slot": 11,
+          "barcode": "AC9D9631-8F92-4080-A61E-D1F630412792",
+          "product": "NyQuil",
+          "machinePrice": "12.99",
+          "userPrice": "12.99",
+          "capacity": 199,
+          "stock": 199
+        },
+        {
+          "machineId": "2307120156",
+          "slot": 13,
+          "barcode": "F5CA2A17-DB9F-4D07-94DF-CD876A9D8692",
+          "product": "DayQuil",
+          "machinePrice": "12.99",
+          "userPrice": "12.99",
+          "capacity": 199,
+          "stock": 199
+        },
+        {
+          "machineId": "2307120156",
+          "slot": 15,
+          "barcode": "D50B8918-F18E-4BFE-BE67-973901BDDF27",
+          "product": "Advil",
+          "machinePrice": "6.99",
+          "userPrice": "6.99",
+          "capacity": 199,
+          "stock": 199
+        },
+        {
+          "machineId": "2307120156",
+          "slot": 17,
+          "barcode": "2E2D9BE7-5041-47C7-8311-CB61A9889A03",
+          "product": "Tylenol",
+          "machinePrice": "6.99",
+          "userPrice": "6.99",
+          "capacity": 199,
+          "stock": 199
+        },
+        {
+          "machineId": "2307120156",
+          "slot": 19,
+          "barcode": "4EE270DA-B465-4390-86BE-A95E7BA28FAB",
+          "product": "Pepto Bismol",
+          "machinePrice": "5.99",
+          "userPrice": "5.99",
+          "capacity": 199,
+          "stock": 199
+        },
+        {
+          "machineId": "2307120156",
+          "slot": 21,
+          "barcode": "23586033-330B-414C-9324-A1757C00B824",
+          "product": "Emergen-C",
+          "machinePrice": "3.99",
+          "userPrice": "3.99",
+          "capacity": 199,
+          "stock": 199
+        },
+        {
+          "machineId": "2307120156",
+          "slot": 23,
+          "barcode": "F1B0E9CE-F1AD-4DB4-8C3B-09F21DE14675",
+          "product": "Benadryl",
+          "machinePrice": "6.99",
+          "userPrice": "6.99",
+          "capacity": 199,
+          "stock": 199
+        },
+        {
+          "machineId": "2307120156",
+          "slot": 25,
+          "barcode": "1E63A4DD-3E0C-4F40-AB0E-34F8F18092FB",
+          "product": "Claritin",
+          "machinePrice": "19.99",
+          "userPrice": "3.99",
+          "capacity": 199,
+          "stock": 199
+        },
+        {
+          "machineId": "2307120156",
+          "slot": 27,
+          "barcode": "C86A6EC3-5A43-4346-9622-40CC4211AB53",
+          "product": "Neuro Mint",
+          "machinePrice": "7.99",
+          "userPrice": "7.99",
+          "capacity": 199,
+          "stock": 199
+        },
+        {
+          "machineId": "2307120156",
+          "slot": 29,
+          "barcode": "44F158F1-5435-4A0C-99F7-6C5DCFEBBDD5",
+          "product": "Neuro Gum",
+          "machinePrice": "7.99",
+          "userPrice": "7.99",
+          "capacity": 199,
+          "stock": 199
+        },
+        {
+          "machineId": "2307120156",
+          "slot": 31,
+          "barcode": "9834F0D7-7346-4884-9249-FB546C58FA42",
+          "product": "ReNu",
+          "machinePrice": "6.99",
+          "userPrice": "6.99",
+          "capacity": 199,
+          "stock": 199
+        },
+        {
+          "machineId": "2307120156",
+          "slot": 32,
+          "barcode": "2CCCCA89-9AAF-462B-9BFB-1842958EECF2",
+          "product": "Degree Womens",
+          "machinePrice": "6.99",
+          "userPrice": "6.99",
+          "capacity": 199,
+          "stock": 199
+        },
+        {
+          "machineId": "2307120156",
+          "slot": 34,
+          "barcode": "1AEAC229-E5E0-42AE-8C55-1F30930390FB",
+          "product": "Visine",
+          "machinePrice": "4.99",
+          "userPrice": "4.99",
+          "capacity": 199,
+          "stock": 199
+        },
+        {
+          "machineId": "2307120156",
+          "slot": 35,
+          "barcode": "9CC402DB-49BC-43BC-B9B1-DED72D7BB0FB",
+          "product": "Pantene Shampoo",
+          "machinePrice": "4.99",
+          "userPrice": "4.99",
+          "capacity": 199,
+          "stock": 199
+        },
+        {
+          "machineId": "2307120156",
+          "slot": 36,
+          "barcode": "E305D802-3F9C-4A81-BD8B-9A1A68112737",
+          "product": "Pantene Conditioner",
+          "machinePrice": "4.99",
+          "userPrice": "4.99",
+          "capacity": 199,
+          "stock": 199
+        },
+        {
+          "machineId": "2307120156",
+          "slot": 37,
+          "barcode": "AAB19005-0C6B-4648-854C-3CAED612BA55",
+          "product": "Zena SuperGreens",
+          "machinePrice": "2.99",
+          "userPrice": "1.99",
+          "capacity": 199,
+          "stock": 199
+        },
+        {
+          "machineId": "2307120156",
+          "slot": 38,
+          "barcode": "5BCB9DD3-5AFD-48FE-8D1B-909D2110C956",
+          "product": "Coppertone Sunscreen",
+          "machinePrice": "4.99",
+          "userPrice": "4.99",
+          "capacity": 199,
+          "stock": 199
+        },
+        {
+          "machineId": "2307120156",
+          "slot": 39,
+          "barcode": "8FF90692-3F91-48C0-997C-7C0607DE7D19",
+          "product": "Liquid IV",
+          "machinePrice": "4.99",
+          "userPrice": "2.99",
+          "capacity": 199,
+          "stock": 199
+        },
+        {
+          "machineId": "2307120156",
+          "slot": 40,
+          "barcode": "3A41CBEB-2037-4F84-8F2C-E7D560908A9F",
+          "product": "Gillette Shaving Cream",
+          "machinePrice": "3.99",
+          "userPrice": "3.99",
+          "capacity": 199,
+          "stock": 199
+        },
+        {
+          "machineId": "2307120156",
+          "slot": 41,
+          "barcode": "6E07025F-92EC-4787-BB05-98A570A3961C",
+          "product": "Olay Bodywash",
+          "machinePrice": "4.99",
+          "userPrice": "4.99",
+          "capacity": 199,
+          "stock": 199
+        },
+        {
+          "machineId": "2307120156",
+          "slot": 42,
+          "barcode": "D13098D1-D3A5-4BBC-9237-9D25AA792690",
+          "product": "Aveeno",
+          "machinePrice": "6.99",
+          "userPrice": "6.99",
+          "capacity": 199,
+          "stock": 199
+        },
+        {
+          "machineId": "2307120156",
+          "slot": 44,
+          "barcode": "8540D0EC-4B92-4C39-A567-86A412307F46",
+          "product": "Banana Boat Sunscreen",
+          "machinePrice": "3.99",
+          "userPrice": "2.99",
+          "capacity": 199,
+          "stock": 199
+        },
+        {
+          "machineId": "2307120156",
+          "slot": 45,
+          "barcode": "DC3A1389-2FF7-4ECC-9E62-6DC4EA066D45",
+          "product": "K-Y Jelly",
+          "machinePrice": "5.99",
+          "userPrice": "5.99",
+          "capacity": 199,
+          "stock": 199
+        },
+        {
+          "machineId": "2307120156",
+          "slot": 46,
+          "barcode": "4C7B4F10-73EA-4A8C-913E-CF149353BC84",
+          "product": "Colgate Toothpaste",
+          "machinePrice": "3.99",
+          "userPrice": "3.99",
+          "capacity": 199,
+          "stock": 199
+        },
+        {
+          "machineId": "2307120156",
+          "slot": 47,
+          "barcode": "751A1090-A7FB-4FAB-B29E-E0565B7EFBB9",
+          "product": "Always Pads",
+          "machinePrice": "3.99",
+          "userPrice": "3.99",
+          "capacity": 199,
+          "stock": 199
+        },
+        {
+          "machineId": "2307120156",
+          "slot": 48,
+          "barcode": "F0C7F359-A00D-44CC-A50E-24CCF79996CF",
+          "product": "Cottenelle Wipes",
+          "machinePrice": "3.99",
+          "userPrice": "3.99",
+          "capacity": 199,
+          "stock": 199
+        },
+        {
+          "machineId": "2307120156",
+          "slot": 49,
+          "barcode": "169A0B86-22B9-4213-B8B7-58CDD10FACBE",
+          "product": "Simply Venus",
+          "machinePrice": "4.99",
+          "userPrice": "4.99",
+          "capacity": 199,
+          "stock": 199
+        },
+        {
+          "machineId": "2307120156",
+          "slot": 50,
+          "barcode": "C363F80A-3F59-401C-9090-EF5CB5E25992",
+          "product": "Gillette Sensor Razor",
+          "machinePrice": "2.99",
+          "userPrice": "2.99",
+          "capacity": 199,
+          "stock": 199
+        },
+        {
+          "machineId": "2307120156",
+          "slot": 51,
+          "barcode": "BFD6DCC9-CC36-4B53-9019-F16A26231F40",
+          "product": "Irish Spring Body Soap",
+          "machinePrice": "6.99",
+          "userPrice": "3.99",
+          "capacity": 199,
+          "stock": 199
+        },
+        {
+          "machineId": "2307120156",
+          "slot": 53,
+          "barcode": "80CB1BAE-3EEB-4E5E-8F01-07CF94690D6C",
+          "product": "Tide Pods",
+          "machinePrice": "9.99",
+          "userPrice": "9.99",
+          "capacity": 199,
+          "stock": 199
+        },
+        {
+          "machineId": "2307120156",
+          "slot": 55,
+          "barcode": "E6798BDF-2140-4C89-AF4A-776471A3C243",
+          "product": "Bounce Dryer2",
+          "machinePrice": "3.99",
+          "userPrice": "2.99",
+          "capacity": 199,
+          "stock": 199
+        },
+        {
+          "machineId": "2307120156",
+          "slot": 57,
+          "barcode": "6B125AEE-5449-4B90-BBAD-B47B9747C9FB",
+          "product": "Lubriderm",
+          "machinePrice": "7.99",
+          "userPrice": "6.99",
+          "capacity": 199,
+          "stock": 199
+        },
+        {
+          "machineId": "2307120156",
+          "slot": 59,
+          "barcode": "B6A6E06F-DC47-48CF-A709-093825C0C711",
+          "product": "Halls",
+          "machinePrice": "6.99",
+          "userPrice": "6.99",
+          "capacity": 199,
+          "stock": 199
+        }
+      ]
+    },
+    {
+      "machineId": "2307130211",
+      "label": "ASU PolyTech South",
+      "group": "ASU",
+      "stockedSlots": 40,
+      "totalStock": 7956,
+      "slots": [
+        {
+          "machineId": "2307130211",
+          "slot": 1,
+          "barcode": "44558426-0ADD-4DF5-9270-D1CB80DEB673",
+          "product": "Excedrin",
+          "machinePrice": "3.99",
+          "userPrice": "3.99",
+          "capacity": 199,
+          "stock": 199
+        },
+        {
+          "machineId": "2307130211",
+          "slot": 3,
+          "barcode": "0CBCF854-1E37-4984-AAFB-B27F078B84A6",
+          "product": "Neutrogena Wipes",
+          "machinePrice": "4.99",
+          "userPrice": "4.99",
+          "capacity": 199,
+          "stock": 199
+        },
+        {
+          "machineId": "2307130211",
+          "slot": 5,
+          "barcode": "A0EBD2F3-F774-4C4D-906C-87C8A3577466",
+          "product": "Platex Tampon",
+          "machinePrice": "5.99",
+          "userPrice": "5.99",
+          "capacity": 199,
+          "stock": 199
+        },
+        {
+          "machineId": "2307130211",
+          "slot": 7,
+          "barcode": "8E819408-34BC-4D5D-8824-6ED6E4309627",
+          "product": "Neosporin",
+          "machinePrice": "10.99",
+          "userPrice": "10.99",
+          "capacity": 199,
+          "stock": 199
+        },
+        {
+          "machineId": "2307130211",
+          "slot": 9,
+          "barcode": "588BD03A-5F2C-4622-B3FE-D76773A2C555",
+          "product": "First Aid Kit",
+          "machinePrice": "3.99",
+          "userPrice": "3.99",
+          "capacity": 199,
+          "stock": 199
+        },
+        {
+          "machineId": "2307130211",
+          "slot": 11,
+          "barcode": "AC9D9631-8F92-4080-A61E-D1F630412792",
+          "product": "NyQuil",
+          "machinePrice": "12.99",
+          "userPrice": "12.99",
+          "capacity": 199,
+          "stock": 199
+        },
+        {
+          "machineId": "2307130211",
+          "slot": 13,
+          "barcode": "F5CA2A17-DB9F-4D07-94DF-CD876A9D8692",
+          "product": "DayQuil",
+          "machinePrice": "12.99",
+          "userPrice": "12.99",
+          "capacity": 199,
+          "stock": 199
+        },
+        {
+          "machineId": "2307130211",
+          "slot": 15,
+          "barcode": "D50B8918-F18E-4BFE-BE67-973901BDDF27",
+          "product": "Advil",
+          "machinePrice": "6.99",
+          "userPrice": "6.99",
+          "capacity": 199,
+          "stock": 199
+        },
+        {
+          "machineId": "2307130211",
+          "slot": 17,
+          "barcode": "2E2D9BE7-5041-47C7-8311-CB61A9889A03",
+          "product": "Tylenol",
+          "machinePrice": "6.99",
+          "userPrice": "6.99",
+          "capacity": 199,
+          "stock": 199
+        },
+        {
+          "machineId": "2307130211",
+          "slot": 19,
+          "barcode": "4EE270DA-B465-4390-86BE-A95E7BA28FAB",
+          "product": "Pepto Bismol",
+          "machinePrice": "5.99",
+          "userPrice": "5.99",
+          "capacity": 199,
+          "stock": 199
+        },
+        {
+          "machineId": "2307130211",
+          "slot": 21,
+          "barcode": "23586033-330B-414C-9324-A1757C00B824",
+          "product": "Emergen-C",
+          "machinePrice": "3.99",
+          "userPrice": "3.99",
+          "capacity": 199,
+          "stock": 199
+        },
+        {
+          "machineId": "2307130211",
+          "slot": 23,
+          "barcode": "F1B0E9CE-F1AD-4DB4-8C3B-09F21DE14675",
+          "product": "Benadryl",
+          "machinePrice": "6.99",
+          "userPrice": "6.99",
+          "capacity": 199,
+          "stock": 199
+        },
+        {
+          "machineId": "2307130211",
+          "slot": 25,
+          "barcode": "1E63A4DD-3E0C-4F40-AB0E-34F8F18092FB",
+          "product": "Claritin",
+          "machinePrice": "3.99",
+          "userPrice": "3.99",
+          "capacity": 199,
+          "stock": 199
+        },
+        {
+          "machineId": "2307130211",
+          "slot": 27,
+          "barcode": "C86A6EC3-5A43-4346-9622-40CC4211AB53",
+          "product": "Neuro Mint",
+          "machinePrice": "7.99",
+          "userPrice": "7.99",
+          "capacity": 199,
+          "stock": 199
+        },
+        {
+          "machineId": "2307130211",
+          "slot": 29,
+          "barcode": "44F158F1-5435-4A0C-99F7-6C5DCFEBBDD5",
+          "product": "Neuro Gum",
+          "machinePrice": "7.99",
+          "userPrice": "7.99",
+          "capacity": 199,
+          "stock": 198
+        },
+        {
+          "machineId": "2307130211",
+          "slot": 31,
+          "barcode": "9834F0D7-7346-4884-9249-FB546C58FA42",
+          "product": "ReNu",
+          "machinePrice": "5.99",
+          "userPrice": "6.99",
+          "capacity": 199,
+          "stock": 199
+        },
+        {
+          "machineId": "2307130211",
+          "slot": 32,
+          "barcode": "2CCCCA89-9AAF-462B-9BFB-1842958EECF2",
+          "product": "Degree Womens",
+          "machinePrice": "6.99",
+          "userPrice": "6.99",
+          "capacity": 199,
+          "stock": 199
+        },
+        {
+          "machineId": "2307130211",
+          "slot": 33,
+          "barcode": "3E9E96BB-7C6C-4128-B01C-73446BAA8576",
+          "product": "AXE Solid",
+          "machinePrice": "6.99",
+          "userPrice": "6.99",
+          "capacity": 199,
+          "stock": 199
+        },
+        {
+          "machineId": "2307130211",
+          "slot": 34,
+          "barcode": "1AEAC229-E5E0-42AE-8C55-1F30930390FB",
+          "product": "Visine",
+          "machinePrice": "4.99",
+          "userPrice": "4.99",
+          "capacity": 199,
+          "stock": 197
+        },
+        {
+          "machineId": "2307130211",
+          "slot": 35,
+          "barcode": "9CC402DB-49BC-43BC-B9B1-DED72D7BB0FB",
+          "product": "Pantene Shampoo",
+          "machinePrice": "4.99",
+          "userPrice": "4.99",
+          "capacity": 199,
+          "stock": 199
+        },
+        {
+          "machineId": "2307130211",
+          "slot": 36,
+          "barcode": "E305D802-3F9C-4A81-BD8B-9A1A68112737",
+          "product": "Pantene Conditioner",
+          "machinePrice": "4.99",
+          "userPrice": "4.99",
+          "capacity": 199,
+          "stock": 199
+        },
+        {
+          "machineId": "2307130211",
+          "slot": 37,
+          "barcode": "AAB19005-0C6B-4648-854C-3CAED612BA55",
+          "product": "Zena SuperGreens",
+          "machinePrice": "2.99",
+          "userPrice": "2.99",
+          "capacity": 199,
+          "stock": 199
+        },
+        {
+          "machineId": "2307130211",
+          "slot": 38,
+          "barcode": "5BCB9DD3-5AFD-48FE-8D1B-909D2110C956",
+          "product": "Coppertone Sunscreen",
+          "machinePrice": "4.99",
+          "userPrice": "4.99",
+          "capacity": 199,
+          "stock": 199
+        },
+        {
+          "machineId": "2307130211",
+          "slot": 39,
+          "barcode": "8FF90692-3F91-48C0-997C-7C0607DE7D19",
+          "product": "Liquid IV",
+          "machinePrice": "2.99",
+          "userPrice": "2.99",
+          "capacity": 199,
+          "stock": 199
+        },
+        {
+          "machineId": "2307130211",
+          "slot": 40,
+          "barcode": "3A41CBEB-2037-4F84-8F2C-E7D560908A9F",
+          "product": "Gillette Shaving Cream",
+          "machinePrice": "3.99",
+          "userPrice": "3.99",
+          "capacity": 199,
+          "stock": 199
+        },
+        {
+          "machineId": "2307130211",
+          "slot": 41,
+          "barcode": "6E07025F-92EC-4787-BB05-98A570A3961C",
+          "product": "Olay Bodywash",
+          "machinePrice": "4.99",
+          "userPrice": "4.99",
+          "capacity": 199,
+          "stock": 199
+        },
+        {
+          "machineId": "2307130211",
+          "slot": 42,
+          "barcode": "D13098D1-D3A5-4BBC-9237-9D25AA792690",
+          "product": "Aveeno",
+          "machinePrice": "6.99",
+          "userPrice": "6.99",
+          "capacity": 199,
+          "stock": 199
+        },
+        {
+          "machineId": "2307130211",
+          "slot": 43,
+          "barcode": "4182A52B-8F3E-4F0A-BA5C-B13D0060EBDD",
+          "product": "Band Aid",
+          "machinePrice": "3.99",
+          "userPrice": "2.99",
+          "capacity": 199,
+          "stock": 199
+        },
+        {
+          "machineId": "2307130211",
+          "slot": 44,
+          "barcode": "8540D0EC-4B92-4C39-A567-86A412307F46",
+          "product": "Banana Boat Sunscreen",
+          "machinePrice": "3.99",
+          "userPrice": "2.99",
+          "capacity": 199,
+          "stock": 199
+        },
+        {
+          "machineId": "2307130211",
+          "slot": 45,
+          "barcode": "DC3A1389-2FF7-4ECC-9E62-6DC4EA066D45",
+          "product": "K-Y Jelly",
+          "machinePrice": "6.99",
+          "userPrice": "5.99",
+          "capacity": 199,
+          "stock": 199
+        },
+        {
+          "machineId": "2307130211",
+          "slot": 46,
+          "barcode": "4C7B4F10-73EA-4A8C-913E-CF149353BC84",
+          "product": "Colgate Toothpaste",
+          "machinePrice": "3.99",
+          "userPrice": "3.99",
+          "capacity": 199,
+          "stock": 199
+        },
+        {
+          "machineId": "2307130211",
+          "slot": 47,
+          "barcode": "751A1090-A7FB-4FAB-B29E-E0565B7EFBB9",
+          "product": "Always Pads",
+          "machinePrice": "3.99",
+          "userPrice": "3.99",
+          "capacity": 199,
+          "stock": 199
+        },
+        {
+          "machineId": "2307130211",
+          "slot": 48,
+          "barcode": "F0C7F359-A00D-44CC-A50E-24CCF79996CF",
+          "product": "Cottenelle Wipes",
+          "machinePrice": "3.99",
+          "userPrice": "3.99",
+          "capacity": 199,
+          "stock": 199
+        },
+        {
+          "machineId": "2307130211",
+          "slot": 49,
+          "barcode": "169A0B86-22B9-4213-B8B7-58CDD10FACBE",
+          "product": "Simply Venus",
+          "machinePrice": "4.99",
+          "userPrice": "4.99",
+          "capacity": 199,
+          "stock": 199
+        },
+        {
+          "machineId": "2307130211",
+          "slot": 50,
+          "barcode": "C363F80A-3F59-401C-9090-EF5CB5E25992",
+          "product": "Gillette Sensor Razor",
+          "machinePrice": "2.99",
+          "userPrice": "2.99",
+          "capacity": 199,
+          "stock": 198
+        },
+        {
+          "machineId": "2307130211",
+          "slot": 51,
+          "barcode": "BFD6DCC9-CC36-4B53-9019-F16A26231F40",
+          "product": "Irish Spring Body Soap",
+          "machinePrice": "3.99",
+          "userPrice": "3.99",
+          "capacity": 199,
+          "stock": 199
+        },
+        {
+          "machineId": "2307130211",
+          "slot": 53,
+          "barcode": "80CB1BAE-3EEB-4E5E-8F01-07CF94690D6C",
+          "product": "Tide Pods",
+          "machinePrice": "9.99",
+          "userPrice": "9.99",
+          "capacity": 199,
+          "stock": 199
+        },
+        {
+          "machineId": "2307130211",
+          "slot": 55,
+          "barcode": "E6798BDF-2140-4C89-AF4A-776471A3C243",
+          "product": "Bounce Dryer2",
+          "machinePrice": "3.99",
+          "userPrice": "2.99",
+          "capacity": 199,
+          "stock": 199
+        },
+        {
+          "machineId": "2307130211",
+          "slot": 57,
+          "barcode": "6B125AEE-5449-4B90-BBAD-B47B9747C9FB",
+          "product": "Lubriderm",
+          "machinePrice": "7.99",
+          "userPrice": "6.99",
+          "capacity": 199,
+          "stock": 199
+        },
+        {
+          "machineId": "2307130211",
+          "slot": 59,
+          "barcode": "B6A6E06F-DC47-48CF-A709-093825C0C711",
+          "product": "Halls",
+          "machinePrice": "6.99",
+          "userPrice": "6.99",
+          "capacity": 199,
+          "stock": 199
+        }
+      ]
+    },
+    {
+      "machineId": "2307130307",
+      "label": "ASU Breezeway Main Campus",
+      "group": "ASU",
+      "stockedSlots": 40,
+      "totalStock": 7960,
+      "slots": [
+        {
+          "machineId": "2307130307",
+          "slot": 1,
+          "barcode": "44558426-0ADD-4DF5-9270-D1CB80DEB673",
+          "product": "Excedrin",
+          "machinePrice": "2.99",
+          "userPrice": "3.99",
+          "capacity": 199,
+          "stock": 199
+        },
+        {
+          "machineId": "2307130307",
+          "slot": 3,
+          "barcode": "0CBCF854-1E37-4984-AAFB-B27F078B84A6",
+          "product": "Neutrogena Wipes",
+          "machinePrice": "4.99",
+          "userPrice": "4.99",
+          "capacity": 199,
+          "stock": 199
+        },
+        {
+          "machineId": "2307130307",
+          "slot": 5,
+          "barcode": "A0EBD2F3-F774-4C4D-906C-87C8A3577466",
+          "product": "Platex Tampon",
+          "machinePrice": "5.99",
+          "userPrice": "5.99",
+          "capacity": 199,
+          "stock": 199
+        },
+        {
+          "machineId": "2307130307",
+          "slot": 7,
+          "barcode": "8E819408-34BC-4D5D-8824-6ED6E4309627",
+          "product": "Neosporin",
+          "machinePrice": "10.99",
+          "userPrice": "10.99",
+          "capacity": 199,
+          "stock": 199
+        },
+        {
+          "machineId": "2307130307",
+          "slot": 9,
+          "barcode": "588BD03A-5F2C-4622-B3FE-D76773A2C555",
+          "product": "First Aid Kit",
+          "machinePrice": "4.99",
+          "userPrice": "3.99",
+          "capacity": 199,
+          "stock": 199
+        },
+        {
+          "machineId": "2307130307",
+          "slot": 11,
+          "barcode": "AC9D9631-8F92-4080-A61E-D1F630412792",
+          "product": "NyQuil",
+          "machinePrice": "12.99",
+          "userPrice": "12.99",
+          "capacity": 199,
+          "stock": 199
+        },
+        {
+          "machineId": "2307130307",
+          "slot": 13,
+          "barcode": "F5CA2A17-DB9F-4D07-94DF-CD876A9D8692",
+          "product": "DayQuil",
+          "machinePrice": "12.99",
+          "userPrice": "12.99",
+          "capacity": 199,
+          "stock": 199
+        },
+        {
+          "machineId": "2307130307",
+          "slot": 15,
+          "barcode": "D50B8918-F18E-4BFE-BE67-973901BDDF27",
+          "product": "Advil",
+          "machinePrice": "6.99",
+          "userPrice": "6.99",
+          "capacity": 199,
+          "stock": 199
+        },
+        {
+          "machineId": "2307130307",
+          "slot": 17,
+          "barcode": "2E2D9BE7-5041-47C7-8311-CB61A9889A03",
+          "product": "Tylenol",
+          "machinePrice": "6.99",
+          "userPrice": "6.99",
+          "capacity": 199,
+          "stock": 199
+        },
+        {
+          "machineId": "2307130307",
+          "slot": 19,
+          "barcode": "4EE270DA-B465-4390-86BE-A95E7BA28FAB",
+          "product": "Pepto Bismol",
+          "machinePrice": "5.99",
+          "userPrice": "5.99",
+          "capacity": 199,
+          "stock": 199
+        },
+        {
+          "machineId": "2307130307",
+          "slot": 21,
+          "barcode": "23586033-330B-414C-9324-A1757C00B824",
+          "product": "Emergen-C",
+          "machinePrice": "3.99",
+          "userPrice": "3.99",
+          "capacity": 199,
+          "stock": 199
+        },
+        {
+          "machineId": "2307130307",
+          "slot": 23,
+          "barcode": "F1B0E9CE-F1AD-4DB4-8C3B-09F21DE14675",
+          "product": "Benadryl",
+          "machinePrice": "6.99",
+          "userPrice": "6.99",
+          "capacity": 199,
+          "stock": 199
+        },
+        {
+          "machineId": "2307130307",
+          "slot": 25,
+          "barcode": "1E63A4DD-3E0C-4F40-AB0E-34F8F18092FB",
+          "product": "Claritin",
+          "machinePrice": "19.99",
+          "userPrice": "3.99",
+          "capacity": 199,
+          "stock": 199
+        },
+        {
+          "machineId": "2307130307",
+          "slot": 27,
+          "barcode": "C86A6EC3-5A43-4346-9622-40CC4211AB53",
+          "product": "Neuro Mint",
+          "machinePrice": "7.99",
+          "userPrice": "7.99",
+          "capacity": 199,
+          "stock": 199
+        },
+        {
+          "machineId": "2307130307",
+          "slot": 29,
+          "barcode": "44F158F1-5435-4A0C-99F7-6C5DCFEBBDD5",
+          "product": "Neuro Gum",
+          "machinePrice": "7.99",
+          "userPrice": "7.99",
+          "capacity": 199,
+          "stock": 199
+        },
+        {
+          "machineId": "2307130307",
+          "slot": 31,
+          "barcode": "9834F0D7-7346-4884-9249-FB546C58FA42",
+          "product": "ReNu",
+          "machinePrice": "6.99",
+          "userPrice": "6.99",
+          "capacity": 199,
+          "stock": 199
+        },
+        {
+          "machineId": "2307130307",
+          "slot": 32,
+          "barcode": "2CCCCA89-9AAF-462B-9BFB-1842958EECF2",
+          "product": "Degree Womens",
+          "machinePrice": "6.99",
+          "userPrice": "6.99",
+          "capacity": 199,
+          "stock": 199
+        },
+        {
+          "machineId": "2307130307",
+          "slot": 33,
+          "barcode": "3E9E96BB-7C6C-4128-B01C-73446BAA8576",
+          "product": "AXE Solid",
+          "machinePrice": "2.99",
+          "userPrice": "6.99",
+          "capacity": 199,
+          "stock": 199
+        },
+        {
+          "machineId": "2307130307",
+          "slot": 34,
+          "barcode": "1AEAC229-E5E0-42AE-8C55-1F30930390FB",
+          "product": "Visine",
+          "machinePrice": "4.99",
+          "userPrice": "4.99",
+          "capacity": 199,
+          "stock": 199
+        },
+        {
+          "machineId": "2307130307",
+          "slot": 35,
+          "barcode": "9CC402DB-49BC-43BC-B9B1-DED72D7BB0FB",
+          "product": "Pantene Shampoo",
+          "machinePrice": "3.99",
+          "userPrice": "4.99",
+          "capacity": 199,
+          "stock": 199
+        },
+        {
+          "machineId": "2307130307",
+          "slot": 36,
+          "barcode": "E305D802-3F9C-4A81-BD8B-9A1A68112737",
+          "product": "Pantene Conditioner",
+          "machinePrice": "3.99",
+          "userPrice": "4.99",
+          "capacity": 199,
+          "stock": 199
+        },
+        {
+          "machineId": "2307130307",
+          "slot": 37,
+          "barcode": "AAB19005-0C6B-4648-854C-3CAED612BA55",
+          "product": "Zena SuperGreens",
+          "machinePrice": "2.99",
+          "userPrice": "2.99",
+          "capacity": 199,
+          "stock": 199
+        },
+        {
+          "machineId": "2307130307",
+          "slot": 38,
+          "barcode": "5BCB9DD3-5AFD-48FE-8D1B-909D2110C956",
+          "product": "Coppertone Sunscreen",
+          "machinePrice": "3.99",
+          "userPrice": "4.99",
+          "capacity": 199,
+          "stock": 199
+        },
+        {
+          "machineId": "2307130307",
+          "slot": 39,
+          "barcode": "8FF90692-3F91-48C0-997C-7C0607DE7D19",
+          "product": "Liquid IV",
+          "machinePrice": "2.99",
+          "userPrice": "2.99",
+          "capacity": 199,
+          "stock": 199
+        },
+        {
+          "machineId": "2307130307",
+          "slot": 40,
+          "barcode": "3A41CBEB-2037-4F84-8F2C-E7D560908A9F",
+          "product": "Gillette Shaving Cream",
+          "machinePrice": "3.99",
+          "userPrice": "3.99",
+          "capacity": 199,
+          "stock": 199
+        },
+        {
+          "machineId": "2307130307",
+          "slot": 41,
+          "barcode": "6E07025F-92EC-4787-BB05-98A570A3961C",
+          "product": "Olay Bodywash",
+          "machinePrice": "3.99",
+          "userPrice": "4.99",
+          "capacity": 199,
+          "stock": 199
+        },
+        {
+          "machineId": "2307130307",
+          "slot": 42,
+          "barcode": "D13098D1-D3A5-4BBC-9237-9D25AA792690",
+          "product": "Aveeno",
+          "machinePrice": "6.99",
+          "userPrice": "6.99",
+          "capacity": 199,
+          "stock": 199
+        },
+        {
+          "machineId": "2307130307",
+          "slot": 43,
+          "barcode": "4182A52B-8F3E-4F0A-BA5C-B13D0060EBDD",
+          "product": "Band Aid",
+          "machinePrice": "2.99",
+          "userPrice": "2.99",
+          "capacity": 199,
+          "stock": 199
+        },
+        {
+          "machineId": "2307130307",
+          "slot": 44,
+          "barcode": "8540D0EC-4B92-4C39-A567-86A412307F46",
+          "product": "Banana Boat Sunscreen",
+          "machinePrice": "3.99",
+          "userPrice": "2.99",
+          "capacity": 199,
+          "stock": 199
+        },
+        {
+          "machineId": "2307130307",
+          "slot": 45,
+          "barcode": "DC3A1389-2FF7-4ECC-9E62-6DC4EA066D45",
+          "product": "K-Y Jelly",
+          "machinePrice": "6.99",
+          "userPrice": "5.99",
+          "capacity": 199,
+          "stock": 199
+        },
+        {
+          "machineId": "2307130307",
+          "slot": 46,
+          "barcode": "4C7B4F10-73EA-4A8C-913E-CF149353BC84",
+          "product": "Colgate Toothpaste",
+          "machinePrice": "3.99",
+          "userPrice": "3.99",
+          "capacity": 199,
+          "stock": 199
+        },
+        {
+          "machineId": "2307130307",
+          "slot": 47,
+          "barcode": "751A1090-A7FB-4FAB-B29E-E0565B7EFBB9",
+          "product": "Always Pads",
+          "machinePrice": "3.99",
+          "userPrice": "3.99",
+          "capacity": 199,
+          "stock": 199
+        },
+        {
+          "machineId": "2307130307",
+          "slot": 48,
+          "barcode": "F0C7F359-A00D-44CC-A50E-24CCF79996CF",
+          "product": "Cottenelle Wipes",
+          "machinePrice": "3.99",
+          "userPrice": "3.99",
+          "capacity": 199,
+          "stock": 199
+        },
+        {
+          "machineId": "2307130307",
+          "slot": 49,
+          "barcode": "169A0B86-22B9-4213-B8B7-58CDD10FACBE",
+          "product": "Simply Venus",
+          "machinePrice": "4.99",
+          "userPrice": "4.99",
+          "capacity": 199,
+          "stock": 199
+        },
+        {
+          "machineId": "2307130307",
+          "slot": 50,
+          "barcode": "C363F80A-3F59-401C-9090-EF5CB5E25992",
+          "product": "Gillette Sensor Razor",
+          "machinePrice": "2.99",
+          "userPrice": "2.99",
+          "capacity": 199,
+          "stock": 199
+        },
+        {
+          "machineId": "2307130307",
+          "slot": 51,
+          "barcode": "BFD6DCC9-CC36-4B53-9019-F16A26231F40",
+          "product": "Irish Spring Body Soap",
+          "machinePrice": "3.99",
+          "userPrice": "3.99",
+          "capacity": 199,
+          "stock": 199
+        },
+        {
+          "machineId": "2307130307",
+          "slot": 53,
+          "barcode": "80CB1BAE-3EEB-4E5E-8F01-07CF94690D6C",
+          "product": "Tide Pods",
+          "machinePrice": "9.99",
+          "userPrice": "9.99",
+          "capacity": 199,
+          "stock": 199
+        },
+        {
+          "machineId": "2307130307",
+          "slot": 55,
+          "barcode": "E6798BDF-2140-4C89-AF4A-776471A3C243",
+          "product": "Bounce Dryer2",
+          "machinePrice": "3.99",
+          "userPrice": "2.99",
+          "capacity": 199,
+          "stock": 199
+        },
+        {
+          "machineId": "2307130307",
+          "slot": 57,
+          "barcode": "6B125AEE-5449-4B90-BBAD-B47B9747C9FB",
+          "product": "Lubriderm",
+          "machinePrice": "7.99",
+          "userPrice": "6.99",
+          "capacity": 199,
+          "stock": 199
+        },
+        {
+          "machineId": "2307130307",
+          "slot": 59,
+          "barcode": "B6A6E06F-DC47-48CF-A709-093825C0C711",
+          "product": "Halls",
+          "machinePrice": "6.99",
+          "userPrice": "6.99",
+          "capacity": 199,
+          "stock": 199
+        }
+      ]
+    },
+    {
+      "machineId": "2404090021",
+      "label": "ASU Downtown City Center",
+      "group": "ASU",
+      "stockedSlots": 10,
+      "totalStock": 1990,
+      "slots": [
+        {
+          "machineId": "2404090021",
+          "slot": 1,
+          "barcode": "44558426-0ADD-4DF5-9270-D1CB80DEB673",
+          "product": "Excedrin",
+          "machinePrice": "2.99",
+          "userPrice": "3.99",
+          "capacity": 199,
+          "stock": 199
+        },
+        {
+          "machineId": "2404090021",
+          "slot": 3,
+          "barcode": "0CBCF854-1E37-4984-AAFB-B27F078B84A6",
+          "product": "Neutrogena Wipes",
+          "machinePrice": "4.99",
+          "userPrice": "4.99",
+          "capacity": 199,
+          "stock": 199
+        },
+        {
+          "machineId": "2404090021",
+          "slot": 5,
+          "barcode": "A0EBD2F3-F774-4C4D-906C-87C8A3577466",
+          "product": "Platex Tampon",
+          "machinePrice": "5.99",
+          "userPrice": "5.99",
+          "capacity": 199,
+          "stock": 199
+        },
+        {
+          "machineId": "2404090021",
+          "slot": 7,
+          "barcode": "8E819408-34BC-4D5D-8824-6ED6E4309627",
+          "product": "Neosporin",
+          "machinePrice": "10.99",
+          "userPrice": "10.99",
+          "capacity": 199,
+          "stock": 199
+        },
+        {
+          "machineId": "2404090021",
+          "slot": 9,
+          "barcode": "588BD03A-5F2C-4622-B3FE-D76773A2C555",
+          "product": "First Aid Kit",
+          "machinePrice": "3.99",
+          "userPrice": "3.99",
+          "capacity": 199,
+          "stock": 199
+        },
+        {
+          "machineId": "2404090021",
+          "slot": 11,
+          "barcode": "AC9D9631-8F92-4080-A61E-D1F630412792",
+          "product": "NyQuil",
+          "machinePrice": "12.99",
+          "userPrice": "12.99",
+          "capacity": 199,
+          "stock": 199
+        },
+        {
+          "machineId": "2404090021",
+          "slot": 13,
+          "barcode": "F5CA2A17-DB9F-4D07-94DF-CD876A9D8692",
+          "product": "DayQuil",
+          "machinePrice": "12.99",
+          "userPrice": "12.99",
+          "capacity": 199,
+          "stock": 199
+        },
+        {
+          "machineId": "2404090021",
+          "slot": 15,
+          "barcode": "D50B8918-F18E-4BFE-BE67-973901BDDF27",
+          "product": "Advil",
+          "machinePrice": "6.99",
+          "userPrice": "6.99",
+          "capacity": 199,
+          "stock": 199
+        },
+        {
+          "machineId": "2404090021",
+          "slot": 17,
+          "barcode": "2E2D9BE7-5041-47C7-8311-CB61A9889A03",
+          "product": "Tylenol",
+          "machinePrice": "6.99",
+          "userPrice": "6.99",
+          "capacity": 199,
+          "stock": 199
+        },
+        {
+          "machineId": "2404090021",
+          "slot": 19,
+          "barcode": "4EE270DA-B465-4390-86BE-A95E7BA28FAB",
+          "product": "Pepto Bismol",
+          "machinePrice": "5.99",
+          "userPrice": "5.99",
+          "capacity": 199,
+          "stock": 199
+        }
+      ]
+    },
+    {
+      "machineId": "2404090022",
+      "label": "ASU Hayden Library",
+      "group": "ASU",
+      "stockedSlots": 0,
+      "totalStock": 0,
+      "slots": []
+    },
+    {
+      "machineId": "2602080991",
+      "label": "Murad",
+      "group": "Murad",
+      "stockedSlots": 0,
+      "totalStock": 0,
+      "slots": []
+    },
+    {
+      "machineId": "2602080907",
+      "label": "CSUDH Front Hall",
+      "group": "CSUDH",
+      "stockedSlots": 1,
+      "totalStock": 98,
+      "slots": [
+        {
+          "machineId": "2602080907",
+          "slot": 1,
+          "barcode": "80CB1BAE-3EEB-4E5E-8F01-07CF94690D6C",
+          "product": "Tide Pods",
+          "machinePrice": "10",
+          "userPrice": "9.99",
+          "capacity": 99,
+          "stock": 98
+        }
+      ]
+    },
+    {
+      "machineId": "2407100037",
+      "label": "Unassigned (no group)",
+      "group": "\u2014",
+      "stockedSlots": 0,
+      "totalStock": 0,
+      "slots": []
+    },
+    {
+      "machineId": "2407100158",
+      "label": "Unassigned (no group)",
+      "group": "\u2014",
+      "stockedSlots": 0,
+      "totalStock": 0,
+      "slots": []
+    },
+    {
+      "machineId": "2602080924",
+      "label": "Unassigned (no group)",
+      "group": "\u2014",
+      "stockedSlots": 0,
+      "totalStock": 0,
+      "slots": []
+    },
+    {
+      "machineId": "2602080931",
+      "label": "Unassigned (no group)",
+      "group": "\u2014",
+      "stockedSlots": 0,
+      "totalStock": 0,
+      "slots": []
+    }
+  ],
+  "refreshedAt": {
+    "2210280082": "2026-08-18 live pull"
+  }
+}
