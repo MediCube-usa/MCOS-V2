@@ -1,11 +1,14 @@
 import Link from 'next/link';
 import { Sidebar } from '@/components/Sidebar';
-import { FLEET } from '@/lib/fleet';
 import { ScopeMap } from '@/components/ScopeMap';
 import { RefreshOurVend } from '@/components/RefreshOurVend';
+import { getLiveFleet, syncedAgo } from '@/lib/live-slots';
 
-export default function MachineOperations() {
-  const machines = FLEET.machines;
+// Always render against the freshest live_slots (edge function keeps it current).
+export const dynamic = 'force-dynamic';
+
+export default async function MachineOperations() {
+  const { machines, syncedAt, live } = await getLiveFleet();
   const withProduct = machines.filter((m) => m.stockedSlots > 0).length;
   const groups = Array.from(new Set(machines.map((m) => m.group)));
 
@@ -19,13 +22,18 @@ export default function MachineOperations() {
           <p className="blurb">Every machine on the account, read live from OurVend. Click a machine to see its slots, prices, and stock.</p>
 
           <div className="banner" style={{ border: '1px solid rgba(255,61,242,.35)', background: 'rgba(255,61,242,.07)', color: '#ffc2f6' }}>
-            Showing the 2026-08-17 snapshot ({machines.length} machines, {withProduct} with product loaded). Live auto-refresh wires in once the OurVend login is captured.
+            {live ? (
+              <>Live from OurVend — synced <b>{syncedAgo(syncedAt)}</b>. {machines.length} machines, {withProduct} with product loaded. The fleet re-syncs automatically every ~20 min; hit refresh for an on-demand pull.</>
+            ) : (
+              <>Showing the committed snapshot ({machines.length} machines, {withProduct} with product loaded). Live rows will appear here as soon as the next OurVend sync lands — or hit refresh now.</>
+            )}
           </div>
 
           <div className="pills" style={{ justifyContent: 'flex-start', marginBottom: 14 }}>
             <div className="pill">{machines.length} machines</div>
             <div className="pill">{withProduct} loaded</div>
             <div className="pill">{groups.length} groups</div>
+            {live && <div className="pill">synced {syncedAgo(syncedAt)}</div>}
           </div>
 
           <RefreshOurVend />

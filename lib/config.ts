@@ -12,3 +12,19 @@ export const SUPABASE_URL =
 
 export const SUPABASE_KEY =
   process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY || 'sb_publishable_Jdnbraiy3U6XiHK48La_Tw_-ODoc6CQ';
+
+// Legacy anon JWT — also publishable, also RLS-guarded. The edge function is
+// deployed with verify_jwt=true, and that check wants a real JWT, so the
+// "Refresh from OurVend" button authorizes with this rather than the newer
+// sb_publishable_ key.
+export const SUPABASE_ANON_JWT =
+  process.env.NEXT_PUBLIC_SUPABASE_ANON_JWT ||
+  'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im5lZ3RlcHZtYmt5ZWZ2eGlha3d1Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODU5OTAyMDYsImV4cCI6MjEwMTU2NjIwNn0.lxxt_mJfYCLCyc3v_h_2qHqZuBnt2GTZ28HfuIhhRIM';
+
+// The permanent, cloud-side OurVend fleet reader (Supabase Edge Function).
+// It reads the OurVend cookie from the RLS-locked secrets table server-side,
+// pulls every stocked slot, and writes live_slots. pg_cron runs it every ~20
+// min; the dashboard button hits the same URL for an on-demand refresh.
+export const OURVEND_REFRESH_URL =
+  process.env.NEXT_PUBLIC_OURVEND_REFRESH_URL ||
+  `${SUPABASE_URL}/functions/v1/ourvend-refresh`;

@@ -1,10 +1,14 @@
 import Link from 'next/link';
 import { Sidebar } from '@/components/Sidebar';
-import { FLEET, neverSynced } from '@/lib/fleet';
+import { neverSynced } from '@/lib/fleet';
+import { getLiveFleet, syncedAgo } from '@/lib/live-slots';
 import { ScopeMap } from '@/components/ScopeMap';
 
-export default function Inventory() {
-  const machines = FLEET.machines;
+// Render against the freshest live_slots on every request.
+export const dynamic = 'force-dynamic';
+
+export default async function Inventory() {
+  const { machines, syncedAt, live } = await getLiveFleet();
 
   // Low-stock signals — only where capacity is real (not a factory default).
   type Low = { machineId: string; label: string; slot: number; product: string; stock: number; capacity: number; pct: number };
@@ -38,7 +42,8 @@ export default function Inventory() {
           <p className="blurb">What is stocked where, across every machine. Inventory decides what is needed — Restocking does the fieldwork.</p>
 
           <div className="banner" style={{ border: '1px solid rgba(255,140,26,.35)', background: 'rgba(255,140,26,.07)', color: '#ffd39a' }}>
-            2026-08-17 snapshot. <b>Low-stock alerts only run where capacity is real</b> — {realCapMachines} of {machines.length} machines have true per-slot capacities set. The rest still show the factory default (99/199), so a percentage there is meaningless until real capacities are entered.
+            {live ? <>Live from OurVend — synced <b>{syncedAgo(syncedAt)}</b>. </> : <>Committed snapshot. </>}
+            <b>Low-stock alerts only run where capacity is real</b> — {realCapMachines} of {machines.length} machines have true per-slot capacities set. The rest still show the factory default (99/199), so a percentage there is meaningless until real capacities are entered.
           </div>
 
           <div className="pills" style={{ justifyContent: 'flex-start', marginBottom: 18 }}>
