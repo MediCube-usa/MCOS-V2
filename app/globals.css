@@ -275,6 +275,18 @@ a { color: inherit; text-decoration: none; }
 .con-body { padding: 0 15px 15px; display: flex; flex-direction: column; gap: 12px; }
 .con-body select { background: rgba(2,13,34,.6); border: 1px solid var(--line); border-radius: 8px; padding: 9px 12px; color: #dbe6ff; font-size: 13.5px; }
 
+/* templates */
+.tplboard { margin-bottom: 14px; }
+.tpl-card { border: 1px solid var(--line); border-radius: 10px; background: var(--panel); }
+.tpl-card.open { border-color: #8b5cff; box-shadow: 0 0 22px -10px #8b5cff; }
+.tpl-slots { border-top: 1px solid var(--line); padding-top: 12px; }
+.tpl-row { display: grid; grid-template-columns: 60px 1fr 90px 70px auto; gap: 6px; margin-bottom: 6px; align-items: center; }
+.tpl-row.tpl-head span { font-size: 10px; letter-spacing: .5px; text-transform: uppercase; color: var(--muted); font-weight: 800; padding-left: 4px; }
+.tpl-row input { background: rgba(2,13,34,.6); border: 1px solid var(--line); border-radius: 7px; padding: 8px 10px; color: #dbe6ff; font-size: 12.5px; }
+.tpl-row input:focus { outline: none; border-color: #8b5cff; }
+.tpl-slots .pd-link { margin-top: 4px; }
+@media (max-width: 620px) { .tpl-row { grid-template-columns: 46px 1fr 66px 52px auto; } }
+
 /* data tables */
 .tablewrap { overflow-x: auto; border: 1px solid var(--line); border-radius: 10px; background: var(--panel); }
 .dtable { border-collapse: collapse; width: 100%; font-size: 13px; }
