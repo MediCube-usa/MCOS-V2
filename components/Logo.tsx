@@ -1,6 +1,8 @@
 /* eslint-disable @next/next/no-img-element */
+import type { CSSProperties } from 'react';
+
 // The real MCOS knot mark (transparent cut-out of the brand logo).
-// Full-color for brand placements.
+// Full-color for brand placements — the white outline is baked into the art.
 export function Logo({ size = 40 }: { size?: number }) {
   return (
     <img
@@ -13,18 +15,9 @@ export function Logo({ size = 40 }: { size?: number }) {
   );
 }
 
-// A crisp white edge around a masked mark, built from offset drop-shadows —
-// like the original logo's white outline.
-function whiteOutline(size: number) {
-  const o = Math.max(1, Math.round(size / 20));
-  const d = Math.round(o * 1.4);
-  return [
-    `${o}px 0 0 #fff`, `-${o}px 0 0 #fff`, `0 ${o}px 0 #fff`, `0 -${o}px 0 #fff`,
-    `${d}px ${d}px 0 #fff`, `-${d}px -${d}px 0 #fff`, `${d}px -${d}px 0 #fff`, `-${d}px ${d}px 0 #fff`
-  ].map((s) => `drop-shadow(${s})`).join(' ');
-}
-
-const MASK: React.CSSProperties = {
+const MASK: CSSProperties = {
+  position: 'absolute',
+  inset: 0,
   WebkitMaskImage: 'url(/mcos-mark.png)',
   maskImage: 'url(/mcos-mark.png)',
   WebkitMaskSize: 'contain',
@@ -35,38 +28,34 @@ const MASK: React.CSSProperties = {
   maskPosition: 'center'
 };
 
-// Rainbow mark (Atlas) — the knot filled with a full-spectrum sweep, white outline.
-export function LogoRainbow({ size = 54 }: { size?: number }) {
+// A recolored mark with a white outline: a white copy of the knot sits slightly
+// larger behind the colored copy, so white shows as an edge all the way around.
+function OutlinedMark({ size, fill, glow }: { size: number; fill: string; glow: string }) {
+  const grow = 1 + Math.max(0.1, 8 / size); // thicker outline at small sizes
   return (
     <span
       aria-label="MCOS"
       role="img"
-      style={{
-        display: 'block',
-        width: size,
-        height: size,
-        background: 'conic-gradient(from 210deg, #ff3df2, #8b5cff, #2f7bff, #00ffea, #4dff88, #caff00, #ff8c1a, #ff3df2)',
-        ...MASK,
-        filter: `${whiteOutline(size)} drop-shadow(0 0 ${size / 5}px rgba(150,120,255,.55))`
-      }}
-    />
+      style={{ position: 'relative', display: 'inline-block', width: size, height: size, filter: `drop-shadow(0 0 ${size / 5}px ${glow})` }}
+    >
+      <span style={{ ...MASK, background: '#ffffff', transform: `scale(${grow})`, transformOrigin: 'center' }} />
+      <span style={{ ...MASK, background: fill }} />
+    </span>
+  );
+}
+
+// Rainbow mark (Atlas) — the knot filled with a full-spectrum sweep, white outline.
+export function LogoRainbow({ size = 54 }: { size?: number }) {
+  const grow = 1 + Math.max(0.1, 8 / size);
+  return (
+    <span aria-label="MCOS" role="img" style={{ position: 'relative', display: 'inline-block', width: size, height: size, filter: `drop-shadow(0 0 ${size / 5}px rgba(150,120,255,.55))` }}>
+      <span style={{ ...MASK, background: '#ffffff', transform: `scale(${grow})`, transformOrigin: 'center' }} />
+      <span style={{ ...MASK, background: 'conic-gradient(from 210deg, #ff3df2, #8b5cff, #2f7bff, #00ffea, #4dff88, #caff00, #ff8c1a, #ff3df2)' }} />
+    </span>
   );
 }
 
 // The mark recolored to one color (per-agent), with the white outline.
 export function LogoTint({ size = 34, color }: { size?: number; color: string }) {
-  return (
-    <span
-      aria-label="MCOS"
-      role="img"
-      style={{
-        display: 'block',
-        width: size,
-        height: size,
-        background: color,
-        ...MASK,
-        filter: `${whiteOutline(size)} drop-shadow(0 0 ${size / 4}px ${color}aa)`
-      }}
-    />
-  );
+  return <OutlinedMark size={size} fill={color} glow={`${color}aa`} />;
 }
