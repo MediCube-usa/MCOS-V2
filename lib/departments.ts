@@ -54,7 +54,7 @@ export const DEPARTMENTS: Department[] = [
     agent: 'Nova', hasAgent: true, status: 'ready',
     metric: '14', metricLabel: 'machines tracked',
     blurb: 'Every machine — status, prices, slots. Reads and writes the fleet through OurVend.' },
-  { id: 'setup-distribution', name: 'Setup & Distribution', group: 'OPERATIONS', color: '#ffb000',
+  { id: 'setup-distribution', name: 'Machine Setup', group: 'OPERATIONS', color: '#ffb000',
     agent: 'Derek', hasAgent: false, status: 'building',
     metric: '—', metricLabel: 'in deployment',
     blurb: 'New machines from order through shipping, placement, and go-live.' },
@@ -63,7 +63,7 @@ export const DEPARTMENTS: Department[] = [
     metric: '—', metricLabel: 'layouts',
     blurb: 'Reusable machine layouts — which product sits in which slot.' },
 
-  { id: 'maps-distribution', name: 'Maps & Distribution', group: 'OPERATIONS', color: '#2fd2ff',
+  { id: 'maps-distribution', name: 'Maps & Routes', group: 'OPERATIONS', color: '#2fd2ff',
     agent: 'Scout', hasAgent: false, status: 'building',
     metric: '—', metricLabel: 'machines mapped',
     blurb: 'Every machine pinned by address/GPS with photos and access notes. Share a location to a refiller, plan routes, show students where machines are. Google Maps-backed; agent-managed later.' },
