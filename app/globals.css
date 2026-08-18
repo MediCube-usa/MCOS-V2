@@ -287,6 +287,13 @@ a { color: inherit; text-decoration: none; }
 .tpl-slots .pd-link { margin-top: 4px; }
 @media (max-width: 620px) { .tpl-row { grid-template-columns: 46px 1fr 66px 52px auto; } }
 
+/* generic record board (warehouse / documents / marketing) */
+.recboard { margin-bottom: 14px; }
+.rec-card { border: 1px solid var(--line); border-radius: 10px; background: var(--panel); }
+.rec-card.open { border-color: var(--rc); box-shadow: 0 0 22px -10px var(--rc); }
+.rec-card .fac-body select { background: rgba(2,13,34,.6); border: 1px solid var(--line); border-radius: 8px; padding: 9px 12px; color: #dbe6ff; font-size: 13.5px; font-family: inherit; }
+.rec-status { font-size: 10px; font-weight: 800; letter-spacing: .5px; text-transform: uppercase; padding: 4px 10px; border-radius: 999px; color: var(--rc); background: color-mix(in srgb, var(--rc) 15%, transparent); border: 1px solid color-mix(in srgb, var(--rc) 40%, transparent); }
+
 /* data tables */
 .tablewrap { overflow-x: auto; border: 1px solid var(--line); border-radius: 10px; background: var(--panel); }
 .dtable { border-collapse: collapse; width: 100%; font-size: 13px; }
