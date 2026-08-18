@@ -1,5 +1,6 @@
 'use client';
 import { useState } from 'react';
+import { Logo } from '@/components/Logo';
 
 export default function Login() {
   const [pw, setPw] = useState('');
@@ -16,7 +17,7 @@ export default function Login() {
   return (
     <div className="login-wrap">
       <form className="login-card" onSubmit={submit}>
-        <div className="login-logo" />
+        <div className="login-logo"><Logo size={64} /></div>
         <h1>MCOS</h1>
         <p>MediCube Operating System</p>
         <input type="password" placeholder="Password" value={pw} onChange={(e) => setPw(e.target.value)} autoFocus />

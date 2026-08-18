@@ -1,13 +1,14 @@
 import Link from 'next/link';
 import { DEPARTMENTS, GROUP_ORDER } from '@/lib/departments';
+import { Logo } from '@/components/Logo';
 
 export function Sidebar({ active }: { active: string }) {
   return (
     <aside className="sidebar">
-      <div className="brand">
-        <div className="logo" />
+      <Link href="/" className="brand">
+        <Logo size={40} />
         <div><b>MCOS</b><small>MEDICUBE HEALTH</small></div>
-      </div>
+      </Link>
       {GROUP_ORDER.map((group) => {
         const items = DEPARTMENTS.filter((d) => d.group === group);
         if (!items.length) return null;
