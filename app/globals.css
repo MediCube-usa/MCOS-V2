@@ -45,7 +45,31 @@ a { color: inherit; text-decoration: none; }
 .nav-item.parked { opacity: .5; }
 
 /* main */
-.main { padding: 24px 30px 60px; }
+.main { position: relative; padding: 24px 30px 60px; overflow: hidden; }
+/* high-tech map/network backdrop — pure CSS, loads instant, readable over it */
+.main::before {
+  content: ""; position: fixed; inset: 0 0 0 264px; z-index: 0; pointer-events: none;
+  background:
+    radial-gradient(circle at 50% 40%, rgba(0,180,255,.10), transparent 44%),
+    radial-gradient(circle at 17% 20%, rgba(0,220,255,.16), transparent 9%),
+    radial-gradient(circle at 40% 30%, rgba(0,220,255,.13), transparent 7%),
+    radial-gradient(circle at 73% 26%, rgba(0,220,255,.14), transparent 8%),
+    radial-gradient(circle at 86% 44%, rgba(0,220,255,.11), transparent 7%),
+    radial-gradient(circle at 60% 64%, rgba(120,90,255,.12), transparent 10%),
+    radial-gradient(circle at 30% 70%, rgba(0,200,255,.10), transparent 8%),
+    radial-gradient(rgba(0,200,255,.11) 1px, transparent 1.5px) 0 0 / 28px 28px,
+    linear-gradient(180deg, rgba(3,8,20,.25), rgba(3,8,20,.62));
+}
+.main::after {
+  content: ""; position: fixed; inset: 0 0 0 264px; z-index: 0; pointer-events: none;
+  background:
+    repeating-linear-gradient(0deg, rgba(0,220,255,.045) 0 1px, transparent 1px 46px),
+    repeating-linear-gradient(90deg, rgba(0,220,255,.035) 0 1px, transparent 1px 58px);
+  mask: radial-gradient(circle at 52% 44%, #000 0 46%, transparent 78%);
+  -webkit-mask: radial-gradient(circle at 52% 44%, #000 0 46%, transparent 78%);
+}
+.main > * { position: relative; z-index: 1; }
+@media (max-width: 900px) { .main::before, .main::after { inset: 0; } }
 .topbar { display: flex; align-items: flex-start; justify-content: space-between; gap: 20px; flex-wrap: wrap; margin-bottom: 22px; }
 .topbar h1 { margin: 0; font-size: 38px; font-weight: 900; text-transform: uppercase; letter-spacing: 1px; text-shadow: 0 0 22px rgba(0,217,255,.5); }
 .topbar .sub { margin-top: 6px; color: var(--muted); font-size: 13px; font-weight: 600; letter-spacing: .5px; }
