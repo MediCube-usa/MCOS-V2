@@ -51,21 +51,21 @@ export const DEPT_SPECS: Record<string, DeptSpec> = {
     purpose: 'Reusable machine layouts — which product sits in which slot. Templates define intended contents.',
     owns: ['templates & versions', 'slot layout & linked slots', 'product-slot assignments', 'price/capacity per slot', 'facility restriction overrides'],
     workflow: ['build template', 'assign products from catalog', 'set linked slots & pricing', 'approve', 'assign to machine at setup'],
-    connects: ['product-catalog-sales', 'machine-setup', 'machine-operations', 'inventory', 'facilities'],
+    connects: ['product-catalog-sales', 'setup-distribution', 'machine-operations', 'inventory', 'facilities'],
     toBuild: ['visual template builder', 'linked-slot handling', 'facility restriction overrides (e.g. no Plan B)', 'version approval']
   },
   'maps-distribution': {
     purpose: 'Private machine map — every machine pinned by location, with field-safe route cards.',
     owns: ['machine GPS & placement photos', 'facility locations', 'field-safe route/delivery instructions'],
     workflow: ['pin machine location', 'attach placement photo', 'plan restock/delivery route', 'share field card to refiller'],
-    connects: ['facilities', 'machine-operations', 'restocking', 'machine-setup'],
+    connects: ['facilities', 'machine-operations', 'restocking', 'setup-distribution'],
     toBuild: ['Google Maps integration', 'placement photos', 'route planner', 'field-safe vs full-view permissions']
   },
   'facilities': {
     purpose: 'Master record & rule center for each campus — not just an address.',
     owns: ['facility profile & location', 'contacts by role', 'reporting & payment rules', 'restrictions', 'delivery/setup instructions'],
     workflow: ['create facility', 'link contacts by role', 'set rules (reporting, restrictions, promo)', 'other departments read these rules'],
-    connects: ['contacts', 'documents', 'machine-setup', 'machine-operations', 'inventory', 'restocking', 'marketing-outreach'],
+    connects: ['contacts', 'documents', 'setup-distribution', 'machine-operations', 'inventory', 'restocking', 'marketing-outreach'],
     toBuild: ['facility profiles', 'rule fields (reporting/restriction/promo)', 'contact links', 'facility calendar/events']
   },
   'warehouse-purchasing': {
@@ -86,7 +86,7 @@ export const DEPT_SPECS: Record<string, DeptSpec> = {
     purpose: 'Secure control center for contracts, licenses, compliance, and corporate records.',
     owns: ['document records & status', 'contract & license deadlines', 'signed/unsigned state', 'secure-vault references'],
     workflow: ['upload / create from template', 'send for signature (DocuSign)', 'store signed', 'expiry/renewal alerts', 'rules flow to other departments'],
-    connects: ['facilities', 'finance', 'machine-setup', 'warehouse-purchasing'],
+    connects: ['facilities', 'finance', 'setup-distribution', 'warehouse-purchasing'],
     toBuild: ['document store & categories', 'expiry/renewal alerts', 'DocuSign flow', 'secure-vault link (no raw secrets in dashboard)']
   },
   'finance': {
@@ -107,7 +107,7 @@ export const DEPT_SPECS: Record<string, DeptSpec> = {
     purpose: 'Central company directory. Every contact lives once, linked by role.',
     owns: ['contact profiles & roles', 'facility/vendor/machine relationships', 'verification status'],
     workflow: ['add contact once', 'assign role', 'link to facility/vendor/machine', 'verify'],
-    connects: ['facilities', 'restocking', 'machine-setup', 'documents', 'marketing-outreach'],
+    connects: ['facilities', 'restocking', 'setup-distribution', 'documents', 'marketing-outreach'],
     toBuild: ['contact database', 'role linking', 'dedupe & verification']
   },
   'vouchers': {

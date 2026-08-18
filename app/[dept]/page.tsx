@@ -4,8 +4,18 @@ import { Sidebar } from '@/components/Sidebar';
 import { DEPARTMENTS, getDepartment } from '@/lib/departments';
 import { ScopeMap } from '@/components/ScopeMap';
 
+// Departments that have their own custom page file (app/<id>/page.tsx). The
+// generic [dept] route must NOT pre-generate these, or it shadows the real page.
+const CUSTOM_PAGES = new Set([
+  'machine-operations', 'inventory', 'restocking', 'product-catalog-sales',
+  'maps-distribution', 'setup-distribution', 'templates-config',
+  'facilities', 'contacts', 'warehouse-purchasing', 'documents', 'marketing-outreach'
+]);
+
 export function generateStaticParams() {
-  return DEPARTMENTS.filter((d) => d.id !== 'command-center').map((d) => ({ dept: d.id }));
+  return DEPARTMENTS
+    .filter((d) => d.id !== 'command-center' && !CUSTOM_PAGES.has(d.id))
+    .map((d) => ({ dept: d.id }));
 }
 
 // Real starter content for the departments whose data layer already works.
