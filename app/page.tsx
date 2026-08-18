@@ -1,5 +1,6 @@
 import Link from 'next/link';
 import { Sidebar } from '@/components/Sidebar';
+import { AgentBadge } from '@/components/AgentBadge';
 import { blockDepartments } from '@/lib/departments';
 
 export default function CommandCenter() {
@@ -31,9 +32,11 @@ export default function CommandCenter() {
             <span>Every machine, school, product, restock, payout, and report moves through MCOS.</span>
           </div>
           <div className="agent-card">
-            <div className="t">Command Agent</div>
-            <div className="n">Atlas · Executive Operations</div>
-            <div className="note">Framework online. {ready} departments live, {building} in build, {shell} parked. Click any block to open its page.</div>
+            <AgentBadge name="Atlas" sub="Executive Operations" size={54} brand />
+            <div className="agent-card-body">
+              <div className="t">Command Agent</div>
+              <div className="note">Framework online. {ready} departments live, {building} in build, {shell} parked. Click any block to open its page.</div>
+            </div>
           </div>
         </div>
 
@@ -46,7 +49,9 @@ export default function CommandCenter() {
               </div>
               <div className="metric">{d.metric}</div>
               <div className="label">{d.metricLabel}</div>
-              <div className="label" style={{ marginTop: 8 }}>{d.hasAgent ? `● ${d.agent}` : `○ ${d.agent}`}</div>
+              {d.agent && d.agent !== '—'
+                ? <div className="block-agent"><AgentBadge name={d.agent} color={d.color} size={30} sub={d.hasAgent ? 'live agent' : undefined} /></div>
+                : <div className="block-agent block-agent-empty">no agent yet</div>}
             </Link>
           ))}
         </section>

@@ -3,6 +3,7 @@ import { notFound } from 'next/navigation';
 import { Sidebar } from '@/components/Sidebar';
 import { DEPARTMENTS, getDepartment } from '@/lib/departments';
 import { ScopeMap } from '@/components/ScopeMap';
+import { AgentBadge } from '@/components/AgentBadge';
 
 // Departments that have their own custom page file (app/<id>/page.tsx). The
 // generic [dept] route must NOT pre-generate these, or it shadows the real page.
@@ -86,9 +87,12 @@ export default async function DepartmentPage({ params }: { params: Promise<{ dep
           {/* Full scope map — shown on every department so the whole plan is visible. */}
           <ScopeMap id={d.id} />
 
-          <div className="section owner-line">
-            <h3>Owner</h3>
-            <p>{d.hasAgent ? `Agent: ${d.agent} (live logic)` : `Agent badge: ${d.agent} — the Command Center agent (Atlas) reaches in here until a dedicated one is earned.`}</p>
+          <div className="section owner-line owner-row">
+            {d.agent && d.agent !== '—' && <AgentBadge name={d.agent} color={d.color} size={40} sub={d.hasAgent ? 'live agent' : 'badge'} />}
+            <div>
+              <h3>Owner</h3>
+              <p>{d.hasAgent ? `${d.agent} runs this department's live logic.` : `${d.agent} is this department's agent. The Command Center agent (Atlas) reaches in here until a dedicated one is earned.`}</p>
+            </div>
           </div>
         </div>
       </main>

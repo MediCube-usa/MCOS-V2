@@ -22,8 +22,12 @@ body {
 }
 a { color: inherit; text-decoration: none; }
 
+/* HUD world-map network backdrop (behind everything) */
+.hud-backdrop { position: fixed; inset: 0; z-index: 0; pointer-events: none; opacity: .65; }
+.hud-backdrop svg { width: 100%; height: 100%; display: block; }
+
 /* shell */
-.shell { display: grid; grid-template-columns: 264px 1fr; min-height: 100vh; }
+.shell { position: relative; z-index: 1; display: grid; grid-template-columns: 264px 1fr; min-height: 100vh; }
 
 /* sidebar */
 .sidebar {
@@ -51,15 +55,9 @@ a { color: inherit; text-decoration: none; }
 .main::before {
   content: ""; position: fixed; inset: 0 0 0 264px; z-index: 0; pointer-events: none;
   background:
-    radial-gradient(circle at 50% 40%, rgba(0,180,255,.10), transparent 44%),
-    radial-gradient(circle at 17% 20%, rgba(0,220,255,.16), transparent 9%),
-    radial-gradient(circle at 40% 30%, rgba(0,220,255,.13), transparent 7%),
-    radial-gradient(circle at 73% 26%, rgba(0,220,255,.14), transparent 8%),
-    radial-gradient(circle at 86% 44%, rgba(0,220,255,.11), transparent 7%),
-    radial-gradient(circle at 60% 64%, rgba(120,90,255,.12), transparent 10%),
-    radial-gradient(circle at 30% 70%, rgba(0,200,255,.10), transparent 8%),
-    radial-gradient(rgba(0,200,255,.11) 1px, transparent 1.5px) 0 0 / 28px 28px,
-    linear-gradient(180deg, rgba(3,8,20,.25), rgba(3,8,20,.62));
+    radial-gradient(circle at 50% 36%, rgba(0,180,255,.08), transparent 46%),
+    radial-gradient(rgba(0,200,255,.09) 1px, transparent 1.5px) 0 0 / 28px 28px,
+    linear-gradient(180deg, rgba(3,8,20,.10), rgba(3,8,20,.40));
 }
 .main::after {
   content: ""; position: fixed; inset: 0 0 0 264px; z-index: 0; pointer-events: none;
@@ -83,10 +81,19 @@ a { color: inherit; text-decoration: none; }
 .statement { border-radius: 10px; padding: 20px 24px; border: 1px solid rgba(0,213,255,.5); background: linear-gradient(135deg, rgba(4,18,42,.85), rgba(3,10,26,.7)); box-shadow: 0 0 30px rgba(0,187,255,.2); }
 .statement b { display: block; font-size: 22px; font-weight: 900; text-transform: uppercase; text-shadow: 0 0 18px rgba(0,213,255,.6); }
 .statement span { display: block; margin-top: 8px; color: var(--muted); font-size: 13px; font-weight: 600; }
-.agent-card { border-radius: 10px; padding: 16px 18px; border: 1px solid var(--cyan); background: rgba(3,12,30,.8); box-shadow: 0 0 24px rgba(0,229,255,.2); }
+.agent-card { display: flex; gap: 14px; align-items: flex-start; border-radius: 10px; padding: 16px 18px; border: 1px solid var(--cyan); background: rgba(3,12,30,.8); box-shadow: 0 0 24px rgba(0,229,255,.2); }
+.agent-card-body { flex: 1; }
 .agent-card .t { color: var(--cyan); font-size: 15px; font-weight: 900; text-transform: uppercase; text-shadow: 0 0 12px rgba(0,229,255,.55); }
-.agent-card .n { margin-top: 2px; font-size: 12px; font-weight: 700; }
-.agent-card .note { margin-top: 12px; color: var(--muted); font-size: 12.5px; line-height: 1.45; font-weight: 500; }
+.agent-card .note { margin-top: 8px; color: var(--muted); font-size: 12.5px; line-height: 1.45; font-weight: 500; }
+
+/* agent badge — the knot logo as an agent, colored, name beneath */
+.agentbadge { display: inline-flex; flex-direction: column; align-items: center; gap: 4px; }
+.agent-name { font-size: 12px; font-weight: 800; letter-spacing: .3px; color: #eaf2ff; }
+.agent-sub { font-size: 9px; font-weight: 700; letter-spacing: .4px; text-transform: uppercase; color: var(--ac, var(--muted)); }
+.block-agent { margin-top: 12px; display: flex; }
+.block-agent .agentbadge { align-items: flex-start; }
+.block-agent .agent-name { color: var(--c); }
+.block-agent-empty { color: var(--muted); font-size: 10.5px; font-weight: 700; font-style: italic; }
 
 /* block grid */
 .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); gap: 15px; }
@@ -137,6 +144,8 @@ a { color: inherit; text-decoration: none; }
   border: 1px solid color-mix(in srgb, var(--cc) 55%, transparent); background: color-mix(in srgb, var(--cc) 12%, transparent); }
 .scope-chip:hover { border-color: var(--cc); box-shadow: 0 0 16px -6px var(--cc); color: #fff; }
 .owner-line h3 { color: var(--c); }
+.owner-row { display: flex; align-items: center; gap: 16px; }
+.owner-row .agent-name { color: var(--c); }
 .scope-heading { font-size: 12px; letter-spacing: 1.4px; text-transform: uppercase; color: var(--muted); font-weight: 800; margin: 30px 0 14px; padding-top: 20px; border-top: 1px solid var(--line); }
 
 /* maps — lifecycle strip */
