@@ -44,7 +44,7 @@ interface SetupMachine {
 // Joe's pipeline: TCN order → port (LA) → Brendamour pickup → warehouse →
 // contract → map card (distribution) → setup (router/TCN/decals) → verified.
 const STAGES = [
-  { id: 'ordered', label: 'Ordered', hint: 'TCN order verified' },
+  { id: 'ordered', label: 'Order', hint: 'TCN order verified' },
   { id: 'shipping', label: 'Shipping', hint: 'port · mostly Los Angeles' },
   { id: 'arrived', label: 'Arrived', hint: 'Brendamour pickup' },
   { id: 'warehouse', label: 'Warehouse', hint: 'received, staged' },
