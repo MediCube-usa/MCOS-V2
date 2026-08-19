@@ -100,10 +100,13 @@ Fully automated, cloud-side, no browser, no Vercel env. All in **Supabase Edge F
   scaffolded, not deeply built. Vouchers, Video Ads — parked shells.
 
 ## OPEN / NEXT
-- Planograms: build Phases 0–2 of SPEC v1 (machine registry+roles → authoring → assignment)
-  on the Catalog block; push via OurVend clone (Phase 4, blocked on walkthrough).
+- Planogram Phase 3: reconciliation diff (assigned planogram vs live_slots).
 - The MCOS→OurVend→machine WRITE (push) path — needs Joe to confirm the exact "clone a machine"
-  steps before any write code (still read-only until then).
+  steps before any write code (still read-only until then). Product swap / price change
+  actions on Machine Ops ride the same unlock.
+- Sales: sell-through counter running (slot_history each :05/:25/:45); exact OurVend sales
+  grid still gated server-side — optional one-time browser capture would add exact history.
+- Joe to fill per-machine: card reader type/portal link, router, lockbox codes, addresses.
 - Boston (Nayax) machines: not set up; planograms may only exist on Nayax (secondary, optional).
 
 ## SESSION LOG (newest first)
