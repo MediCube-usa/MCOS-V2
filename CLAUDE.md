@@ -9,6 +9,11 @@ MCOS is MediCube's operating system: a neon "Command Center" dashboard that runs
 TCN/Yunshu vending machines. Deployed on **Vercel** (auto-deploys on push to `main`), backed by
 **Supabase** (project `negtepvmbkyefvxiakwu`, "MCOS 2v").
 
+**THE LIVE SITE IS https://mcos-v2-site.vercel.app** (Vercel project `mcos-v2-site`, wired to
+this repo's `main`). The Vercel project named `mcos-v2` is a STRAY frozen duplicate (3 manual
+deploys, no GitHub link, never updates) — do not use its URL; Joe to delete it in the Vercel
+dashboard. (This confusion cost a whole evening on 2026-08-19.)
+
 ---
 
 ## HARD RULES (do not break)
