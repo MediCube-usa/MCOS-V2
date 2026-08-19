@@ -96,7 +96,30 @@ far has been strictly read-only for safety. Before writing any push code I need 
   fleet. OurVend stays the system.
 - **Joe wants ongoing narration:** keep him informed of what is being built as we go.
 
-## OPEN BUG — Commodity catalog (ListJson) returns empty to our server
+## ✅ DONE (2026-08-19) — Catalog images + descriptions imported
+- 51 products pulled from OurVend Commodity Management → MCOS `products` table.
+  All 51 have images (verified HTTP 200), 49 have descriptions. Catalog now 53 rows
+  (51 synced + 2 pre-existing not in current OurVend list).
+- What cracked it:
+  - **Fresh browser cookie** with the WAF tokens (`aliyungf_tc`, `acw_tc`) + current
+    `ASP.NET_SessionId` — passed to the edge function in the POST body `{ "cookie": "..." }`.
+    The stored slot-sync cookie lacked the WAF tokens, so the Commodity module returned empty.
+  - **Key on `PrID`** (OurVend product GUID) — matches the existing catalog rows so re-import
+    MERGES, not duplicates. (`PrCode` = human code "1007"; not the key.)
+  - **Image URL = `https://ourvend-image.oss-cn-qingdao.aliyuncs.com/Regular/` + `PrImgUrl`.**
+    The `Regular/` folder was the missing prefix (without it → 404). Public bucket, loads in browser.
+  - Body params: `Type=0` (Local warehouse), `PrType=0`, `sidx=PrTopping&sord=desc`, plus a
+    priming GET to /CommodityInfo/Index.
+- Field map: PrID→barcode(key), PrName→name, PrImgUrl→image_url, PrSpecification→description
+  (this is size/spec, e.g. "10pk"), PrRetailPrice→default_price, PrCostPrice→cost,
+  CiManufacturer→supplier. (Also available but not yet stored: CiType=category, CreateDate.)
+- CatalogBoard.tsx already renders image_url + description, so the live Product Catalog page
+  shows them now.
+- RE-SYNC caveat: the WAF cookie expires, so an automatic/scheduled catalog re-sync needs a
+  fresh cookie. Until login-capture is built, re-syncing = paste a fresh `ListJson` cookie again
+  (2-min job). The 20-min SLOT sync is unaffected (separate module, its stored cookie works).
+
+## (resolved) OPEN BUG — Commodity catalog (ListJson) returned empty to our server
 - `/CommodityInfo/ListJson` (POST) returns HTTP 200 with an EMPTY body from the edge function,
   for both Local (Type=0) and Cloud (Type=1) warehouses — even though the same session cookie
   works for Selection/SoltInfo and the grid loads fine in Joe's browser.

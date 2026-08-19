@@ -18,7 +18,7 @@ import "jsr:@supabase/functions-js/edge-runtime.d.ts";
 const SUPABASE_URL = Deno.env.get("SUPABASE_URL")!;
 const SERVICE_KEY = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!;
 const OURVEND = "https://os.ourvend.com";
-const OSS = "https://ourvend-image.oss-cn-qingdao.aliyuncs.com/";
+const OSS = "https://ourvend-image.oss-cn-qingdao.aliyuncs.com/Regular/";
 const sb = { apikey: SERVICE_KEY, Authorization: `Bearer ${SERVICE_KEY}` };
 
 async function getCookie(): Promise<string> {
@@ -53,7 +53,11 @@ Deno.serve(async (req: Request) => {
   const warehouse = url.searchParams.get("warehouse") || "0"; // 0 = Local, 1 = Cloud
   const prtype = url.searchParams.get("prtype") || "0";        // 0 = All types
 
-  const cookie = await getCookie();
+  // A fresh browser cookie can be passed in the POST body ({ "cookie": "..." }) to
+  // get past the Commodity module's WAF (aliyungf_tc/acw_tc); otherwise use the stored one.
+  let bodyCookie = "";
+  try { const b = await req.json(); bodyCookie = (b?.cookie as string) || ""; } catch { /* no body */ }
+  const cookie = bodyCookie || await getCookie();
   if (!cookie) return Response.json({ ok: false, error: "no OurVend cookie stored" });
 
   // Prime the Commodity module: entering the page sets the server-side session
@@ -77,7 +81,7 @@ Deno.serve(async (req: Request) => {
     // The Commodity grid (jqGrid) posts these filter fields (empty = all) plus paging.
     body: new URLSearchParams({
       PrCode: "", PrName: "", Type: warehouse, PrType: prtype,
-      _search: "false", nd: String(Date.now()), rows, page: "1", sidx: "", sord: "asc",
+      _search: "false", nd: String(Date.now()), rows, page: "1", sidx: "PrTopping", sord: "desc",
     }).toString(),
     redirect: "manual",
   });
@@ -109,7 +113,9 @@ Deno.serve(async (req: Request) => {
   // Map + upsert. OurVend field names confirmed from the page's colModel.
   const products = list.map((r) => {
     const row = asObj(r);
-    const barcode = pick(row, ["PrCode"]);
+    // Key on PrID (OurVend's product GUID) — matches the existing catalog rows so a
+    // re-import merges instead of duplicating. PrCode ("1007") is the human code.
+    const barcode = pick(row, ["PrID"]);
     const name = pick(row, ["PrName"]);
     const img = pick(row, ["PrImgUrl"]);
     const spec = pick(row, ["PrSpecification"]);
