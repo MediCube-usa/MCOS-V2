@@ -199,8 +199,12 @@ This page is where products are built, assessed, bought, and promoted. Tabs:
    GetProductNameList: PrIDs) but the GRID endpoints return 200-empty to our server — the
    same bot-wall the Commodity module had. RESOLUTION (same as the catalog fix): Joe runs a
    sales search in OurVend → F12 Network → copy the `ListJson` request as cURL → paste to
-   Claude; we fold its context into the fn and schedule it. SalesBoard tab is wired to
-   `product_sales` and lights up the moment data lands.
+   Claude; we fold its context into the fn and schedule it. UPDATE (same day): rather than
+   wait, sales now come from a LIVE SELL-THROUGH COUNTER — pg_cron snapshots live_slots
+   stock into `slot_history` every 20 min (:05/:25/:45, after each fleet sync); view
+   `product_sales_estimate` sums stock DROPS (refills excluded) = units sold per product.
+   Fully automatic, started 2026-08-19. SalesBoard shows the counter; if the exact
+   OurVend feed (`product_sales`) ever fills, it takes precedence automatically.
 
 **The agent on this page (load later, Joe):** research products/price points/popularity/
 demographics/online + location sales; run checks and searches on the shopping sites; pull
