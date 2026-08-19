@@ -127,6 +127,12 @@ Fully automated, cloud-side, no browser, no Vercel env. All in **Supabase Edge F
 - Boston (Nayax) machines: not set up; planograms may only exist on Nayax (secondary, optional).
 
 ## SESSION LOG (newest first)
+- 2026-08-19 (h): BUILT THE MAP CARD on Maps & Routes (docs/blocks/maps.md — every field from
+  Joe's dumps: address, Google pin, walk-out spot, directions to+THROUGH machine, fill times,
+  access time, follow-up, contacts, 3 photo link spaces, refill videos/docs/notes, access
+  notes; key code never on card). machine_locations extended. Restock tasks now show the
+  shared card read-only + link (no doubles). Cleaned Restocking page (dropped unasked
+  low-stock banner). Fixed Setup board sizing (8 stages fit the same width; scoped CSS).
 - 2026-08-19 (g): BUILT Restocking per Joe's dump — restock_tasks pipeline w/ refill +
   shipping-refill tabs, refiller offer/accept/re-offer, shared map-card links (+refill
   videos/docs on machines), verify-before-codes flow (lockbox key + generated refill code),

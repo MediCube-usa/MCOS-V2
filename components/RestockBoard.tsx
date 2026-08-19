@@ -34,7 +34,12 @@ interface Task {
 }
 interface Machine {
   machine_id: string; label: string | null; campus: string | null; lockbox_code: string | null;
-  map_card_url: string | null; refill_videos_url: string | null; refill_docs_url: string | null;
+  refill_videos_url: string | null; refill_docs_url: string | null;
+}
+interface CardInfo {
+  machine_id: string; address: string | null; google_maps_url: string | null;
+  walkout_location: string | null; fill_times: string | null; hours: string | null;
+  contact_name: string | null; contact_phone: string | null;
 }
 interface Slot { coil: number; product: string | null; stock: number | null; capacity: number | null; }
 
@@ -63,6 +68,7 @@ function Bool({ label, value, onChange }: { label: string; value: boolean; onCha
 export function RestockBoard() {
   const [tasks, setTasks] = useState<Task[]>([]);
   const [machines, setMachines] = useState<Machine[]>([]);
+  const [cards, setCards] = useState<Record<string, CardInfo>>({});
   const [status, setStatus] = useState<'loading' | 'ready' | 'error'>('loading');
   const [msg, setMsg] = useState('');
   const [tab, setTab] = useState<'refill' | 'shipping_refill'>('refill');
@@ -74,12 +80,14 @@ export function RestockBoard() {
   useEffect(() => {
     (async () => {
       try {
-        const [t, m] = await Promise.all([
+        const [t, m, l] = await Promise.all([
           dbSelect<Task>('restock_tasks', 'select=*&order=created_at.desc'),
-          dbSelect<Machine>('machines', 'select=machine_id,label,campus,lockbox_code,map_card_url,refill_videos_url,refill_docs_url&order=label.asc.nullslast'),
+          dbSelect<Machine>('machines', 'select=machine_id,label,campus,lockbox_code,refill_videos_url,refill_docs_url&order=label.asc.nullslast'),
+          dbSelect<CardInfo>('machine_locations', 'select=machine_id,address,google_maps_url,walkout_location,fill_times,hours,contact_name,contact_phone'),
         ]);
         setTasks(t.map((x) => ({ ...x, replenish: Array.isArray(x.replenish) ? x.replenish : [] })));
         setMachines(m);
+        setCards(Object.fromEntries(l.map((c) => [c.machine_id, c])));
         setStatus('ready');
       } catch (e) { setStatus('error'); setMsg(e instanceof Error ? e.message : 'load failed'); }
     })();
@@ -226,14 +234,26 @@ export function RestockBoard() {
                     </div>
                   )}
 
-                  <div className="sb-check-title">Map card (shared across departments)</div>
-                  {m && (
-                    <div className="pd-grid">
-                      <label className="pd-field"><span>Map card link</span><input value={m.map_card_url || ''} onChange={(e) => patchMachine(m.machine_id, { map_card_url: e.target.value })} placeholder="pinned walk-out location" /></label>
-                      <label className="pd-field"><span>Refilling videos</span><input value={m.refill_videos_url || ''} onChange={(e) => patchMachine(m.machine_id, { refill_videos_url: e.target.value })} placeholder="link" /></label>
-                      <label className="pd-field"><span>Refill notes / documents</span><input value={m.refill_docs_url || ''} onChange={(e) => patchMachine(m.machine_id, { refill_docs_url: e.target.value })} placeholder="link" /></label>
-                    </div>
-                  )}
+                  <div className="sb-check-title">Map card (the shared card — edited on Maps &amp; Routes)</div>
+                  {(() => {
+                    const c = cards[t.machine_id];
+                    return (
+                      <div className="mapcard-summary">
+                        {c?.address && <div><b>Address:</b> {c.address}</div>}
+                        {c?.walkout_location && <div><b>Walk-out:</b> {c.walkout_location}</div>}
+                        {c?.fill_times && <div><b>Fill times:</b> {c.fill_times}</div>}
+                        {c?.hours && <div><b>Access:</b> {c.hours}</div>}
+                        {(c?.contact_name || c?.contact_phone) && <div><b>Contact:</b> {[c?.contact_name, c?.contact_phone].filter(Boolean).join(' · ')}</div>}
+                        <div className="sup-foot">
+                          {c?.google_maps_url && <a className="pd-link" href={c.google_maps_url} target="_blank" rel="noopener noreferrer">Google pin ↗</a>}
+                          {m?.refill_videos_url && <a className="pd-link" href={m.refill_videos_url} target="_blank" rel="noopener noreferrer">Refill videos ↗</a>}
+                          {m?.refill_docs_url && <a className="pd-link" href={m.refill_docs_url} target="_blank" rel="noopener noreferrer">Documents ↗</a>}
+                          <a className="pd-link" href="/maps-distribution#map-cards">Edit the full card on Maps &amp; Routes →</a>
+                        </div>
+                        {!c?.address && !c?.walkout_location && <div style={{ color: '#ffc247', fontSize: 12.5 }}>This machine&apos;s map card isn&apos;t filled in yet — complete it on Maps &amp; Routes before sending.</div>}
+                      </div>
+                    );
+                  })()}
                   <div className="sb-check"><Bool label="Map card sent to refiller (after confirm)" value={!!t.mapcard_sent} onChange={(v) => patch(t.id, { mapcard_sent: v })} /></div>
 
                   <div className="sb-check-title">At the machine — verify, then release codes</div>

@@ -3,6 +3,7 @@ import { Sidebar } from '@/components/Sidebar';
 import { FLEET } from '@/lib/fleet';
 import { ScopeMap } from '@/components/ScopeMap';
 import { MapConsole } from '@/components/MapConsole';
+import { MapCards } from '@/components/MapCards';
 
 const COLOR = '#2fd2ff';
 
@@ -40,6 +41,8 @@ export default function MapsDistribution() {
           </div>
 
           <MapConsole machines={machines} />
+
+          <MapCards />
 
           <div className="section" style={{ marginTop: 18 }}>
             <h3>Next on this page <span className="ph-tag">after pins</span></h3>

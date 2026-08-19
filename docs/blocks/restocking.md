@@ -56,5 +56,11 @@ are equipped with campus/machine info, instructions, and contacts.
   offer/schedule/re-offer dates, mapcard_sent, onsite_verified, access_code_sent,
   refill_code(+sent), replenish jsonb, inventory_verified, photo_url, filed_drive,
   filed_email, pickup_location, checkin_contact, checkin_instructions, backstorage_note.
-- `machines` gains map_card_url, refill_videos_url, refill_docs_url — the shared map-card
-  resources (used by restocking, distribution, and any department that sends someone out).
+- THE MAP CARD is canonical on the **Maps & Routes page** (`machine_locations` = the card
+  table + refill videos/docs links on `machines`). Restock tasks show a read-only summary of
+  the card and link to Maps & Routes for edits — one card, many departments, no doubles.
+  Card contents: name/ID/campus, address, Google pin (directions there), WALK-OUT location,
+  directions to the machine, directions THROUGH the machine, fill times, time of access,
+  follow-up date, contacts + numbers (+extra), photos (machine/hallway/location), refilling
+  videos + documents + notes, access notes. The lockbox KEY CODE is never on the card —
+  it releases only after on-site verification.
