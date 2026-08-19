@@ -99,6 +99,10 @@ Fully automated, cloud-side, no browser, no Vercel env. All in **Supabase Edge F
 - Boston (Nayax) machines: not set up; planograms may only exist on Nayax (secondary, optional).
 
 ## SESSION LOG (newest first)
+- 2026-08-19 (c): Imported PLANOGRAM 01 "UNLV Tonopah 1" (Joe's xlsx → `templates`, draft,
+  40 slots). Gate check: 28 in catalog, 7 check-variant, 5 NOT in OurVend (Clear Blue
+  Pregnancy Test, Beast Bites, Creatine Gummies, Dove Bar Soap, Chapstick Cherry — must be
+  loaded one at a time), 5 price diffs vs cloud. Details in the block spec.
 - 2026-08-19 (b): Verified connection live (crons active, sync 16m fresh, 14-machine roster:
   7 w/ slots, 7 at 0). Locked PLANOGRAM SPEC v1 with Joe: new-machines-only, clone-only push,
   images only from preloaded catalog (one at a time). Catalog now 49/49 w/ image+desc (4

@@ -218,6 +218,22 @@ role flags in Phase 0 will reconcile the count.
   fields, what price does). Per-push explicit confirm. Everything stays read-only until that
   walkthrough happens.
 
+### PLANOGRAM 01 — UNLV Tonopah (imported 2026-08-19, DRAFT)
+- Source: Joe's `UNLV_Tonopah_Slot_Setup_1.xlsx` → `templates` row **"UNLV Tonopah 1"**
+  (status `draft`, 40 slots: coil, product, capacity, purchase_price, retail_price,
+  description, catalog barcode where matched).
+- **Gate check vs the 49-product OurVend catalog:** 28 clean matches · 7 "check variant"
+  (probable same product, size/form differs — Playtex 8 vs 10ct, Tylenol Extra Strength vial
+  vs 8ct, Pepto 12 vs 8ct, ReNu 2oz vs 1oz, Degree Shower Clean vs Womens, AXE Roll vs Solid,
+  Always Liners vs Pads) · **5 NOT in OurVend** (hard blockers, must be loaded one at a time
+  with image + description): Clear Blue Pregnancy Test, Beast Bites 30 Gummies, Creatine
+  Gummies 30, Dove Bar Soap, Chapstick Cherry.
+- **5 sheet prices differ from OurVend cloud:** My Choice 17.99 vs 18.99 · ReNu 5.99 vs 6.99 ·
+  Cottenelle 2.99 vs 3.99 · AXE Spray 2.99 vs 4.99 · Emergen-C 4.99 vs 3.99. Joe decides
+  which side is right.
+- Sheet's IMAGE column was broken (#VALUE!) — irrelevant: per rule #4 images come only from
+  the preloaded OurVend catalog anyway.
+
 ### Still open for the push path (need Joe, unchanged from OPEN above)
 - The exact OurVend clone-a-machine steps (which screens/buttons, what gets copied).
 - Creating a product in the OurVend catalog: exact screen + required fields (one at a time).
