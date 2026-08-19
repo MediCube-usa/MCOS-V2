@@ -148,9 +148,6 @@ export function PlanogramsBoard() {
     }
   };
 
-  if (status === 'loading') return <div className="section"><p>Loading planograms…</p></div>;
-  if (status === 'error') return <div className="banner building">Could not load: {msg}</div>;
-
   return (
     <div>
       <div className="hub-tabs">
@@ -158,8 +155,10 @@ export function PlanogramsBoard() {
         <button className={`hub-tab ${view === 'machines' ? 'active' : ''}`} onClick={() => setView('machines')}>Machines ({machines.length})</button>
       </div>
       {msg && <div className="sb-msg">{msg}</div>}
+      {status === 'loading' && <div className="section"><p>Loading planograms…</p></div>}
+      {status === 'error' && <div className="banner building">Could not load: {msg} — check your connection and reload.</div>}
 
-      {view === 'planograms' && (
+      {status === 'ready' && view === 'planograms' && (
         <div>
           <div className="sb-bar">
             <div className="sb-counts">
@@ -242,7 +241,7 @@ export function PlanogramsBoard() {
         </div>
       )}
 
-      {view === 'machines' && (
+      {status === 'ready' && view === 'machines' && (
         <div>
           <p className="hub-note">The OurVend roster with roles. <b>live</b> machines keep their current layouts
             (begin counts get updated at the machine). <b>new</b> machines take a planogram assignment.

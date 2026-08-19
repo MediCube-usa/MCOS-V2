@@ -142,9 +142,6 @@ export function RestockBoard() {
   const editAdd = (t: Task, coil: number, add: number) =>
     patch(t.id, { replenish: t.replenish.map((r) => (r.coil === coil ? { ...r, add } : r)) });
 
-  if (status === 'loading') return <div className="section"><p>Loading restock tasks…</p></div>;
-  if (status === 'error') return <div className="banner building">Could not load: {msg}</div>;
-
   const shown = tasks.filter((t) => t.task_type === tab);
 
   return (
@@ -154,6 +151,8 @@ export function RestockBoard() {
         <button className={`hub-tab ${tab === 'shipping_refill' ? 'active' : ''}`} onClick={() => setTab('shipping_refill')}>Shipping refill ({tasks.filter((t) => t.task_type === 'shipping_refill').length})</button>
       </div>
       {msg && <div className="sb-msg">{msg}</div>}
+      {status === 'loading' && <div className="section"><p>Loading restock tasks…</p></div>}
+      {status === 'error' && <div className="banner building">Could not load: {msg} — check your connection and reload.</div>}
 
       <div className="sb-bar">
         <div className="sb-counts">

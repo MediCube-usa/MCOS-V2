@@ -70,6 +70,7 @@ export function SetupBoard() {
   const [status, setStatus] = useState<'loading' | 'ready' | 'error'>('loading');
   const [msg, setMsg] = useState('');
   const [open, setOpen] = useState<string | null>(null);
+  const [view, setView] = useState<string>('ordered');
   const [adding, setAdding] = useState(false);
   const [nm, setNm] = useState('');
   const [model, setModel] = useState('');
@@ -104,19 +105,23 @@ export function SetupBoard() {
   const move = (m: SetupMachine, dir: 1 | -1) => {
     const i = STAGES.findIndex((s) => s.id === m.stage);
     const next = STAGES[Math.min(STAGES.length - 1, Math.max(0, i + (i === -1 ? 1 : dir)))];
-    if (next.id !== m.stage) patch(m.id, { stage: next.id });
+    if (next.id !== m.stage) { patch(m.id, { stage: next.id }); setView(next.id); }
   };
   const toggleCheck = (m: SetupMachine, item: string) =>
     patch(m.id, { checklist: { ...m.checklist, [item]: !m.checklist[item] } });
 
-  if (status === 'loading') return <div className="section"><p>Loading pipeline…</p></div>;
-  if (status === 'error') return <div className="banner building">Could not load the setup pipeline: {msg}</div>;
-
   return (
     <div className="setupboard">
+      <div className="hub-tabs">
+        {STAGES.map((s) => (
+          <button key={s.id} className={`hub-tab ${view === s.id ? 'active' : ''}`} onClick={() => setView(s.id)}>
+            {s.label} ({rows.filter((r) => r.stage === s.id).length})
+          </button>
+        ))}
+      </div>
       <div className="sb-bar">
         <div className="sb-counts">
-          {STAGES.map((s) => <span key={s.id} className="sb-count"><b>{rows.filter((r) => r.stage === s.id).length}</b> {s.label}</span>)}
+          <span className="sb-count">{STAGES.find((s) => s.id === view)?.hint}</span>
         </div>
         {!adding
           ? <button className="pd-save" onClick={() => setAdding(true)}>+ New TCN order</button>
@@ -130,15 +135,15 @@ export function SetupBoard() {
           )}
       </div>
       {msg && <div className="sb-msg">{msg}</div>}
+      {status === 'loading' && <div className="section"><p>Loading pipeline…</p></div>}
+      {status === 'error' && <div className="banner building">Could not load the setup pipeline: {msg} — check your connection and reload.</div>}
 
-      {rows.length === 0 && <div className="section"><p>No machines in the pipeline. Add the TCN order and it moves
+      {status === 'ready' && rows.length === 0 && <div className="section"><p>No machines in the pipeline. Add the TCN order and it moves
         through: shipping → Brendamour pickup → warehouse → contract → map card → setup → verified.</p></div>}
 
-      <div className="sb-cols">
-        {STAGES.map((s) => (
-          <div key={s.id} className="sb-col">
-            <div className="sb-col-head"><b>{s.label}</b><span>{s.hint}</span></div>
-            {rows.filter((r) => r.stage === s.id).map((m) => {
+      <div className="req-grid">
+        {rows.filter((r) => r.stage === view).map((m) => {
+              const s = STAGES.find((x) => x.id === view)!;
               const isOpen = open === m.id;
               const proto = PROTOCOL.filter((i) => m.checklist[i]).length;
               return (
@@ -215,9 +220,7 @@ export function SetupBoard() {
                   )}
                 </div>
               );
-            })}
-          </div>
-        ))}
+        })}
       </div>
     </div>
   );
