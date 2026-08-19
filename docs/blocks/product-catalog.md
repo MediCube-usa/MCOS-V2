@@ -168,7 +168,67 @@ far has been strictly read-only for safety. Before writing any push code I need 
 
 ---
 
+## PLANOGRAM SPEC v1 (locked with Joe, 2026-08-19) — build to this
+
+Joe's decisions from this session (these refine, not replace, the sections above):
+
+1. **Planograms are for NEW machine setup, not retro-fits.** The current live machines keep
+   the layouts they have. New machines get a planogram assigned in MCOS and edited as needed;
+   a machine goes LIVE when refill staff place the products and set the **beginning inventory
+   count at the machine**. (Live ≠ assigned: assignment is an MCOS state; live requires the
+   physical fill + begin count.)
+2. **Current live machines → Machine block now.** They stay live untouched; they need to be
+   added/registered in the Machine block, and their inventory begin count is updated at the
+   machine.
+3. **CLONE ONLY (Joe, confirmed).** In OurVend a planogram gets onto a machine ONLY by cloning
+   a machine. We set up template machines (not in use) and clone the template onto real
+   machines. There is no per-slot push path to design around.
+4. **IMAGES ONLY FROM THE PRELOADED CATALOG (Joe, confirmed).** OurVend accepts product
+   images only from the preloaded catalog (Commodity Management), and products are loaded
+   there **one at a time**. In MCOS we can hold whatever we want, but anything destined for
+   OurVend must be generated from preloaded catalog products (image + description already in
+   OurVend). The MCOS planogram editor therefore restricts slot products to catalog entries.
+5. **Catalog state (verified live 2026-08-19):** 49 products, **all 49 with image +
+   description** → every current product passes the OurVend gate. (The 4 description-less
+   rows disappeared from `products` ~02:00 UTC mid-session — presumed Joe's cleanup in the
+   dashboard; flag if that wasn't you.)
+
+**Fleet observation (OurVend roster, verified 2026-08-19):** 14 machines sync. 7 report
+slots — 5 fully configured (36–40 slots), 2 partial (10 and 1 slots) — and 7 report 0 slots
+(presumed the new/unset machines). Joe says 13 machines are to be set up as planograms;
+role flags in Phase 0 will reconcile the count.
+
+### Build plan (phases)
+- **Phase 0 — Machine registry & roles.** A `machines` registry (machine_id, name, role:
+  `live | new | template`, campus, notes), seeded from the 14-machine roster; Joe flags each
+  machine's role in the UI. Puts the current live machines in the Machine block (Joe's #2).
+- **Phase 1 — Planogram authoring (our DB only).** Create/edit planograms on the Catalog
+  block: grid of coil → product → price → capacity. Product picker limited to `products`
+  (the catalog gate, incl. images rule #4). Store in the existing `templates` table
+  (id/name/description/status/slots jsonb). Status: `draft → ready`.
+- **Phase 2 — Assignment & go-live tracking.** Assign a planogram to a `new` machine;
+  status `assigned`; goes `live` when refill places product + begin count set at machine
+  (manually confirmed at first). Reassignment/changes tracked.
+- **Phase 3 — Reconciliation (read-only).** Once an assigned machine reports slots via the
+  20-min sync, diff planogram vs `live_slots` coil-by-coil (product/price/capacity);
+  "differs" flags expected for machine-side ES-folder prices.
+- **Phase 4 — Push via clone (WRITE, blocked).** MCOS → OurVend → machine rides the
+  clone-a-machine mechanism only (Joe's #3): set up the template machine in OurVend, clone
+  onto targets. Blocked on Joe walking through the exact OurVend clone steps (screens,
+  fields, what price does). Per-push explicit confirm. Everything stays read-only until that
+  walkthrough happens.
+
+### Still open for the push path (need Joe, unchanged from OPEN above)
+- The exact OurVend clone-a-machine steps (which screens/buttons, what gets copied).
+- Creating a product in the OurVend catalog: exact screen + required fields (one at a time).
+- Whether clone also sets price, or price stays machine-side (ES folder).
+- Confirmation flow: per-push confirm before anything goes out (assumed yes).
+
+---
+
 ## Build order once the OPEN questions are answered
-1. One-time catalog import: `/CommodityInfo/ListJson` → `products` (image_url from OSS base + path, description, name, barcode, price). Review together.
-2. Bring planogram management onto this block: build/edit/assign planograms to machines.
-3. Build the MCOS → OurVend → machine push bridge (write path) — per the "strange way" once documented, with the agreed confirm step.
+1. ~~One-time catalog import~~ ✅ DONE (see above) — 49 products, all with image + description.
+2. Bring planogram management onto this block: build/edit/assign planograms to machines
+   (Phases 0–2 of the plan above).
+3. Build the MCOS → OurVend → machine push bridge (write path) — **clone-a-machine only**,
+   per Joe's walkthrough, with the agreed per-push confirm step (Phase 4).

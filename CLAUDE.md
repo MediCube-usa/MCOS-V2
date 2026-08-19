@@ -51,17 +51,21 @@ Fully automated, cloud-side, no browser, no Vercel env. All in **Supabase Edge F
 - **Schedules (pg_cron):** `ourvend-fleet-sync` every 20 min (data), `ourvend-auto-login` hourly
   (session), `ourvend-catalog-sync` daily. Data freshness = 20 min.
 - **Key OurVend facts:** catalog is the gate — a product needs image+desc in OurVend before it
-  can be used in a template. OurVend has NO template object — a "planogram template" = a MACHINE
-  cloned onto others (set up a not-in-use machine named "Template"). Prices can be set at the
+  can be used in a template, and OurVend takes product images ONLY from the preloaded catalog
+  (loaded one at a time). OurVend has NO template object — a "planogram template" = a MACHINE
+  cloned onto others (set up a not-in-use machine named "Template"); applying a planogram is
+  CLONE ONLY (Joe, confirmed 2026-08-19). Prices can be set at the
   machine (ES folder) and may lag OurVend's cloud price → "differs" flags are expected.
 - If Joe changes the OurVend password, update `secrets.ourvend_password` (then run login).
 
 ## SUPABASE (project negtepvmbkyefvxiakwu)
-- Tables: `live_slots` (fleet slots, ~204), `products` (catalog, 53; 51 from OurVend w/ images),
-  `ourvend_sync_log`, `secrets` (RLS-locked), plus block tables (`facilities`, `contacts`,
-  `templates`, `setup_machines`, `machine_locations`, `warehouse_orders`, `documents`,
-  `campaigns`).
-- Edge functions: `ourvend-login`, `ourvend-refresh`, `ourvend-catalog`.
+- Tables: `live_slots` (fleet slots, ~204), `products` (catalog, 49 — ALL with image+desc since
+  2026-08-19 cleanup), `ourvend_sync_log`, `secrets` (RLS-locked), plus block tables
+  (`facilities`, `contacts`, `templates`, `setup_machines`, `machine_locations`,
+  `warehouse_orders`, `documents`, `campaigns`).
+- Edge functions: `ourvend-login`, `ourvend-refresh`, `ourvend-catalog`, plus `catalog-thumbs`
+  (read-only utility: shrinks public OSS product images to base64 thumbs for reports; no cron;
+  safe to delete).
 - Public keys/URLs in `lib/config.ts`. Anon JWT is used by the dashboard Refresh button + crons.
 
 ## APP ARCHITECTURE
@@ -78,19 +82,28 @@ Fully automated, cloud-side, no browser, no Vercel env. All in **Supabase Edge F
 ## BLOCK STATUS (update as we go)
 - **Machine Operations** — live off `live_slots`. ✅ data wired
 - **Inventory** — live off `live_slots`, low-stock signals. ✅ data wired
-- **Product Catalog & Sales** — 51 products w/ images+descriptions imported from OurVend. ✅
-  Next: planogram management on this block (see `docs/blocks/product-catalog.md`).
-- **Planograms/Templates** — NOT built yet. Model: machines-as-templates + clone-to-push.
+- **Product Catalog & Sales** — 49 products, ALL w/ image+description (passes the OurVend
+  gate). ✅ Next: planogram management on this block (see `docs/blocks/product-catalog.md`).
+- **Planograms/Templates** — SPEC v1 locked (2026-08-19, in `docs/blocks/product-catalog.md`):
+  planograms are for NEW machines only (live machines keep their layouts); push = clone-a-machine
+  ONLY; images only from preloaded catalog. Phases 0–2 (registry/authoring/assignment) ready to
+  build; Phase 4 push BLOCKED on Joe's clone walkthrough.
 - Restocking, Setup, Facilities, Warehouse, Payments, Documents, Finance, Marketing, Contacts —
   scaffolded, not deeply built. Vouchers, Video Ads — parked shells.
 
 ## OPEN / NEXT
-- Planograms: build create/edit/assign-to-machine on the Catalog block; push via OurVend clone.
+- Planograms: build Phases 0–2 of SPEC v1 (machine registry+roles → authoring → assignment)
+  on the Catalog block; push via OurVend clone (Phase 4, blocked on walkthrough).
 - The MCOS→OurVend→machine WRITE (push) path — needs Joe to confirm the exact "clone a machine"
   steps before any write code (still read-only until then).
 - Boston (Nayax) machines: not set up; planograms may only exist on Nayax (secondary, optional).
 
 ## SESSION LOG (newest first)
+- 2026-08-19 (b): Verified connection live (crons active, sync 16m fresh, 14-machine roster:
+  7 w/ slots, 7 at 0). Locked PLANOGRAM SPEC v1 with Joe: new-machines-only, clone-only push,
+  images only from preloaded catalog (one at a time). Catalog now 49/49 w/ image+desc (4
+  desc-less rows removed from `products` mid-session, presumed Joe). Deployed `catalog-thumbs`
+  utility edge fn. "Planogram Ops" artifact (plan + fleet + catalog board) — link in chat.
 - 2026-08-19: Built OurVend auto-login (self-renewing session) + self-heal in both syncs +
   hourly login / daily catalog crons. Imported 51 catalog products w/ images+descriptions.
   Wired Machine Ops + Inventory to live_slots. Locked "OurVend is the system, Nayax secondary."
