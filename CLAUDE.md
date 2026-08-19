@@ -10,9 +10,14 @@ TCN/Yunshu vending machines. Deployed on **Vercel** (auto-deploys on push to `ma
 **Supabase** (project `negtepvmbkyefvxiakwu`, "MCOS 2v").
 
 **THE LIVE SITE IS https://mcos-v2-site.vercel.app** (Vercel project `mcos-v2-site`, wired to
-this repo's `main`). The Vercel project named `mcos-v2` is a STRAY frozen duplicate (3 manual
-deploys, no GitHub link, never updates) — do not use its URL; Joe to delete it in the Vercel
-dashboard. (This confusion cost a whole evening on 2026-08-19.)
+this repo's `main`). The Vercel project named `mcos-v2` is a STRAY frozen duplicate (manual
+deploys, no GitHub link, never updates) — as of 2026-08-19 its production URL
+(mcos-v2.vercel.app) is a 307 REDIRECT to mcos-v2-site.vercel.app (deployed via Vercel MCP),
+so there is only ONE site with real content. Joe can still delete the `mcos-v2` project in the
+Vercel dashboard (Settings → Delete Project) — the redirect just makes it harmless meanwhile.
+(This confusion cost a whole evening on 2026-08-19.) Note: rows marked "Preview" in the
+mcos-v2-site deployments list are normal Vercel previews of the claude/* work branches — same
+commits as Production, not a second site.
 
 ---
 
