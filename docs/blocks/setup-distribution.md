@@ -1,7 +1,12 @@
 # Block spec — Machine Setup / Ordered & Distribution
 
-Status: SPEC v1 (Joe brain-dump 2026-08-19) — BUILT same day on `/setup-distribution`
-(SetupBoard reworked to this pipeline).
+Status: SPEC v1 (Joe brain-dump 2026-08-19) — BUILT same day; REDESIGNED same day per Joe:
+the 8 stages are COLORED COMMAND TABS (Order amber, Shipping cyan, Arrived blue, Warehouse
+violet, Contract pink, Map card green, Setup lime, Verified mint). Every tab opens a full
+stage panel even with zero machines: the stage mission, THIS TAB HOLDS (every field), and
+COMPLETE WHEN → next stage — so what lives at each stage is visible before any order is
+placed. Machines at the stage list below; advancing follows the card to the next tab.
+Browser-verified (tabs switch, panels render, no horizontal overflow).
 
 Joe: "this is really ordered and distribution." The lifecycle of a machine BEFORE it is
 live: TCN order → shipping/port → Brendamour pickup → warehouse → contract → campus

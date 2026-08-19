@@ -17,18 +17,9 @@ export default function SetupDistribution() {
         <div className="deptpage" style={{ ['--c' as string]: COLOR, maxWidth: 1280 }}>
           <div className="crumb"><Link href="/">Command Center</Link> / OPERATIONS</div>
           <h1>Machine Setup</h1>
-          <p className="blurb">New machines from TCN order through shipping, placement, and go-live. Add a machine when it&apos;s ordered; move it down the pipeline as it progresses.</p>
-
-          <div className="banner" style={{ border: '1px solid rgba(255,176,0,.35)', background: 'rgba(255,176,0,.07)', color: '#ffce7a' }}>
-            <b>How it works:</b> add a machine when your partner orders it. Open a card to set its order ref, facility, ETA, notes, and tick the go-live checklist. Use ← / advance → to move it through the stages. When it reaches <b>Live</b>, it belongs to Machine Operations.
-          </div>
+          <p className="blurb">The fleet pipeline — every machine from TCN order to verified, coast to coast. Each colored tab is a stage: open it to see exactly what it holds, what completes it, and the machines sitting there.</p>
 
           <SetupBoard />
-
-          <div className="section" style={{ marginTop: 18 }}>
-            <h3>Coming next on this page <span className="ph-tag">after the pipeline</span></h3>
-            <p>TCN &amp; logistics contacts (Brendamour, warehouse) linked in, setup photos/proof per machine, and auto-handoff: when a machine goes Live it appears in Machine Operations and gets pinned in Maps. Facility, template, and card-reader fields will link to those departments instead of free text.</p>
-          </div>
 
           <h2 className="scope-heading">Full department scope</h2>
           <ScopeMap id="setup-distribution" />
