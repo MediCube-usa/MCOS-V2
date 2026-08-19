@@ -96,7 +96,13 @@ Fully automated, cloud-side, no browser, no Vercel env. All in **Supabase Edge F
   PlanogramsBoard on the Templates block — 40-coil authoring w/ catalog-gated picker,
   assignment, go-live confirm. Phase 3 reconciliation next; Phase 4 push BLOCKED on Joe's
   clone walkthrough.
-- Restocking, Setup, Facilities, Warehouse, Payments, Documents, Finance, Marketing, Contacts —
+- **Setup & Distribution** — SPEC v1 + BUILT (2026-08-19, `docs/blocks/setup-distribution.md`):
+  Joe's ordered-and-distribution pipeline — TCN order (model/qty/color/fridge-or-non/invoice +
+  purchasing protocol) → shipping/port (LA default) + paperwork/dates → Brendamour pickup →
+  warehouse → contract → MAP CARD (walk-out location, Google Maps pin, photos, directions,
+  access time, contacts, follow-up) → setup (router online, TCN registered, decals) →
+  verified (TCN machine_id links to Machine Ops). `setup_machines` extended.
+- Restocking, Facilities, Warehouse, Payments, Documents, Finance, Marketing, Contacts —
   scaffolded, not deeply built. Vouchers, Video Ads — parked shells.
 
 ## OPEN / NEXT
@@ -110,6 +116,10 @@ Fully automated, cloud-side, no browser, no Vercel env. All in **Supabase Edge F
 - Boston (Nayax) machines: not set up; planograms may only exist on Nayax (secondary, optional).
 
 ## SESSION LOG (newest first)
+- 2026-08-19 (f): BUILT Machine Ops record (health strip, reader+portal link, router, apps,
+  lockbox generate, service log, address→machine_locations) and Setup & Distribution pipeline
+  (8 stages per Joe's ordered-and-distribution dump incl. map cards). Sales sell-through
+  counter live (slot_history snapshots + product_sales_estimate view). All deployed to main.
 - 2026-08-19 (e): BUILT planogram Phases 0–2 on Templates block (`machines` registry seeded
   w/ real roster labels from ourvend-refresh; PlanogramsBoard: 40-coil authoring, catalog-only
   picker, assignment + go-live confirm; old TemplatesBoard removed). Sales reader

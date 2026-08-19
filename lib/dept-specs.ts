@@ -41,11 +41,11 @@ export const DEPT_SPECS: Record<string, DeptSpec> = {
     toBuild: ['OurVend Sales Report reader (read-only) → per-product sold totals', 'agent: shop-site research, pull products in, order assistance (per-action confirm)', 'pre-order / launch staging']
   },
   'setup-distribution': {
-    purpose: 'Pre-live machine lifecycle — from TCN order through shipping, placement, and go-live.',
-    owns: ['machine orders & TCN contacts', 'shipping / import / port status', 'delivery schedule', 'setup checklist', 'go-live approval'],
-    workflow: ['order machine', 'track shipping → port → warehouse', 'assign facility & schedule delivery', 'place & connect', 'load template & initial stock', 'verify → go live'],
+    purpose: 'Ordered & distribution — the machine\'s life before it is live: TCN order → port (LA) → Brendamour → warehouse → contract → map card → setup → verified.',
+    owns: ['TCN orders (model, qty, color, fridge/non, invoice)', 'purchasing protocol checklist (model/color/locks can change)', 'shipping, port + paperwork, calendar dates', 'Brendamour pickup → warehouse', 'contract → ship to campus', 'MAP CARDS: pinned walk-out location, photos on Google Maps, directions, access times, contacts, follow-ups', 'setup verification: router online, TCN registered, decals'],
+    workflow: ['order from TCN (verify model/color/locks)', 'ship → port (mostly Los Angeles), papers + dates', 'Brendamour pickup → warehouse', 'contract signed → ship to campus', 'create + send the map card', 'set up on site: router online, register TCN, decals', 'verified → Machine Operations'],
     connects: ['facilities', 'documents', 'templates-config', 'inventory', 'payments', 'machine-operations', 'maps-distribution'],
-    toBuild: ['order & shipping tracker', 'logistics contacts (Brendamour, warehouse)', 'go-live checklist', 'setup photos/proof']
+    toBuild: ['file uploads for invoice/paperwork/photos', 'calendar sync for ETAs + follow-ups', 'auto-handoff to machines registry on verified']
   },
   'templates-config': {
     purpose: 'Planograms & templates — author layouts on the shared 40-coil grid, flag machine roles, assign to new machines, track go-live. Push = OurVend clone-a-machine ONLY (locked until the clone walkthrough).',
