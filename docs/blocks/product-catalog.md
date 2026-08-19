@@ -192,11 +192,15 @@ This page is where products are built, assessed, bought, and promoted. Tabs:
    (verified in live_slots): coils 1–29 odd = 15 WIDE slots, 31–51 = 21 STANDARD slots,
    53–59 odd = 4 WIDE slots, 40 total. The tab shows the map so you know what product can
    replace another and fit. Static layout (from the live data), no per-machine variance.
-5. **Sales** (NOTE — data feed not built yet) — per-product totals: what it costs, what it
-   sells for, how many we sell, where it sells and where it does not. NOT currently
-   derivable from `live_slots` (stock snapshots only, no transaction history). Needs a
-   read-only OurVend Sales Report reader (the old repo reached `/SaleSummarize/*`).
-   → Next build candidate; the tab shows the plan honestly until the feed exists.
+5. **Sales** (reader BUILT 2026-08-19, feed blocked on a 2-min capture) — per-product
+   totals: cost, sell price, units sold, where it sells / doesn't. Edge fn `ourvend-sales`
+   is deployed and browser-faithful (Index → getSession → ListJson/ListJsonPro); the module's
+   helper endpoints answer (GetMachineGroup: UNLV/ASU/Murad/CSUDH/BostonUniversity MGIDs;
+   GetProductNameList: PrIDs) but the GRID endpoints return 200-empty to our server — the
+   same bot-wall the Commodity module had. RESOLUTION (same as the catalog fix): Joe runs a
+   sales search in OurVend → F12 Network → copy the `ListJson` request as cURL → paste to
+   Claude; we fold its context into the fn and schedule it. SalesBoard tab is wired to
+   `product_sales` and lights up the moment data lands.
 
 **The agent on this page (load later, Joe):** research products/price points/popularity/
 demographics/online + location sales; run checks and searches on the shopping sites; pull

@@ -1,38 +1,35 @@
 import Link from 'next/link';
 import { Sidebar } from '@/components/Sidebar';
 import { ScopeMap } from '@/components/ScopeMap';
-import { TemplatesBoard } from '@/components/TemplatesBoard';
-import { FLEET } from '@/lib/fleet';
+import { PlanogramsBoard } from '@/components/PlanogramsBoard';
 
 const COLOR = '#8b5cff';
 
-// Templates define intended machine contents — which product in which slot, at
-// what price and capacity. Built once, approved, then loaded onto a machine at
-// setup. Product names are pulled from the live fleet for quick entry.
+// Planograms & Templates — authoring, machine roles, assignment, go-live tracking.
+// Spec: docs/blocks/planograms.md. Push to OurVend is CLONE-A-MACHINE ONLY and stays
+// locked (read-only) until Joe walks through the exact clone steps.
 export default function TemplatesConfig() {
-  const products = Array.from(
-    new Set(FLEET.machines.flatMap((m) => m.slots.map((s) => s.product).filter(Boolean)))
-  ).sort();
-
   return (
     <div className="shell">
       <Sidebar active="templates-config" />
       <main className="main">
         <div className="deptpage" style={{ ['--c' as string]: COLOR, maxWidth: 1100 }}>
           <div className="crumb"><Link href="/">Command Center</Link> / OPERATIONS</div>
-          <h1>Templates &amp; Config</h1>
-          <p className="blurb">Reusable machine layouts — which product sits in which slot, at what price and capacity. Build once, approve, load onto a machine at setup.</p>
+          <h1>Planograms &amp; Templates</h1>
+          <p className="blurb">Author planograms on the shared 40-coil layout, flag machine roles, assign
+            planograms to new machines, and track go-live. Products come from the
+            <Link href="/product-catalog-sales" style={{ color: '#c3b0ff' }}> Product Catalog</Link> — only
+            catalog products (image + description in OurVend) can ride a planogram.</p>
 
           <div className="banner" style={{ border: '1px solid rgba(139,92,255,.35)', background: 'rgba(139,92,255,.08)', color: '#cdbcff' }}>
-            <b>Build a layout once, reuse it.</b> Add slot rows, type a product (autocompletes from your live catalog), set price and capacity. Approve it when it&apos;s ready — approved templates are what <Link href="/setup-distribution" style={{ color: '#c3b0ff' }}>Setup</Link> loads onto a new machine.
+            <b>How it reaches a machine:</b> OurVend has no template object — a planogram becomes a
+            <b> template machine</b> (set up, not in use) and gets <b>cloned</b> onto real machines. A machine
+            goes live when refill places the products and sets the beginning count at the machine.
+            The MCOS→OurVend push is <b>locked</b> until Joe walks the clone steps — everything here stays
+            in our own database.
           </div>
 
-          <TemplatesBoard products={products} />
-
-          <div className="section" style={{ marginTop: 18 }}>
-            <h3>Coming next on this page <span className="ph-tag">after layouts</span></h3>
-            <p>Linked-slot handling (one product across two coils, like the fleet already does), facility restriction overrides (e.g. block Plan B on a campus that bans it), a visual slot grid, and one-click apply-to-machine that writes the layout through Machine Operations.</p>
-          </div>
+          <PlanogramsBoard />
 
           <h2 className="scope-heading">Full department scope</h2>
           <ScopeMap id="templates-config" />

@@ -1,6 +1,8 @@
 # Block spec — Planograms / Templates
 
-Status: SPEC v1 locked (2026-08-19). Phases 0–2 ready to build; Phase 4 push BLOCKED.
+Status: SPEC v1 locked (2026-08-19). Phases 0–2 BUILT (same day): machines registry +
+PlanogramsBoard (authoring on the 40-coil grid, catalog-gated picker, assignment +
+go-live confirm) live on the Templates block. Phase 3 next; Phase 4 push BLOCKED.
 Last updated: 2026-08-19 (moved out of product-catalog.md — Joe: "planograms and templates
 will be on another block"; the Catalog block keeps products/sales/research only).
 

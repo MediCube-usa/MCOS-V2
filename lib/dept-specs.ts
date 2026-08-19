@@ -48,11 +48,11 @@ export const DEPT_SPECS: Record<string, DeptSpec> = {
     toBuild: ['order & shipping tracker', 'logistics contacts (Brendamour, warehouse)', 'go-live checklist', 'setup photos/proof']
   },
   'templates-config': {
-    purpose: 'Reusable machine layouts — which product sits in which slot. Templates define intended contents.',
-    owns: ['templates & versions', 'slot layout & linked slots', 'product-slot assignments', 'price/capacity per slot', 'facility restriction overrides'],
-    workflow: ['build template', 'assign products from catalog', 'set linked slots & pricing', 'approve', 'assign to machine at setup'],
+    purpose: 'Planograms & templates — author layouts on the shared 40-coil grid, flag machine roles, assign to new machines, track go-live. Push = OurVend clone-a-machine ONLY (locked until the clone walkthrough).',
+    owns: ['planograms (templates table) & their draft→ready→assigned→live status', 'machine roles registry (live / new / template)', 'planogram↔machine assignment + go-live confirms', 'the clone-only push path (locked)'],
+    workflow: ['author planogram from catalog products (the gate)', 'flag machine roles', 'assign to a new machine', 'refill places product + begin count at machine', 'confirm live', 'later: clone template machine in OurVend (per-push OK)'],
     connects: ['product-catalog-sales', 'setup-distribution', 'machine-operations', 'inventory', 'facilities'],
-    toBuild: ['visual template builder', 'linked-slot handling', 'facility restriction overrides (e.g. no Plan B)', 'version approval']
+    toBuild: ['reconciliation diff (planogram vs live_slots)', 'clone/push runbook after Joe’s walkthrough', 'facility restriction overrides (e.g. no Plan B)']
   },
   'maps-distribution': {
     purpose: 'Private machine map — every machine pinned by location, with field-safe route cards.',

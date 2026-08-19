@@ -63,9 +63,10 @@ Fully automated, cloud-side, no browser, no Vercel env. All in **Supabase Edge F
   2026-08-19 cleanup), `ourvend_sync_log`, `secrets` (RLS-locked), plus block tables
   (`facilities`, `contacts`, `templates`, `setup_machines`, `machine_locations`,
   `warehouse_orders`, `documents`, `campaigns`).
-- Edge functions: `ourvend-login`, `ourvend-refresh`, `ourvend-catalog`, plus `catalog-thumbs`
-  (read-only utility: shrinks public OSS product images to base64 thumbs for reports; no cron;
-  safe to delete).
+- Edge functions: `ourvend-login`, `ourvend-refresh`, `ourvend-catalog`, `ourvend-sales`
+  (sales reader, built+deployed, feed blocked on a one-time browser capture — see
+  product-catalog spec), plus utilities `catalog-thumbs` + `ourvend-sales-probe` (read-only,
+  no cron, safe to delete).
 - Public keys/URLs in `lib/config.ts`. Anon JWT is used by the dashboard Refresh button + crons.
 
 ## APP ARCHITECTURE
@@ -80,17 +81,20 @@ Fully automated, cloud-side, no browser, no Vercel env. All in **Supabase Edge F
 ---
 
 ## BLOCK STATUS (update as we go)
-- **Machine Operations** — live off `live_slots`. ✅ data wired
+- **Machine Operations** — live off `live_slots`. ✅ data wired. SPEC v1 captured
+  (2026-08-19, `docs/blocks/machine-operations.md`): per-machine record — ID/name/location,
+  live planogram + product swap + price change, card reader, connectivity, lock codes, apps,
+  maintenance history, OurVend registration. BUILD NEXT after the Catalog block is done.
 - **Inventory** — live off `live_slots`, low-stock signals. ✅ data wired
 - **Product Catalog & Sales** — 49 products, ALL w/ image+description (passes the OurVend
   gate). ✅ SPEC v2 (2026-08-19): the PRODUCT HUB — tabs Products / Requested / Shop-Suppliers
   (Weiner's LTD) / Coil Setup / Sales(feed pending). Planograms moved OFF this block.
   See `docs/blocks/product-catalog.md`.
-- **Planograms/Templates** — SPEC v1 locked (2026-08-19, moved to `docs/blocks/planograms.md`;
-  UI home = Templates/Config block):
-  planograms are for NEW machines only (live machines keep their layouts); push = clone-a-machine
-  ONLY; images only from preloaded catalog. Phases 0–2 (registry/authoring/assignment) ready to
-  build; Phase 4 push BLOCKED on Joe's clone walkthrough.
+- **Planograms/Templates** — SPEC v1 locked; **Phases 0–2 BUILT** (2026-08-19, spec in
+  `docs/blocks/planograms.md`): `machines` registry (14 seeded w/ real labels + roles) +
+  PlanogramsBoard on the Templates block — 40-coil authoring w/ catalog-gated picker,
+  assignment, go-live confirm. Phase 3 reconciliation next; Phase 4 push BLOCKED on Joe's
+  clone walkthrough.
 - Restocking, Setup, Facilities, Warehouse, Payments, Documents, Finance, Marketing, Contacts —
   scaffolded, not deeply built. Vouchers, Video Ads — parked shells.
 
@@ -102,6 +106,13 @@ Fully automated, cloud-side, no browser, no Vercel env. All in **Supabase Edge F
 - Boston (Nayax) machines: not set up; planograms may only exist on Nayax (secondary, optional).
 
 ## SESSION LOG (newest first)
+- 2026-08-19 (e): BUILT planogram Phases 0–2 on Templates block (`machines` registry seeded
+  w/ real roster labels from ourvend-refresh; PlanogramsBoard: 40-coil authoring, catalog-only
+  picker, assignment + go-live confirm; old TemplatesBoard removed). Sales reader
+  `ourvend-sales` built+deployed; SaleSummarize helper endpoints answer but grid endpoints
+  200-empty (same bot-wall as Commodity) → needs Joe's one-time ListJson browser capture,
+  then schedule it. SalesBoard tab wired to `product_sales` (lights up when data lands).
+  Captured Machine Operations SPEC v1 (next block). ourvend-sales-probe utility deployed.
 - 2026-08-19 (d): Joe's SPEC v2 brain-dump for Catalog block = product hub (shop links,
   requested-products lists, research, coil map, sales info; planograms → own block/file).
   Built tabs: Requested (`requested_products` table), Shop/Suppliers (`supplier_links`,
