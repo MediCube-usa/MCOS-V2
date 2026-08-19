@@ -75,6 +75,39 @@ far has been strictly read-only for safety. Before writing any push code I need 
 
 ---
 
+## HOW OURVEND ACTUALLY WORKS (Joe, 2026-08-18) — read before building push/templates
+- **Catalog is the gate.** A product cannot be used in ANY template — even a single item —
+  until it exists in the **OurVend catalog with image + description loaded.** No image/desc =
+  OurVend will not load it. So: fully load the catalog first, always.
+- **The catalog is a DIFFERENT place than the slots.** Slots come from Selection/SoltInfo;
+  the catalog comes from Commodity Management. They are separate. (This is why the catalog
+  reader is its own thing.)
+- **OurVend has NO standalone planogram/template object.** A full planogram template in
+  OurVend is made by **cloning a machine.** You set up a machine that is *not in use*, name it
+  "Template" / "Planogram X", and push it onto real machines by cloning that machine.
+  → In MCOS: planogram templates are represented as **machines flagged as templates (not in
+     use).** MCOS makes authoring them easy; but to push through OurVend onto real machines it
+     must ride the **clone-a-machine** mechanism. Build the push path around cloning, not around
+     a (non-existent) template API.
+- **Boston campus machines** are **not set up yet** and are on **Nayax**. Joe asked whether we
+  could pull their planograms from Nayax. ANSWER: possible ONLY if we connect Nayax Lynx (need
+  the token stored here). This is a **bounded, secondary** source — just to source planograms
+  for the un-set-up Boston machines — NOT a switch away from OurVend, NOT for the rest of the
+  fleet. OurVend stays the system.
+- **Joe wants ongoing narration:** keep him informed of what is being built as we go.
+
+## OPEN BUG — Commodity catalog (ListJson) returns empty to our server
+- `/CommodityInfo/ListJson` (POST) returns HTTP 200 with an EMPTY body from the edge function,
+  for both Local (Type=0) and Cloud (Type=1) warehouses — even though the same session cookie
+  works for Selection/SoltInfo and the grid loads fine in Joe's browser.
+- Params sent match the page's jqGrid postData: PrCode, PrName, Type (warehouse), PrType, plus
+  _search/nd/rows/page/sidx/sord. Priming GET /CommodityInfo/Index first did not help.
+- Hypothesis: the catalog is scoped to a selected **account / merchant / sub-warehouse** that
+  the browser has in session but our server call does not. Next: find how that selection is set
+  (a cookie, a session-setting endpoint, or an account id param) and include it.
+- Reader is deployed as edge function `ourvend-catalog` (dry-run default; `?commit=1` imports;
+  `?raw=1` shows raw; `?warehouse=0|1`). Source: `supabase/functions/ourvend-catalog/index.ts`.
+
 ## What we already have (no new work needed)
 - Live read connection to OurVend (edge function + cron, every ~20 min) → `live_slots`.
 - `products` table: barcode, name, description, image_url, category, default_price, cost,
