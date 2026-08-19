@@ -34,11 +34,11 @@ export const DEPT_SPECS: Record<string, DeptSpec> = {
     toBuild: ['refiller contact records', 'push notification (dev)', 'one-time access code (dev)', 'proof upload', 'monthly refiller accounting', 'training videos']
   },
   'product-catalog-sales': {
-    purpose: 'Master product database. Products exist here before being assigned anywhere.',
-    owns: ['product identity & SKU', 'images', 'cost / price / margin', 'supplier item numbers', 'restrictions & substitutes'],
-    workflow: ['add / edit product', 'attach image & supplier', 'set default capacity/threshold', 'assign to templates'],
-    connects: ['templates-config', 'inventory', 'warehouse-purchasing', 'finance', 'machine-operations'],
-    toBuild: ['add-product form (OurVend mapped)', 'image upload', 'live sales feed', 'cost/margin fields', 'substitute mapping']
+    purpose: 'The product hub — everything products, sales, research and promo decisions. Products exist here first; planograms (Templates block) consume them.',
+    owns: ['product identity & SKU', 'images & descriptions (the OurVend gate)', 'cost / price / margin', 'supplier shop links + warehouse contacts + shipping prices', 'requested-products lists (per campus/promo) & demand counts', 'product research (price points, popularity, demographics)', 'the shared 40-coil setup map', 'sales totals & where-it-sells (once the sales feed lands)'],
+    workflow: ['shop supplier sites (Weiner’s LTD first)', 'bring product back → Requested list with source/image/description', 'research price & popularity', 'approve → order → add to Products + load into OurVend (image + desc, one at a time)', 'place via Templates block', 'watch sales & promo the requested winners'],
+    connects: ['templates-config', 'inventory', 'warehouse-purchasing', 'finance', 'machine-operations', 'marketing-outreach'],
+    toBuild: ['OurVend Sales Report reader (read-only) → per-product sold totals', 'agent: shop-site research, pull products in, order assistance (per-action confirm)', 'pre-order / launch staging']
   },
   'setup-distribution': {
     purpose: 'Pre-live machine lifecycle — from TCN order through shipping, placement, and go-live.',

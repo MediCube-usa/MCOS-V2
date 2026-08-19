@@ -22,12 +22,11 @@ nothing is lost between sessions. When we code, we code to this file.
 - First pass is a **one-time import** to populate MCOS so Joe can SEE it all. Not a rigid
   auto-overwrite rule yet — some OurVend data is stale and we review it together first.
 
-### 2. Planograms (a.k.a. Templates) live ON this block
-- Planograms belong on the Product Catalog block (bring the Templates/Config content here).
-- Must be able to: **create new planograms, edit existing ones, assign a planogram to a
-  machine, and change assignments.** Full build/manage, not read-only display.
-- A planogram = the coil→product→price→capacity layout for a machine (what we already read
-  per machine via `/Selection/SoltInfo`).
+### 2. (MOVED 2026-08-19) Planograms → `docs/blocks/planograms.md`
+- Joe: "planograms and templates will be on another block ... eliminate double things."
+- This block is where all PRODUCTS come from (identity, image, description, price, SKU,
+  sales, research). Template building CONSUMES products from here but lives on the
+  Templates/Config block. Spec + build plan + UNLV planogram 01: `docs/blocks/planograms.md`.
 
 ### 3. The push path — MCOS → OurVend → machines  ⚠️ MOST IMPORTANT, and a WRITE path
 - Rule in OurVend: **a product must have its image + description loaded in OurVend before
@@ -168,83 +167,52 @@ far has been strictly read-only for safety. Before writing any push code I need 
 
 ---
 
-## PLANOGRAM SPEC v1 (locked with Joe, 2026-08-19) — build to this
+## SPEC v2 — Product Catalog & Sales = the product hub (Joe brain-dump, 2026-08-19)
 
-Joe's decisions from this session (these refine, not replace, the sections above):
+Joe: "everything and anything to do with products, sales, research and promo decisions
+should be here." Planograms/templates moved to their own block (see pointer above).
+This page is where products are built, assessed, bought, and promoted. Tabs:
 
-1. **Planograms are for NEW machine setup, not retro-fits.** The current live machines keep
-   the layouts they have. New machines get a planogram assigned in MCOS and edited as needed;
-   a machine goes LIVE when refill staff place the products and set the **beginning inventory
-   count at the machine**. (Live ≠ assigned: assignment is an MCOS state; live requires the
-   physical fill + begin count.)
-2. **Current live machines → Machine block now.** They stay live untouched; they need to be
-   added/registered in the Machine block, and their inventory begin count is updated at the
-   machine.
-3. **CLONE ONLY (Joe, confirmed).** In OurVend a planogram gets onto a machine ONLY by cloning
-   a machine. We set up template machines (not in use) and clone the template onto real
-   machines. There is no per-slot push path to design around.
-4. **IMAGES ONLY FROM THE PRELOADED CATALOG (Joe, confirmed).** OurVend accepts product
-   images only from the preloaded catalog (Commodity Management), and products are loaded
-   there **one at a time**. In MCOS we can hold whatever we want, but anything destined for
-   OurVend must be generated from preloaded catalog products (image + description already in
-   OurVend). The MCOS planogram editor therefore restricts slot products to catalog entries.
-5. **Catalog state (verified live 2026-08-19):** 49 products, **all 49 with image +
-   description** → every current product passes the OurVend gate. (The 4 description-less
-   rows disappeared from `products` ~02:00 UTC mid-session — presumed Joe's cleanup in the
-   dashboard; flag if that wasn't you.)
+1. **Products** (exists) — the master catalog: image, description, SKU/barcode, price,
+   cost, supplier, category, which machines carry it. The OurVend gate stays the rule:
+   image + description required before a product can ride any template.
+2. **Requested** (NEW, built 2026-08-19) — products NOT in machines yet, kept as research/
+   request lists (per campus or per promo list). Fields: name, list label ("UNLV", "Fall
+   promo"…), status researching → requested → approved → ordered → in_catalog,
+   requested_count (how many people asked — a strong promotion tool), target price,
+   est. cost, source URL, image, description, popularity/demographics notes. Table:
+   `requested_products`.
+3. **Shop / Suppliers** (NEW, built 2026-08-19) — clickable links to the sites we buy from,
+   plus warehouse contact + shipping prices per supplier. Table: `supplier_links`. Seeded
+   with **Weiner's LTD (https://weinersltd.com)** — the main one. Login happens on their
+   site (Joe adds credentials later). More links addable in the UI. Flow: shop there →
+   bring product info back into Requested/Products (copy description, borrow image) —
+   manual now, agent-assisted later.
+4. **Coil Setup** (NEW, built 2026-08-19) — all machines share the SAME coil layout
+   (verified in live_slots): coils 1–29 odd = 15 WIDE slots, 31–51 = 21 STANDARD slots,
+   53–59 odd = 4 WIDE slots, 40 total. The tab shows the map so you know what product can
+   replace another and fit. Static layout (from the live data), no per-machine variance.
+5. **Sales** (NOTE — data feed not built yet) — per-product totals: what it costs, what it
+   sells for, how many we sell, where it sells and where it does not. NOT currently
+   derivable from `live_slots` (stock snapshots only, no transaction history). Needs a
+   read-only OurVend Sales Report reader (the old repo reached `/SaleSummarize/*`).
+   → Next build candidate; the tab shows the plan honestly until the feed exists.
 
-**Fleet observation (OurVend roster, verified 2026-08-19):** 14 machines sync. 7 report
-slots — 5 fully configured (36–40 slots), 2 partial (10 and 1 slots) — and 7 report 0 slots
-(presumed the new/unset machines). Joe says 13 machines are to be set up as planograms;
-role flags in Phase 0 will reconcile the count.
+**The agent on this page (load later, Joe):** research products/price points/popularity/
+demographics/online + location sales; run checks and searches on the shopping sites; pull
+products out and add to the catalog (image, description, price); help place orders
+(WRITE — same per-action confirm discipline as everything else); sales strategies to
+increase sales; what does good where. The tabs above are built so the agent and Joe use
+the same tools.
 
-### Build plan (phases)
-- **Phase 0 — Machine registry & roles.** A `machines` registry (machine_id, name, role:
-  `live | new | template`, campus, notes), seeded from the 14-machine roster; Joe flags each
-  machine's role in the UI. Puts the current live machines in the Machine block (Joe's #2).
-- **Phase 1 — Planogram authoring (our DB only).** Create/edit planograms on the Catalog
-  block: grid of coil → product → price → capacity. Product picker limited to `products`
-  (the catalog gate, incl. images rule #4). Store in the existing `templates` table
-  (id/name/description/status/slots jsonb). Status: `draft → ready`.
-- **Phase 2 — Assignment & go-live tracking.** Assign a planogram to a `new` machine;
-  status `assigned`; goes `live` when refill places product + begin count set at machine
-  (manually confirmed at first). Reassignment/changes tracked.
-- **Phase 3 — Reconciliation (read-only).** Once an assigned machine reports slots via the
-  20-min sync, diff planogram vs `live_slots` coil-by-coil (product/price/capacity);
-  "differs" flags expected for machine-side ES-folder prices.
-- **Phase 4 — Push via clone (WRITE, blocked).** MCOS → OurVend → machine rides the
-  clone-a-machine mechanism only (Joe's #3): set up the template machine in OurVend, clone
-  onto targets. Blocked on Joe walking through the exact OurVend clone steps (screens,
-  fields, what price does). Per-push explicit confirm. Everything stays read-only until that
-  walkthrough happens.
-
-### PLANOGRAM 01 — UNLV Tonopah (imported 2026-08-19, DRAFT)
-- Source: Joe's `UNLV_Tonopah_Slot_Setup_1.xlsx` → `templates` row **"UNLV Tonopah 1"**
-  (status `draft`, 40 slots: coil, product, capacity, purchase_price, retail_price,
-  description, catalog barcode where matched).
-- **Gate check vs the 49-product OurVend catalog:** 28 clean matches · 7 "check variant"
-  (probable same product, size/form differs — Playtex 8 vs 10ct, Tylenol Extra Strength vial
-  vs 8ct, Pepto 12 vs 8ct, ReNu 2oz vs 1oz, Degree Shower Clean vs Womens, AXE Roll vs Solid,
-  Always Liners vs Pads) · **5 NOT in OurVend** (hard blockers, must be loaded one at a time
-  with image + description): Clear Blue Pregnancy Test, Beast Bites 30 Gummies, Creatine
-  Gummies 30, Dove Bar Soap, Chapstick Cherry.
-- **5 sheet prices differ from OurVend cloud:** My Choice 17.99 vs 18.99 · ReNu 5.99 vs 6.99 ·
-  Cottenelle 2.99 vs 3.99 · AXE Spray 2.99 vs 4.99 · Emergen-C 4.99 vs 3.99. Joe decides
-  which side is right.
-- Sheet's IMAGE column was broken (#VALUE!) — irrelevant: per rule #4 images come only from
-  the preloaded OurVend catalog anyway.
-
-### Still open for the push path (need Joe, unchanged from OPEN above)
-- The exact OurVend clone-a-machine steps (which screens/buttons, what gets copied).
-- Creating a product in the OurVend catalog: exact screen + required fields (one at a time).
-- Whether clone also sets price, or price stays machine-side (ES folder).
-- Confirmation flow: per-push confirm before anything goes out (assumed yes).
+Setting up for launch / pre-orders: this page carries all product info (cost, price,
+sales, where sold/not sold) so launches and pre-orders are staged from here.
 
 ---
 
-## Build order once the OPEN questions are answered
-1. ~~One-time catalog import~~ ✅ DONE (see above) — 49 products, all with image + description.
-2. Bring planogram management onto this block: build/edit/assign planograms to machines
-   (Phases 0–2 of the plan above).
-3. Build the MCOS → OurVend → machine push bridge (write path) — **clone-a-machine only**,
-   per Joe's walkthrough, with the agreed per-push confirm step (Phase 4).
+## Build order
+1. ~~One-time catalog import~~ ✅ DONE — 49 products, all with image + description.
+2. ~~Requested / Shop-Suppliers / Coil Setup tabs~~ ✅ built 2026-08-19 (SPEC v2 above).
+3. OurVend **Sales Report reader** (read-only edge fn) → per-product sold totals on the
+   Sales tab. Next data build on this block.
+4. Planograms + push: other block — `docs/blocks/planograms.md`.

@@ -83,8 +83,11 @@ Fully automated, cloud-side, no browser, no Vercel env. All in **Supabase Edge F
 - **Machine Operations** — live off `live_slots`. ✅ data wired
 - **Inventory** — live off `live_slots`, low-stock signals. ✅ data wired
 - **Product Catalog & Sales** — 49 products, ALL w/ image+description (passes the OurVend
-  gate). ✅ Next: planogram management on this block (see `docs/blocks/product-catalog.md`).
-- **Planograms/Templates** — SPEC v1 locked (2026-08-19, in `docs/blocks/product-catalog.md`):
+  gate). ✅ SPEC v2 (2026-08-19): the PRODUCT HUB — tabs Products / Requested / Shop-Suppliers
+  (Weiner's LTD) / Coil Setup / Sales(feed pending). Planograms moved OFF this block.
+  See `docs/blocks/product-catalog.md`.
+- **Planograms/Templates** — SPEC v1 locked (2026-08-19, moved to `docs/blocks/planograms.md`;
+  UI home = Templates/Config block):
   planograms are for NEW machines only (live machines keep their layouts); push = clone-a-machine
   ONLY; images only from preloaded catalog. Phases 0–2 (registry/authoring/assignment) ready to
   build; Phase 4 push BLOCKED on Joe's clone walkthrough.
@@ -99,6 +102,13 @@ Fully automated, cloud-side, no browser, no Vercel env. All in **Supabase Edge F
 - Boston (Nayax) machines: not set up; planograms may only exist on Nayax (secondary, optional).
 
 ## SESSION LOG (newest first)
+- 2026-08-19 (d): Joe's SPEC v2 brain-dump for Catalog block = product hub (shop links,
+  requested-products lists, research, coil map, sales info; planograms → own block/file).
+  Built tabs: Requested (`requested_products` table), Shop/Suppliers (`supplier_links`,
+  seeded Weiner's LTD https://weinersltd.com), Coil Setup (shared 40-coil layout: 1–29 odd
+  wide, 31–51 standard, 53–59 odd wide). Sales totals NOT derivable yet (no transaction
+  history in live_slots) → needs read-only OurVend Sales Report reader, noted as next.
+  Old repo medicube-mcos attached read-only; old Vercel project untouched/live alongside v2.
 - 2026-08-19 (c): Imported PLANOGRAM 01 "UNLV Tonopah 1" (Joe's xlsx → `templates`, draft,
   40 slots). Gate check: 28 in catalog, 7 check-variant, 5 NOT in OurVend (Clear Blue
   Pregnancy Test, Beast Bites, Creatine Gummies, Dove Bar Soap, Chapstick Cherry — must be
