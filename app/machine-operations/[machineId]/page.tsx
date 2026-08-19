@@ -4,6 +4,7 @@ import { Sidebar } from '@/components/Sidebar';
 import { RefreshOurVend } from '@/components/RefreshOurVend';
 import { neverSynced } from '@/lib/fleet';
 import { getLiveMachine, getLiveImages, syncedAgo } from '@/lib/live-slots';
+import { MachineRecord } from '@/components/MachineRecord';
 
 // Render live from live_slots on every request.
 export const dynamic = 'force-dynamic';
@@ -28,6 +29,19 @@ export default async function MachineDetail({ params }: { params: Promise<{ mach
 
           <RefreshOurVend machineId={m.machineId} label={m.label} />
 
+          <MachineRecord
+            machineId={m.machineId}
+            health={{
+              reporting: live && m.stockedSlots > 0,
+              syncedAgo: syncedAt ? syncedAgo(syncedAt) : '—',
+              slots: m.stockedSlots,
+              stock: m.totalStock,
+              low: m.slots.filter((s) => s.product && s.stock <= 2).length,
+              diffs: m.slots.filter((s) => !neverSynced(s) && s.userPrice && s.machinePrice !== s.userPrice).length,
+            }}
+          />
+
+          <h2 className="scope-heading" style={{ marginTop: 18 }}>Planogram — what&apos;s in this machine</h2>
           {m.slots.length === 0 ? (
             <div className="banner" style={{ border: '1px solid rgba(150,150,170,.4)', background: 'rgba(150,150,170,.08)', color: '#c8d0e0', marginTop: 12 }}>
               No products loaded on this machine — empty or still in setup.

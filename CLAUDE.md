@@ -84,7 +84,8 @@ Fully automated, cloud-side, no browser, no Vercel env. All in **Supabase Edge F
 - **Machine Operations** — live off `live_slots`. ✅ data wired. SPEC v1 captured
   (2026-08-19, `docs/blocks/machine-operations.md`): per-machine record — ID/name/location,
   live planogram + product swap + price change, card reader, connectivity, lock codes, apps,
-  maintenance history, OurVend registration. BUILD NEXT after the Catalog block is done.
+  maintenance history, OurVend registration. ✅ BUILT (2026-08-19): record card + health strip
+  + lockbox generate + service log on the machine detail page (MachineRecord.tsx).
 - **Inventory** — live off `live_slots`, low-stock signals. ✅ data wired
 - **Product Catalog & Sales** — 49 products, ALL w/ image+description (passes the OurVend
   gate). ✅ SPEC v2 (2026-08-19): the PRODUCT HUB — tabs Products / Requested / Shop-Suppliers

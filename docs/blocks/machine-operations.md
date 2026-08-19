@@ -1,7 +1,13 @@
 # Block spec — Machine Operations
 
-Status: SPEC v1 (Joe brain-dump, 2026-08-19 — captured verbatim-in-spirit, not yet built to
-this spec). Build AFTER the Product Catalog block is completely done (Joe's sequencing).
+Status: SPEC v1 + Joe's refinement (2026-08-19) — **BUILT same day** on the machine detail
+page (`/machine-operations/[id]`): health strip (online/synced/slots/units/low/price-differs),
+editable record (name, campus, ADDRESS→machine_locations, card reader type w/ datalist
+Nayax/Cantaloupe/Aprivas, reader PORTAL LINK — password stays in the portal sign-up, router/
+internet, apps, OurVend-registered flag, access notes), LOCKBOX CODE with one-click generate
+(4-digit, stored + timestamped per machine), maintenance/service log (`machine_events`),
+and the machine's live planogram below (already existed). Fields on `machines`; log table
+`machine_events`.
 
 Machine Operations = the LIVE machines, after go-live. "Basically a history and operation of
 the machine."

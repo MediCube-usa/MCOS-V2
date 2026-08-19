@@ -408,3 +408,15 @@ a { color: inherit; text-decoration: none; }
 .coil-gate { font-size: 12px; color: var(--muted); text-align: center; }
 .mreg-in { background: rgba(0,20,45,.5); color: inherit; border: 1px solid var(--line); border-radius: 6px; padding: 4px 7px; font-size: 12px; width: 100%; min-width: 80px; }
 .mreg-notes { min-width: 160px; }
+
+/* machine record (Machine Operations) */
+.mrec { background: var(--panel); border: 1px solid var(--line); border-radius: 12px; padding: 16px; margin-top: 14px; }
+.mrec-health { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; }
+.pill.warn { color: #ffc247; border-color: rgba(255,194,71,.5); }
+.mrec-lock { display: flex; flex-wrap: wrap; gap: 14px; justify-content: space-between; align-items: center;
+  margin-top: 14px; padding: 12px 16px; border: 1px solid var(--line); border-radius: 10px; background: rgba(0,20,45,.5); }
+.mrec-lock-label { font-size: 10.5px; letter-spacing: .6px; color: var(--muted); font-weight: 800; }
+.mrec-code { font-family: var(--font-mono, monospace); font-size: 26px; font-weight: 800; letter-spacing: .2em; }
+.mrec-lock-sub { font-size: 11px; color: var(--muted); }
+.mrec-ev { display: flex; gap: 12px; align-items: center; padding: 7px 0; border-bottom: 1px solid rgba(111,228,255,.08); font-size: 13px; }
+.mrec-ev:last-child { border-bottom: none; }
