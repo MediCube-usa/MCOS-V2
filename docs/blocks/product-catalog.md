@@ -105,6 +105,16 @@ far has been strictly read-only for safety. Before writing any push code I need 
 - Hypothesis: the catalog is scoped to a selected **account / merchant / sub-warehouse** that
   the browser has in session but our server call does not. Next: find how that selection is set
   (a cookie, a session-setting endpoint, or an account id param) and include it.
+- CONFIRMED (2026-08-19): sibling commodity endpoints (`GetType`, `getSession`, `GetCitype`)
+  return **403 Forbidden (Alibaba WAF "访问受限")** to our server, and `ListJson` returns a
+  200 with an EMPTY body. The Commodity module is behind the bot-wall harder than the Selection
+  (slot) module, which is why SoltInfo works but the catalog does not. Our server request lacks
+  the browser's WAF JS-challenge cookie (e.g. `acw_sc__v2`) and live commodity session.
+- RESOLUTION PATH: one-time capture of the working `ListJson` request from Joe's browser
+  (Network tab → ListJson → Copy as cURL). That carries the exact cookies (incl. WAF cookie),
+  form fields, and account context. Replicate it in the `ourvend-catalog` edge function → the
+  full catalog (images + descriptions) imports and stays permanent, same pattern as the slots.
+  This is the same capture method that established the original OurVend connection.
 - Reader is deployed as edge function `ourvend-catalog` (dry-run default; `?commit=1` imports;
   `?raw=1` shows raw; `?warehouse=0|1`). Source: `supabase/functions/ourvend-catalog/index.ts`.
 
