@@ -1,25 +1,19 @@
-// MCOS ↔ OurVend fleet sync — permanent, cloud-side, no browser.
+// MCOS ↔ OurVend fleet sync — permanent, cloud-side, no browser. Self-healing.
 //
-// This is the automated reader that keeps `live_slots` current. It runs inside
-// Supabase (Edge Function), which:
-//   1. auto-receives the service-role key, so it can read the OurVend session
-//      cookie from the RLS-locked `secrets` table (never exposed to the browser);
-//   2. can reach os.ourvend.com from the cloud (proven — the bot-wall does not
-//      block a server origin the way it would a sandbox);
-//   3. is invoked on a schedule by pg_cron every ~20 min (job: ourvend-fleet-sync)
-//      AND on demand by the "Refresh from OurVend" button in the dashboard.
+// Reads every stocked slot for the whole roster and writes live_slots. Runs on a
+// 20-min pg_cron schedule and on demand from the dashboard Refresh button.
 //
-// READ-ONLY against OurVend: it only POSTs /Selection/SoltInfo (read). It never
-// calls /Selection/Edit. The only writes are into our own Supabase tables.
-//
-// Deployed as edge function `ourvend-refresh` (verify_jwt=true — callers pass the
-// project anon key). Optional ?machine=<id> refreshes a single machine.
+// Self-heal: if a read shows the session expired, it calls ourvend-login to renew
+// the stored cookie and retries — so the sync keeps working with no cookie pasted
+// by hand. READ-ONLY against OurVend; writes only to our own tables.
 import "jsr:@supabase/functions-js/edge-runtime.d.ts";
 
 const SUPABASE_URL = Deno.env.get("SUPABASE_URL")!;
 const SERVICE_KEY = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!;
 const OURVEND = "https://os.ourvend.com";
-// 6553.5 / 600 are uninitialised hardware registers, not prices. 255 = empty slot.
+const UA = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0 Safari/537.36";
+const LOGIN_FN = `${SUPABASE_URL}/functions/v1/ourvend-login`;
+const ANON = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im5lZ3RlcHZtYmt5ZWZ2eGlha3d1Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODU5OTAyMDYsImV4cCI6MjEwMTU2NjIwNn0.lxxt_mJfYCLCyc3v_h_2qHqZuBnt2GTZ28HfuIhhRIM";
 const SENTINEL = new Set(["6553.5", "600"]);
 
 const ROSTER = [
@@ -47,24 +41,27 @@ async function getCookie(): Promise<string> {
   return rows?.[0]?.value ?? "";
 }
 
+async function relogin(): Promise<string> {
+  await fetch(LOGIN_FN, { method: "POST", headers: { apikey: ANON, Authorization: `Bearer ${ANON}`, "content-type": "application/json" }, body: "{}" }).catch(() => {});
+  return await getCookie();
+}
+
+class SessionExpired extends Error {}
+
 async function readMachine(machineId: string, cookie: string) {
   const r = await fetch(`${OURVEND}/Selection/SoltInfo`, {
     method: "POST",
     headers: {
-      "content-type": "application/x-www-form-urlencoded; charset=UTF-8",
-      "x-requested-with": "XMLHttpRequest",
-      origin: OURVEND,
-      referer: `${OURVEND}/Selection/Index`,
-      cookie,
-      "user-agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0 Safari/537.36",
+      "content-type": "application/x-www-form-urlencoded; charset=UTF-8", "x-requested-with": "XMLHttpRequest",
+      origin: OURVEND, referer: `${OURVEND}/Selection/Index`, cookie, "user-agent": UA,
     },
     body: new URLSearchParams({ MachineID: machineId, boxId: "" }).toString(),
     redirect: "manual",
   });
   const text = await r.text();
-  if (r.status >= 300 && r.status < 400) throw new Error("session expired");
+  if (r.status >= 300 && r.status < 400) throw new SessionExpired("redirect");
   let parsed: unknown;
-  try { parsed = JSON.parse(text); } catch { throw new Error("non-JSON (session expired?)"); }
+  try { parsed = JSON.parse(text); } catch { throw new SessionExpired("non-JSON"); }
   const rows = Array.isArray(parsed) ? (parsed as unknown[])[1] : null;
   if (!Array.isArray(rows)) throw new Error("unexpected shape");
   const out: Record<string, unknown>[] = [];
@@ -94,16 +91,27 @@ async function log(machineId: string | null, slots: number, ok: boolean, note: s
 Deno.serve(async (req: Request) => {
   const url = new URL(req.url);
   const one = url.searchParams.get("machine");
-  const cookie = await getCookie();
+  let cookie = await getCookie();
   if (!cookie) return Response.json({ ok: false, error: "no OurVend cookie stored" });
   const targets = one ? ROSTER.filter((m) => m.machineId === one) : ROSTER;
   if (targets.length === 0) return Response.json({ ok: false, error: `unknown machine ${one}` });
 
   const results: Record<string, unknown>[] = [];
   let totalSlots = 0;
+  let reloggedIn = false;
   for (const m of targets) {
     try {
-      const rows = await readMachine(m.machineId, cookie);
+      let rows: Record<string, unknown>[];
+      try {
+        rows = await readMachine(m.machineId, cookie);
+      } catch (e) {
+        // Session expired → renew once and retry this machine.
+        if (e instanceof SessionExpired && !reloggedIn) {
+          cookie = await relogin();
+          reloggedIn = true;
+          rows = await readMachine(m.machineId, cookie);
+        } else { throw e; }
+      }
       await saveSlots(m.machineId, rows);
       await log(m.machineId, rows.length, true, "ok");
       results.push({ machineId: m.machineId, label: m.label, slots: rows.length });
@@ -116,5 +124,5 @@ Deno.serve(async (req: Request) => {
     if (targets.length > 1) await new Promise((r) => setTimeout(r, 250));
   }
   const failed = results.filter((r) => r.error).length;
-  return Response.json({ ok: failed === 0, machines: results.length, totalSlots, failed, syncedAt: new Date().toISOString(), results });
+  return Response.json({ ok: failed === 0, machines: results.length, totalSlots, failed, reloggedIn, syncedAt: new Date().toISOString(), results });
 });

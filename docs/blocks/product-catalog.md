@@ -96,6 +96,21 @@ far has been strictly read-only for safety. Before writing any push code I need 
   fleet. OurVend stays the system.
 - **Joe wants ongoing narration:** keep him informed of what is being built as we go.
 
+## ✅ DONE (2026-08-19) — OurVend AUTO-LOGIN (self-renewing session)
+- The connection now logs itself in. Edge function `ourvend-login` replicates the OurVend
+  login page: POST `/Account/GetPubKey` → RSA/PKCS#1-v1.5 encrypt the password (node-forge,
+  same as the page's JSEncrypt) → POST `/Account/Login` (`userAccount`/`userPwd`/`LoginUrl`) →
+  captures the fresh cookie jar (`aliyungf_tc`, `acw_tc`, `ASP.NET_SessionId`) and writes it to
+  `secrets.ourvend_cookie`. Verified: login ok, and the catalog then reads with the STORED
+  cookie (no manual paste).
+- Credentials live ONLY in `secrets` (`ourvend_username` / `ourvend_password`) — never in code,
+  repo, logs, or responses.
+- Self-heal: `ourvend-refresh` (slots) and `ourvend-catalog` call `ourvend-login` and retry the
+  instant they detect an expired session. So re-login is on-demand, not on a timer.
+- Schedules (pg_cron): `ourvend-fleet-sync` every 20 min (data), `ourvend-auto-login` hourly
+  (session refresh), `ourvend-catalog-sync` daily. Data freshness = 20 min regardless.
+- Files: `supabase/functions/ourvend-login/index.ts`, updated `ourvend-refresh` + `ourvend-catalog`.
+
 ## ✅ DONE (2026-08-19) — Catalog images + descriptions imported
 - 51 products pulled from OurVend Commodity Management → MCOS `products` table.
   All 51 have images (verified HTTP 200), 49 have descriptions. Catalog now 53 rows
