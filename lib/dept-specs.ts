@@ -27,11 +27,11 @@ export const DEPT_SPECS: Record<string, DeptSpec> = {
     toBuild: ['real per-slot capacities entered', 'sell-through velocity from sales feed', 'reorder trigger math', 'manual count + adjustment log']
   },
   'restocking': {
-    purpose: 'Field execution — get a person to the machine, track proof, update stock when done.',
-    owns: ['restock tasks & work orders', 'refiller assignment', 'access/key process', 'photo proof & checklist', 'exceptions'],
-    workflow: ['task drafted from inventory', 'assign refiller', 'notify + send access code', 'refill', 'upload proof', 'inventory updates'],
+    purpose: 'Field execution: alert → accept (or roll to next day) → map card → verify at machine → codes → replenish exactly → photo → filed. Refill never changes prices or slots.',
+    owns: ['restock tasks (refill + shipping refill)', 'refiller setup: Instawork / Aramark / student + contacts', 'offer, accept, re-offer scheduling', 'map card delivery (with refill videos/docs)', 'on-site verify → key code + refill code release', 'replenish lists (exact product + amount)', 'photo proof → Drive + email filing'],
+    workflow: ['trigger restock → alert refiller with time+date', 'no accept → next day re-offer', 'confirmed → send map card', 'QR/push verify at machine → release key code', 'replenish per screen (refill code from agent)', 'inventory verified → door closed → photo to agent', 'agent files to Google Drive + email → done'],
     connects: ['inventory', 'machine-operations', 'facilities', 'contacts', 'maps-distribution'],
-    toBuild: ['refiller contact records', 'push notification (dev)', 'one-time access code (dev)', 'proof upload', 'monthly refiller accounting', 'training videos']
+    toBuild: ['agent layer: SMS/push alerts, QR check-in, auto code release, photo intake, auto Drive/email filing', 'at-machine text bot via QR (campus/machine info, contacts)', 'refiller accounting']
   },
   'product-catalog-sales': {
     purpose: 'The product hub — everything products, sales, research and promo decisions. Products exist here first; planograms (Templates block) consume them.',

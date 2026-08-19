@@ -102,7 +102,13 @@ Fully automated, cloud-side, no browser, no Vercel env. All in **Supabase Edge F
   warehouse → contract → MAP CARD (walk-out location, Google Maps pin, photos, directions,
   access time, contacts, follow-up) → setup (router online, TCN registered, decals) →
   verified (TCN machine_id links to Machine Ops). `setup_machines` extended.
-- Restocking, Facilities, Warehouse, Payments, Documents, Finance, Marketing, Contacts —
+- **Restocking** — SPEC v1 + BUILT (2026-08-19, `docs/blocks/restocking.md`): task pipeline
+  (alert → accept/re-offer-next-day → map card → on-site verify → key+refill codes →
+  replenish list from live slots → photo → Drive/email filed), refiller setup
+  (Instawork/Aramark/student), Shipping-refill tab (campus check-in first, back-storage).
+  RULE: refill never changes prices/slots. Agent layer (SMS/QR/text bot/auto filing) specced,
+  not built. `restock_tasks` table; machines gained map_card_url + refill videos/docs links.
+- Facilities, Warehouse, Payments, Documents, Finance, Marketing, Contacts —
   scaffolded, not deeply built. Vouchers, Video Ads — parked shells.
 
 ## OPEN / NEXT
@@ -116,6 +122,11 @@ Fully automated, cloud-side, no browser, no Vercel env. All in **Supabase Edge F
 - Boston (Nayax) machines: not set up; planograms may only exist on Nayax (secondary, optional).
 
 ## SESSION LOG (newest first)
+- 2026-08-19 (g): BUILT Restocking per Joe's dump — restock_tasks pipeline w/ refill +
+  shipping-refill tabs, refiller offer/accept/re-offer, shared map-card links (+refill
+  videos/docs on machines), verify-before-codes flow (lockbox key + generated refill code),
+  replenish list loaded from live_slots (real capacities only), photo + Drive/email filed
+  flags. Agent layer specced for later.
 - 2026-08-19 (f): BUILT Machine Ops record (health strip, reader+portal link, router, apps,
   lockbox generate, service log, address→machine_locations) and Setup & Distribution pipeline
   (8 stages per Joe's ordered-and-distribution dump incl. map cards). Sales sell-through
