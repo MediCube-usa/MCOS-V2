@@ -182,17 +182,23 @@ This page is where products are built, assessed, bought, and promoted. Tabs:
    requested_count (how many people asked — a strong promotion tool), target price,
    est. cost, source URL, image, description, popularity/demographics notes. Table:
    `requested_products`.
-3. **Shop / Suppliers** (NEW, built 2026-08-19) — clickable links to the sites we buy from,
+3. **Research** (NEW, built 2026-08-19 per Joe) — drop a product in (from the catalog or
+   typed) and RUN a search on the entire scenario. Joe defines the exact search parameters
+   later ("very specific"); until the engine is loaded, runs QUEUE in `product_research`
+   (status queued → running → done) and execute when it's live. Scope per run: price points,
+   popularity/demand, demographics, online sales/reviews, where it sells/doesn't in our
+   fleet, supplier cost. Findings + notes fields per run.
+4. **Shop / Suppliers** (NEW, built 2026-08-19) — clickable links to the sites we buy from,
    plus warehouse contact + shipping prices per supplier. Table: `supplier_links`. Seeded
    with **Weiner's LTD (https://weinersltd.com)** — the main one. Login happens on their
    site (Joe adds credentials later). More links addable in the UI. Flow: shop there →
    bring product info back into Requested/Products (copy description, borrow image) —
    manual now, agent-assisted later.
-4. **Coil Setup** (NEW, built 2026-08-19) — all machines share the SAME coil layout
+5. **Coil Setup** (NEW, built 2026-08-19) — all machines share the SAME coil layout
    (verified in live_slots): coils 1–29 odd = 15 WIDE slots, 31–51 = 21 STANDARD slots,
    53–59 odd = 4 WIDE slots, 40 total. The tab shows the map so you know what product can
    replace another and fit. Static layout (from the live data), no per-machine variance.
-5. **Sales** (reader BUILT 2026-08-19, feed blocked on a 2-min capture) — per-product
+6. **Sales** (reader BUILT 2026-08-19, feed blocked on a 2-min capture) — per-product
    totals: cost, sell price, units sold, where it sells / doesn't. Edge fn `ourvend-sales`
    is deployed and browser-faithful (Index → getSession → ListJson/ListJsonPro); the module's
    helper endpoints answer (GetMachineGroup: UNLV/ASU/Murad/CSUDH/BostonUniversity MGIDs;
