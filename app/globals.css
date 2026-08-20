@@ -483,9 +483,14 @@ a { color: inherit; text-decoration: none; }
 .vr-item span { display: block; font-size: 10px; text-transform: uppercase; letter-spacing: .6px; color: var(--muted); font-weight: 800; margin-bottom: 2px; }
 
 /* ---- calendar panel (Command Center header, top right) ----
-   Compact, solid dark, the size of the Command Agent box. No embeds. */
-.calpanel { width: min(400px, 100%); background: var(--panel); border: 1px solid var(--line);
-  border-radius: 12px; padding: 10px 12px; display: flex; flex-direction: column; gap: 6px; }
+   HARD-SIZED: agent-box width, header height. The box NEVER grows — whatever
+   is inside (Google embed included) fills it and scrolls, the header stays put. */
+.calpanel { width: min(300px, 100%); height: 132px; overflow: hidden; background: var(--panel);
+  border: 1px solid var(--line); border-radius: 12px; padding: 8px 12px;
+  display: flex; flex-direction: column; gap: 5px; flex: none; }
+.calpanel .gcal-dark { flex: 1; min-height: 0; }
+.calpanel .gcal-dark iframe { height: 100%; }
+.calpanel .cal-list { flex: 1; min-height: 0; overflow-y: auto; }
 .cal-head { display: flex; justify-content: space-between; align-items: center; }
 .cal-title { font-size: 11.5px; font-weight: 900; letter-spacing: .7px; text-transform: uppercase; color: #6fe4ff; }
 .cal-open { font-size: 11.5px; font-weight: 700; color: #6fe4ff; }
