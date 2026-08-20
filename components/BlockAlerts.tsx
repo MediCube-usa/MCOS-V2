@@ -11,7 +11,7 @@
 import { useEffect, useState } from 'react';
 import { dbDelete, dbInsert, dbUpdate } from '@/lib/db';
 import { getDepartment } from '@/lib/departments';
-import { Appointment, CalItem, alertLevel, fetchCalendar, fmtWhen, fromRow, gcalUrl } from '@/lib/appointments';
+import { Appointment, CalItem, alertLevel, fetchAlertsOff, fetchCalendar, fmtWhen, fromRow, gcalUrl, setAlertsEnabled } from '@/lib/appointments';
 
 const LEVEL_LABEL = { overdue: 'OVERDUE', today: 'TODAY', soon: 'COMING UP' } as const;
 
@@ -19,6 +19,7 @@ export function BlockAlerts({ dept }: { dept: string }) {
   const color = getDepartment(dept)?.color || '#6fe4ff';
   const [items, setItems] = useState<CalItem[]>([]);
   const [status, setStatus] = useState<'loading' | 'ready' | 'error'>('loading');
+  const [alertsOn, setAlertsOn] = useState(true);
   const [showBook, setShowBook] = useState(false);
   const [msg, setMsg] = useState('');
   const [title, setTitle] = useState('');
@@ -30,10 +31,19 @@ export function BlockAlerts({ dept }: { dept: string }) {
   const flash = (t: string) => { setMsg(t); setTimeout(() => setMsg(''), 3000); };
 
   useEffect(() => {
-    fetchCalendar(dept)
-      .then((all) => { setItems(all); setStatus('ready'); })
+    Promise.all([fetchCalendar(dept), fetchAlertsOff()])
+      .then(([all, off]) => { setItems(all); setAlertsOn(!off.has(dept)); setStatus('ready'); })
       .catch(() => setStatus('error'));
   }, [dept]);
+
+  const toggleAlerts = async () => {
+    const next = !alertsOn;
+    setAlertsOn(next);
+    try {
+      await setAlertsEnabled(dept, next);
+      flash(next ? 'Reminders ON for this block — alerts show here and on the Command Center' : 'Reminders OFF for this block — nothing fires here or on the Command Center');
+    } catch { setAlertsOn(!next); flash('Could not save the setting'); }
+  };
 
   const add = async () => {
     if (!title.trim() || !date) { flash('Give it a title and a date'); return; }
@@ -58,7 +68,7 @@ export function BlockAlerts({ dept }: { dept: string }) {
     try { await dbDelete('appointments', `id=eq.${i.id}`); flash('Removed'); } catch { flash('Delete failed'); }
   };
 
-  const alerts = items.filter((i) => alertLevel(i) !== 'later');
+  const alerts = alertsOn ? items.filter((i) => alertLevel(i) !== 'later') : [];
   const upcoming = items.slice(0, 10);
 
   return (
@@ -87,6 +97,10 @@ export function BlockAlerts({ dept }: { dept: string }) {
 
       {showBook && (
         <div className="appt-book">
+          <label className="sb-check-row" style={{ marginBottom: 8 }}>
+            <input type="checkbox" checked={alertsOn} onChange={toggleAlerts} />
+            🔔 Reminders &amp; alerts for this block {alertsOn ? 'ON' : 'OFF'} — controls the alert rows here and this block&apos;s badge on the Command Center
+          </label>
           {status === 'error' && <div className="cal-empty">could not load — reload the page</div>}
           {status === 'ready' && upcoming.length === 0 && (
             <div className="cal-empty">nothing on the book for this block yet — set the first one below</div>

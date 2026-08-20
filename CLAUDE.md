@@ -145,6 +145,13 @@ Fully automated, cloud-side, no browser, no Vercel env. All in **Supabase Edge F
 - Boston (Nayax) machines: not set up; planograms may only exist on Nayax (secondary, optional).
 
 ## SESSION LOG (newest first)
+- 2026-08-20 (d): Joe's edit list on the calendar, executed verbatim: personal Google
+  embed REMOVED (no personal account on the site — MediCube ops calendar to be added
+  later via calendar ID; ＋GCal links are account-agnostic); header calendar compact/dark,
+  agent-command-box size; floating ready/building status tags removed from boxes; block
+  alert = round logo-sized ⏰ badge under the logo (not a stripe); Machine Setup block
+  orange→RED #ff3b3b; per-block reminders ON/OFF switch in each page's appointment book
+  (`block_settings` — OFF hides page alerts, box badge, header rows). 13/13 browser checks.
 - 2026-08-20 (c): CALENDAR LAYER built (docs/blocks/calendar.md) — Google Calendar
   panel replaces the Ready/Building/Parked/Machines pills top-right of Command Center;
   small ⏰ appt-count chips under each box's logo (Joe: "just a small number, not a

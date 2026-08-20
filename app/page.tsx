@@ -76,7 +76,6 @@ export default function CommandCenter() {
             const alert = ALERTS[d.id];
             return (
               <Link key={d.id} href={`/${d.id}`} className={`block ${d.status === 'shell' ? 'parked' : ''}`} style={{ ['--c' as string]: d.color }}>
-                <span className={`status-tag ${d.status}`}>{d.status}</span>
                 <div className="block-head">
                   <div className="block-title">
                     <h2>{d.name}</h2>

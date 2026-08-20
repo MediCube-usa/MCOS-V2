@@ -54,7 +54,7 @@ export const DEPARTMENTS: Department[] = [
     agent: 'Nova', hasAgent: true, status: 'ready',
     metric: '14', metricLabel: 'machines tracked',
     blurb: 'Every machine — status, prices, slots. Reads and writes the fleet through OurVend.' },
-  { id: 'setup-distribution', name: 'Machine Setup', group: 'OPERATIONS', color: '#ffb000',
+  { id: 'setup-distribution', name: 'Machine Setup', group: 'OPERATIONS', color: '#ff3b3b',
     agent: 'Derek', hasAgent: false, status: 'building',
     metric: '—', metricLabel: 'in deployment',
     blurb: 'New machines from order through shipping, placement, and go-live.' },

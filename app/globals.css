@@ -482,27 +482,31 @@ a { color: inherit; text-decoration: none; }
 .vr-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 10px; font-size: 13.5px; color: #dbe6ff; }
 .vr-item span { display: block; font-size: 10px; text-transform: uppercase; letter-spacing: .6px; color: var(--muted); font-weight: 800; margin-bottom: 2px; }
 
-/* ---- Google Calendar panel (Command Center, top right) ---- */
-.calpanel { width: min(420px, 100%); background: var(--panel); border: 1px solid var(--line);
-  border-radius: 12px; padding: 12px 14px; display: flex; flex-direction: column; gap: 8px; }
+/* ---- calendar panel (Command Center header, top right) ----
+   Compact, solid dark, the size of the Command Agent box. No embeds. */
+.calpanel { width: min(400px, 100%); background: var(--panel); border: 1px solid var(--line);
+  border-radius: 12px; padding: 10px 12px; display: flex; flex-direction: column; gap: 6px; }
 .cal-head { display: flex; justify-content: space-between; align-items: center; }
-.cal-title { font-size: 12px; font-weight: 900; letter-spacing: .7px; text-transform: uppercase; color: #6fe4ff; }
-.cal-open { font-size: 12px; font-weight: 700; color: #6fe4ff; }
-.cal-embed { width: 100%; height: 168px; border: 1px solid var(--line); border-radius: 8px; background: #071225; }
+.cal-title { font-size: 11.5px; font-weight: 900; letter-spacing: .7px; text-transform: uppercase; color: #6fe4ff; }
+.cal-open { font-size: 11.5px; font-weight: 700; color: #6fe4ff; }
 .cal-list { display: flex; flex-direction: column; gap: 4px; }
-.cal-row { display: flex; align-items: center; gap: 8px; font-size: 12.5px; padding: 4px 6px; border-radius: 7px; background: #081120; }
+.cal-row { display: flex; align-items: center; gap: 8px; font-size: 12px; padding: 3px 6px; border-radius: 7px; background: #081120; }
 .cal-row.overdue { border: 1px solid rgba(255,80,120,.4); }
 .cal-row.today { border: 1px solid rgba(255,176,0,.45); }
-.cal-when { color: var(--muted); font-size: 11.5px; font-weight: 800; white-space: nowrap; }
+.cal-when { color: var(--muted); font-size: 11px; font-weight: 800; white-space: nowrap; }
 .cal-what { flex: 1; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; color: #dbe6ff; display: inline-flex; align-items: center; gap: 6px; }
 .cal-dot { width: 7px; height: 7px; border-radius: 999px; flex: none; display: inline-block; }
 .cal-add { font-size: 11px; font-weight: 800; color: #6fe4ff; white-space: nowrap; }
 .cal-empty { font-size: 12px; color: var(--muted); }
 
-/* small alert number under the logo on each Command Center box */
-.block-side { display: flex; flex-direction: column; align-items: flex-end; gap: 5px; }
-.box-alertnum { font-size: 10.5px; font-weight: 800; letter-spacing: .4px; color: #ffce7a;
-  background: rgba(255,176,0,.12); border: 1px solid rgba(255,176,0,.4); border-radius: 999px; padding: 2px 8px; white-space: nowrap; }
+/* the calendar alert on a Command Center box — round badge the size of the
+   block's logo, sitting right under it */
+.block-side { display: flex; flex-direction: column; align-items: center; gap: 6px; }
+.box-alertnum { width: 30px; height: 30px; border-radius: 999px; display: inline-flex; flex-direction: column;
+  align-items: center; justify-content: center; line-height: 1; font-size: 12px; font-weight: 900; color: #ffce7a;
+  background: rgba(255,176,0,.14); border: 1px solid rgba(255,176,0,.55);
+  box-shadow: 0 0 10px rgba(255,176,0,.25); }
+.box-alertnum em { font-style: normal; font-size: 8.5px; line-height: 1; }
 
 /* ---- per-block alerts + appointment book ---- */
 .blockalerts { margin: 0 0 16px; }

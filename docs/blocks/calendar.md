@@ -6,19 +6,25 @@ in the front page of each block" + refinement: "not a stripe, just a small alert
 under the logo in each box… just a small number — that is the command center's
 purpose of the front boxes").
 
-## What it is
-- **Command Center, top right:** the Ready/Building/Parked/Machines pills are GONE.
-  In their place the Google Calendar panel: Joe's live Google agenda (embed renders
-  when signed into Google in that browser), an "open ↗" link to calendar.google.com,
-  and the next appointments rolling up from every block — each with a one-click
-  **＋GCal** add-to-Google-Calendar link.
-- **Command Center boxes:** a small ⏰ count under each block's logo — the number of
-  that department's appointment alerts (overdue / today / inside reminder window).
-  Nothing shows when there's nothing to flag. The existing one-line alert in the
-  box's blank space stays.
+## What it is (REVISED 2026-08-20 per Joe's edit list)
+- **Command Center, header top right:** a COMPACT dark calendar panel, the size of the
+  Command Agent box — next 3 appointments across all blocks, ＋GCal on each, link to
+  Google Calendar. **NO embed, NO white background, NO personal Google account** —
+  Joe explicitly does not want his personal calendar on the site. The embed of
+  me.joejordan@gmail.com was removed. A MediCube ops Google account/calendar can be
+  added later (Joe supplies the calendar ID); ＋GCal links land in whichever Google
+  account the browser is signed into.
+- **Command Center boxes:** the floating ready/building status tags are REMOVED (Joe:
+  "I didn't ask for it"). The calendar alert is a ROUND BADGE the size of the block's
+  logo, directly under the logo (⏰ + count) — not a stripe. Nothing shows at zero or
+  when the block's reminders are off. Machine Setup block recolored ORANGE → RED
+  (#ff3b3b, the only red on the page, per Joe).
 - **Every block page:** compact alert rows at the top (OVERDUE red / TODAY amber /
   COMING UP cyan) + a collapsible "Appointments & reminders" book: set new ones
-  (what/date/time/alert-me/location/notes), mark done, remove, ＋GCal each.
+  (what/date/time/alert-me/location/notes), mark done, remove, ＋GCal each, and the
+  **per-block reminder switch** — "🔔 Reminders & alerts for this block ON/OFF"
+  (`block_settings` table): OFF kills the alert rows on the page, the box badge, and
+  the block's rows in the header calendar. Set per page, exactly as Joe wanted.
 
 ## Data
 - `appointments` table: department, title, starts_at, has_time, location, notes,

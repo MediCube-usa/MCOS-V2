@@ -4,7 +4,7 @@
 // Google Calendar hookup is link-based: every item carries a one-click
 // "add to Google Calendar" URL, and Google handles the phone/email reminders.
 
-import { dbSelect } from '@/lib/db';
+import { dbSelect, dbInsert, dbUpdate } from '@/lib/db';
 
 export interface Appointment {
   id: string;
@@ -160,4 +160,29 @@ let allCache: Promise<CalItem[]> | null = null;
 export function fetchCalendarShared(): Promise<CalItem[]> {
   if (!allCache) allCache = fetchCalendar().catch((e) => { allCache = null; throw e; });
   return allCache;
+}
+
+// ---- per-block reminder switch (block_settings) ----
+// Alerts on for some blocks and off for others; set on each block's page.
+// Missing row = ON (the default).
+interface BlockSetting { department: string; alerts_enabled: boolean; }
+
+export async function fetchAlertsOff(): Promise<Set<string>> {
+  try {
+    const rows = await dbSelect<BlockSetting>('block_settings', 'select=department,alerts_enabled&alerts_enabled=eq.false');
+    return new Set(rows.map((r) => r.department));
+  } catch { return new Set(); }
+}
+
+let offCache: Promise<Set<string>> | null = null;
+export function fetchAlertsOffShared(): Promise<Set<string>> {
+  if (!offCache) offCache = fetchAlertsOff().catch(() => { offCache = null; return new Set<string>(); });
+  return offCache;
+}
+
+export async function setAlertsEnabled(department: string, enabled: boolean): Promise<void> {
+  const existing = await dbSelect<BlockSetting>('block_settings', `select=department&department=eq.${department}`);
+  if (existing.length > 0) await dbUpdate('block_settings', `department=eq.${department}`, { alerts_enabled: enabled });
+  else await dbInsert('block_settings', { department, alerts_enabled: enabled });
+  offCache = null;
 }
