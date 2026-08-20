@@ -33,6 +33,12 @@ dashboard. (This confusion cost a whole evening on 2026-08-19.)
    (Joe, 2026-08-20). It IS the system: the OurVend connection, every table, edge functions,
    crons, secrets, uploaded documents. All earlier "safe to delete" talk was about old VERCEL
    dashboard projects only (mcos-v2 / medicube-mcos = old hosted websites) — never Supabase.
+7. **OLD MCOS IS SET ASIDE** (Joe, 2026-08-20): the old system (repo `Medicube-MCOS`, Vercel
+   `medicube-mcos`/`mcos-v2`) was patchwork-on-patchwork — the very reason MCOS 2 exists.
+   Never build on it, read from it by default, or bring its patterns here. The system is ONE
+   LINE: repo MCOS-V2 → Vercel project mcos-v2-site → mcos-v2-site.vercel.app, only `main`
+   builds (vercel.json + dashboard setting). The new blueprints live in this repo's
+   `docs/blocks/`. Joe archives/deletes the old shells himself; nothing here depends on them.
 
 ## HOW WE WORK
 - **Block by block.** For each dashboard block: (a) Joe brain-dumps, (b) write/append its spec
