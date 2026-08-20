@@ -31,9 +31,10 @@ function fleetAlerts() {
 
 export const revalidate = 120;
 
-// Live counts for the block stat lines — real numbers, refreshed every couple
-// of minutes; falls back to the static metric if the database is unreachable.
-async function liveCounts(): Promise<{ products: number | null; openTasks: number | null }> {
+// Live counts for the block stat lines — real numbers from the database,
+// refreshed every couple of minutes; '—' only if the database is unreachable.
+// A zero here is REAL: the block is connected and that table is empty today.
+async function liveCounts(): Promise<Record<string, number | null>> {
   const { SUPABASE_URL, SUPABASE_KEY } = await import('@/lib/config');
   const headers = { apikey: SUPABASE_KEY, Authorization: `Bearer ${SUPABASE_KEY}` };
   const count = async (q: string) => {
@@ -43,11 +44,18 @@ async function liveCounts(): Promise<{ products: number | null; openTasks: numbe
       return ((await r.json()) as unknown[]).length;
     } catch { return null; }
   };
-  const [products, openTasks] = await Promise.all([
+  const [products, openTasks, pipeline, layouts, mapped, campuses, orders, docs, people] = await Promise.all([
     count('products?select=barcode'),
     count('restock_tasks?select=id&status=not.eq.done'),
+    count('setup_machines?select=id'),
+    count('templates?select=id'),
+    count('machine_locations?select=machine_id'),
+    count('facilities?select=id'),
+    count('warehouse_orders?select=id&status=not.eq.received'),
+    count('documents?select=id'),
+    count('contacts?select=id'),
   ]);
-  return { products, openTasks };
+  return { products, openTasks, pipeline, layouts, mapped, campuses, orders, docs, people };
 }
 
 export default async function CommandCenter() {
@@ -58,12 +66,25 @@ export default async function CommandCenter() {
   const a = fleetAlerts();
   const live = await liveCounts();
 
-  // the stat line on each box — live wherever we have real data
+  // stocked slots across the fleet — a real, always-meaningful inventory number
+  let stocked = 0;
+  for (const m of FLEET.machines) for (const s of m.slots) if (s.product && !neverSynced(s)) stocked++;
+
+  // the stat line on each box — live wherever real data exists; a zero means
+  // connected-and-empty-today, never disconnected
+  const n = (v: number | null) => (v !== null ? String(v) : '—');
   const METRICS: Record<string, string> = {
-    'product-catalog-sales': live.products !== null ? String(live.products) : '—',
-    'inventory': String(a.low),
-    'restocking': live.openTasks !== null ? String(live.openTasks) : '—',
+    'product-catalog-sales': n(live.products),
+    'inventory': String(stocked),
+    'restocking': n(live.openTasks),
     'machine-operations': String(a.machines),
+    'setup-distribution': n(live.pipeline),
+    'templates-config': n(live.layouts),
+    'maps-distribution': n(live.mapped),
+    'facilities': n(live.campuses),
+    'warehouse-purchasing': n(live.orders),
+    'documents': n(live.docs),
+    'contacts': n(live.people),
   };
 
   // per-department alert line: real where we have data, else a neutral status

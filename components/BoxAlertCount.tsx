@@ -1,27 +1,37 @@
 'use client';
 
-// The calendar alert on a Command Center box — a round badge the size of the
-// block's logo, sitting right under it. Counts this department's appointment
-// alerts (overdue / today / inside the reminder window). Renders nothing when
-// there's nothing to flag or the block's reminders are switched off.
+// The calendar alert on EVERY Command Center box — always present, same as
+// the block's other alert line. Dim clock = connected, nothing due right now.
+// Lit amber + count = this block has appointments due (overdue / today /
+// inside the reminder window). Sits under the block's logo.
 
 import { useEffect, useState } from 'react';
 import { alertLevel, fetchCalendarShared, fetchAlertsOffShared } from '@/lib/appointments';
 
 export function BoxAlertCount({ dept }: { dept: string }) {
-  const [n, setN] = useState(0);
+  const [state, setState] = useState<{ n: number; off: boolean } | null>(null);
   useEffect(() => {
     Promise.all([fetchCalendarShared(), fetchAlertsOffShared()])
-      .then(([all, off]) => {
-        if (off.has(dept)) { setN(0); return; }
-        setN(all.filter((i) => i.department === dept && alertLevel(i) !== 'later').length);
-      })
-      .catch(() => {});
+      .then(([all, off]) => setState({
+        n: all.filter((i) => i.department === dept && alertLevel(i) !== 'later').length,
+        off: off.has(dept),
+      }))
+      .catch(() => setState({ n: 0, off: false }));
   }, [dept]);
-  if (n === 0) return null;
+
+  if (!state || state.off || state.n === 0) {
+    return (
+      <span
+        className="box-alertnum zero"
+        title={state?.off ? 'reminders switched off for this block (its page → appointment book)' : 'calendar connected — nothing due; set appointments on this block’s page'}
+      >
+        <em>⏰</em>0
+      </span>
+    );
+  }
   return (
-    <span className="box-alertnum" title={`${n} appointment alert${n > 1 ? 's' : ''} on this block`}>
-      <em>⏰</em>{n}
+    <span className="box-alertnum" title={`${state.n} appointment alert${state.n > 1 ? 's' : ''} on this block — open it`}>
+      <em>⏰</em>{state.n}
     </span>
   );
 }

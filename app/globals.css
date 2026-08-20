@@ -561,6 +561,8 @@ a { color: inherit; text-decoration: none; }
   background: rgba(255,176,0,.14); border: 1px solid rgba(255,176,0,.55);
   box-shadow: 0 0 10px rgba(255,176,0,.25); }
 .box-alertnum em { font-style: normal; font-size: 8.5px; line-height: 1; }
+.box-alertnum.zero { color: rgba(160,185,215,.55); background: rgba(140,170,210,.07);
+  border-color: rgba(140,170,210,.28); box-shadow: none; }
 
 /* ---- per-block alerts + appointment book ---- */
 .blockalerts { margin: 0 0 16px; }
