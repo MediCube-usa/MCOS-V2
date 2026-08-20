@@ -12,7 +12,7 @@ import {
   fmtWhen, gcalUrl, groupByDay, monthMatrix,
 } from '@/lib/appointments';
 import { DEPARTMENTS, getDepartment } from '@/lib/departments';
-import { GCAL_EMBED_ID } from '@/lib/config';
+import { CAL_DEFAULTS, CalSettings, fetchCalSettings } from '@/lib/site-settings';
 
 const MONTHS = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
 
@@ -20,9 +20,11 @@ export function FullCalendar() {
   const now = new Date();
   const [items, setItems] = useState<CalItem[]>([]);
   const [status, setStatus] = useState<'loading' | 'ready' | 'error'>('loading');
+  const [cfg, setCfg] = useState<CalSettings | null>(null);
   const [ym, setYm] = useState<[number, number]>([now.getFullYear(), now.getMonth()]);
 
   useEffect(() => {
+    fetchCalSettings().then(setCfg).catch(() => setCfg(CAL_DEFAULTS));
     Promise.all([fetchCalendarShared(), fetchAlertsOffShared()])
       .then(([all, off]) => { setItems(all.filter((i) => !off.has(i.department))); setStatus('ready'); })
       .catch(() => setStatus('error'));
@@ -40,11 +42,11 @@ export function FullCalendar() {
 
   return (
     <div className="fullcal">
-      {GCAL_EMBED_ID && (
-        <div className="gcal-dark gcal-month">
+      {cfg?.calendar_id && (
+        <div className={`gcal-month ${cfg.dark ? 'gcal-dark' : 'gcal-dark gcal-plain'}`}>
           <iframe
             title="MediCube Google Calendar"
-            src={`https://calendar.google.com/calendar/embed?src=${encodeURIComponent(GCAL_EMBED_ID)}&mode=MONTH&showTitle=0&showPrint=0&showTz=0&showCalendars=0`}
+            src={`https://calendar.google.com/calendar/embed?src=${encodeURIComponent(cfg.calendar_id)}&mode=MONTH&showTitle=0&showPrint=0&showTz=0&showCalendars=0`}
             loading="lazy"
           />
         </div>

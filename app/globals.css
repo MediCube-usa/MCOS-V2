@@ -525,7 +525,8 @@ a { color: inherit; text-decoration: none; }
 .gcal-dark { border: 1px solid var(--line); border-radius: 8px; overflow: hidden; background: #0b0f16; }
 .gcal-dark iframe { width: 100%; height: 200px; border: 0; display: block;
   filter: invert(0.92) hue-rotate(180deg) saturate(0.8) contrast(0.95); background: #fff; }
-.gcal-dark.gcal-month iframe { height: 560px; }
+.gcal-dark.gcal-month iframe, .gcal-month.gcal-dark iframe { height: 560px; }
+.gcal-dark.gcal-plain iframe { filter: none; }
 
 /* ---- /calendar — the full month grid, everything at once ---- */
 .fc-bar { display: flex; flex-wrap: wrap; gap: 12px; align-items: center; justify-content: space-between; margin: 14px 0 10px; }

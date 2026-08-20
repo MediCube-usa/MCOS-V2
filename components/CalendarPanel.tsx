@@ -16,7 +16,7 @@ import {
   fmtWhen, gcalUrl, groupByDay, monthMatrix,
 } from '@/lib/appointments';
 import { getDepartment } from '@/lib/departments';
-import { GCAL_EMBED_ID } from '@/lib/config';
+import { CAL_DEFAULTS, CalSettings, embedUrl, fetchCalSettings } from '@/lib/site-settings';
 
 const MONTHS = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
 
@@ -24,10 +24,12 @@ export function CalendarPanel() {
   const now = new Date();
   const [items, setItems] = useState<CalItem[]>([]);
   const [status, setStatus] = useState<'loading' | 'ready' | 'error'>('loading');
+  const [cfg, setCfg] = useState<CalSettings | null>(null);
   const [ym, setYm] = useState<[number, number]>([now.getFullYear(), now.getMonth()]);
   const [sel, setSel] = useState<string>(dayKey(now));
 
   useEffect(() => {
+    fetchCalSettings().then(setCfg).catch(() => setCfg(CAL_DEFAULTS));
     Promise.all([fetchCalendarShared(), fetchAlertsOffShared()])
       .then(([all, off]) => { setItems(all.filter((i) => !off.has(i.department))); setStatus('ready'); })
       .catch(() => setStatus('error'));
@@ -42,19 +44,17 @@ export function CalendarPanel() {
     const x = new Date(y, m + d, 1); return [x.getFullYear(), x.getMonth()];
   });
 
-  if (GCAL_EMBED_ID) {
+  if (!cfg) return <div className="calpanel"><div className="cal-head"><span className="cal-title">📅 Calendar</span></div></div>;
+
+  if (cfg.calendar_id) {
     return (
       <div className="calpanel">
         <div className="cal-head">
           <Link className="cal-title" href="/calendar">📅 Calendar</Link>
           <a className="cal-open" href="https://calendar.google.com/calendar/r" target="_blank" rel="noreferrer">open ↗</a>
         </div>
-        <div className="gcal-dark">
-          <iframe
-            title="MediCube Google Calendar"
-            src={`https://calendar.google.com/calendar/embed?src=${encodeURIComponent(GCAL_EMBED_ID)}&mode=AGENDA&showTitle=0&showNav=1&showPrint=0&showTabs=0&showCalendars=0&showTz=0`}
-            loading="lazy"
-          />
+        <div className={cfg.dark ? 'gcal-dark' : 'gcal-dark gcal-plain'}>
+          <iframe title="MediCube Google Calendar" src={embedUrl(cfg.calendar_id, cfg.mode)} loading="lazy" />
         </div>
       </div>
     );
