@@ -57,7 +57,7 @@ a { color: inherit; text-decoration: none; }
 /* high-tech map/network backdrop — pure CSS, loads instant, readable over it */
 .main > * { position: relative; z-index: 1; }
 @media (max-width: 900px) { .main::before, .main::after { inset: 0; } }
-.topbar { display: flex; align-items: flex-start; justify-content: space-between; gap: 20px; flex-wrap: wrap; margin-bottom: 22px; }
+.topbar { display: flex; align-items: flex-start; justify-content: space-between; gap: 20px; flex-wrap: wrap; margin-bottom: 12px; }
 .topbar h1 { margin: 0; font-size: 38px; font-weight: 900; text-transform: uppercase; letter-spacing: 1px; text-shadow: 0 0 22px rgba(0,217,255,.5); }
 .topbar .sub { display: inline-block; margin-top: 8px; color: var(--muted); font-size: 13px; font-weight: 600; letter-spacing: .5px; background: #0a1728; padding: 5px 11px; border-radius: 6px; }
 .pills { display: flex; gap: 8px; flex-wrap: wrap; justify-content: flex-end; }
@@ -607,11 +607,11 @@ a { color: inherit; text-decoration: none; }
 .atlas-send:disabled { opacity: .5; cursor: default; }
 
 /* ---- Atlas band: big chat box left, video + calendar stacked right ---- */
-.atlas-band .agent-card { min-height: 296px; }
+.atlas-band .agent-card { min-height: 364px; }
 .atlas-band .agent-card-body { display: flex; flex-direction: column; }
 .atlas-band .atlas-log { flex: 1; max-height: none; min-height: 0; }
 .side-stack { display: flex; flex-direction: column; gap: 12px; width: min(300px, 100%); }
-.video-box { width: min(300px, 100%); height: 152px; display: flex; flex-direction: column; overflow: hidden;
+.video-box { width: min(300px, 100%); height: 176px; display: flex; flex-direction: column; overflow: hidden;
   background: #0a0f1e; border: 1px solid rgba(179,102,255,.55); border-radius: 10px; box-shadow: 0 0 20px rgba(179,102,255,.18); }
 .video-head { display: flex; align-items: center; justify-content: space-between; padding: 7px 10px 5px;
   font-size: 11px; font-weight: 800; letter-spacing: .5px; text-transform: uppercase; color: #b366ff; }
@@ -626,3 +626,19 @@ a { color: inherit; text-decoration: none; }
 .video-note { font-size: 9.5px; color: var(--muted); padding: 5px 10px 7px; }
 @media (max-width: 900px) { .side-stack { width: 100%; } .side-stack .calpanel, .video-box { width: 100%; } }
 .atlas-band .agent-card { align-items: stretch; }
+
+/* ---- even band: calendar box = video box size; compact real month grid inside ---- */
+.side-stack .calpanel { height: 176px; }
+.calpanel .cal-mini-nav { display: flex; align-items: center; justify-content: space-between; padding: 0 2px; margin: 3px 0 2px; }
+.calpanel .cal-mini-nav button { width: 18px; height: 16px; line-height: 1; padding: 0; font-size: 11px; }
+.calpanel .cal-mini-month { font-size: 10px; font-weight: 800; letter-spacing: .6px; text-transform: uppercase; color: #cfefff; }
+.calpanel .cal-mini-grid { gap: 1px; }
+.calpanel .mini-wd { font-size: 7px; }
+.calpanel .mini-day { height: 14px; font-size: 8.5px; font-weight: 700; border-radius: 3px; display: flex; align-items: flex-start; justify-content: center; line-height: 1.25; color: #dbe6ff; }
+.calpanel .mini-dots { bottom: 1px; gap: 1px; }
+.calpanel .mini-dots i { width: 3px; height: 3px; }
+.calpanel .cal-list { margin-top: 3px; gap: 2px; }
+.calpanel .cal-row { font-size: 10px; padding: 1px 5px; border-radius: 5px; }
+.calpanel .cal-when { font-size: 9px; }
+.calpanel .cal-add { font-size: 9px; }
+.calpanel .cal-empty { font-size: 10px; }
