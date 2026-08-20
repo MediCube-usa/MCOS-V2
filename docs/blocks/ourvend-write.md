@@ -85,3 +85,14 @@ ListJson (catalog). Slot side: Selection/GetSoltInfo, Selection/GetProduct.
 uploadImage), reads cookie from secrets, self-heals via ourvend-login like the
 readers. Per-item approval before any real write (hard rule 3). Slot/coil write
 (Selection/*) still needs its own capture — the machine test was skipped tonight.
+
+## 🚀 FIRST LIVE WRITE SUCCEEDED 2026-08-20
+`ourvend-write` edge fn deployed (Supabase, verify_jwt, no cron, per-item only).
+Deleted the test product live: action=deleteProduct, prId=582A4DB6-5DB5-4126-AEC2-BE43ABFDD15A
+→ OurVend returned "ok". THE WRITE PATH THROUGH THE PRIVATE API WORKS.
+- Delete: POST /CommodityInfo/Delete  body PrIDs=<PrID>  (getSession-gated, self-heals)
+- Edit:   POST /CommodityInfo/EditCI  (full field set, read-modify-write) — built, untested-live
+- Add + image (AddCI / AuditImge) — recipes known, actions next
+AXE Spray (1050): capture confirms test bumped 4.99→5.99 then restored to 4.99 w/
+original description — already clean, no action needed.
+Cookie/session is the SAME one the readers use; writes ride it and relogin on expiry.

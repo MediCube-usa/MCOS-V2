@@ -72,6 +72,7 @@ Fully automated, cloud-side, no browser, no Vercel env. All in **Supabase Edge F
   CLONE ONLY (Joe, confirmed 2026-08-19). Prices can be set at the
   machine (ES folder) and may lag OurVend's cloud price → "differs" flags are expected.
 - If Joe changes the OurVend password, update `secrets.ourvend_password` (then run login).
+- **WRITE PATH LIVE (2026-08-20):** `ourvend-write` edge fn pushes into OurVend through the private API on the readers' session (self-heals). First live write verified — deleted a test product, OurVend returned "ok". Actions: deleteProduct + editProduct built; addProduct/image recipes captured (docs/blocks/ourvend-write.md). Per-item approval only (hard rule 3); no cron.
 
 ## SUPABASE (project negtepvmbkyefvxiakwu)
 - Tables: `live_slots` (fleet slots, ~204), `products` (catalog, 49 — ALL with image+desc since
