@@ -145,6 +145,13 @@ Fully automated, cloud-side, no browser, no Vercel env. All in **Supabase Edge F
 - Boston (Nayax) machines: not set up; planograms may only exist on Nayax (secondary, optional).
 
 ## SESSION LOG (newest first)
+- 2026-08-20 (f): Medi Cube ops Google account live (medicubehub1@gmail.com, public —
+  verified via ics feed 200): real Google grid renders in the corner box (pinned 300×132,
+  agent-box width/header height) + /calendar. Self-serve ⚙ Calendar settings panel on
+  /calendar (site_settings table): corner view Agenda/Week/Month, dark filter on/off,
+  calendar ID — Joe changes the face himself, no rebuilds. NOTE: mid-deploy refresh can
+  show one unstyled page-load (old cached HTML + interrupted CSS fetch) — content is fine;
+  close tab + fresh tab fixes; check the v-badge first, always.
 - 2026-08-20 (e): REAL CALENDAR BOX (Joe was firm — actual functioning calendar, dark, in
   the corner): interactive month grid in the header (nav, today, per-block dots, red
   not-met days, day-click items) + /calendar full page (grid + chips + NOT MET strip +
