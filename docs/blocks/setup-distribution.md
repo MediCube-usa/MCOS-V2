@@ -2,11 +2,18 @@
 
 Status: SPEC v1 (Joe brain-dump 2026-08-19) — BUILT same day; REDESIGNED same day per Joe:
 the 8 stages are COLORED COMMAND TABS (Order amber, Shipping cyan, Arrived blue, Warehouse
-violet, Contract pink, Map card green, Setup lime, Verified mint). Every tab opens a full
-stage panel even with zero machines: the stage mission, THIS TAB HOLDS (every field), and
-COMPLETE WHEN → next stage — so what lives at each stage is visible before any order is
-placed. Machines at the stage list below; advancing follows the card to the next tab.
-Browser-verified (tabs switch, panels render, no horizontal overflow).
+violet, Contract pink, Map card green, Setup lime, Verified mint). LIVE-USE REWORK
+2026-08-20 per Joe ("no placeholder examples — I am finishing this site"): stage panels are
+SOLID/opaque like the landing page (map backdrop no longer bleeds through), and every tab
+renders its stage's ACTUAL WORKING FORM — not a description of it. A machine card opened on
+a tab shows that stage's own fields first (Order = order form + protocol checklist; Shipping
+= port/info/ETA; Contract = dates + campus; Map card = the full card fields; Setup =
+TCN ID + router/TCN/decals checks; Verified = read-only recap + Machine Ops link), with a
+"Show full record — every stage" toggle for everything at once. Invoice, paperwork, and the
+signed contract each have a REAL document space: paste a link or upload the actual file
+(Supabase Storage bucket `mcos-docs`, public read, anon upload verified live). Advancing
+still follows the card to the next colored tab. Browser-verified with mocked rows: 13/13
+checks (opaque panels, per-stage forms, uploads present, full-record toggle, no overflow).
 
 Joe: "this is really ordered and distribution." The lifecycle of a machine BEFORE it is
 live: TCN order → shipping/port → Brendamour pickup → warehouse → contract → campus
@@ -48,6 +55,12 @@ Machine Operations.
   registry (Machine Ops) — address/access data is entered there (machine_locations feeds
   the Maps block). Map-card info lives on the setup record for the distribution run.
 
+## Data (additions 2026-08-20)
+- `setup_machines.contract_url` — the signed contract file/link lives on the Contract tab.
+- Storage bucket `mcos-docs` (public) — pipeline documents uploaded straight from the tabs
+  land at `setup/<machine-id>/<kind>-<ts>.<ext>`; anon insert/select/update policies.
+
 ## Later / open
-- File uploads for invoice/paperwork/photos ("upload there maybe later") — links for now.
+- Photo uploads on the map card (photos go up on the Google Maps site per the flow; the
+  card tracks the "uploaded" state).
 - Calendar sync for ETA/follow-ups (shows as date fields now).

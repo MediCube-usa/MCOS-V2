@@ -197,8 +197,8 @@ a { color: inherit; text-decoration: none; }
 .pd-field { display: flex; flex-direction: column; gap: 5px; }
 .pd-field.pd-wide { grid-column: 1 / -1; }
 .pd-field span { font-size: 10.5px; letter-spacing: .6px; text-transform: uppercase; color: var(--muted); font-weight: 800; }
-.pd-field input, .pd-field textarea { background: #0a1626; border: 1px solid var(--line); border-radius: 8px; padding: 9px 12px; color: #dbe6ff; font-size: 13.5px; font-family: inherit; resize: vertical; }
-.pd-field input:focus, .pd-field textarea:focus { outline: none; border-color: #2fd2ff; box-shadow: 0 0 0 2px rgba(47,210,255,.2); }
+.pd-field input, .pd-field textarea, .pd-field select { background: #0a1626; border: 1px solid var(--line); border-radius: 8px; padding: 9px 12px; color: #dbe6ff; font-size: 13.5px; font-family: inherit; resize: vertical; }
+.pd-field input:focus, .pd-field textarea:focus, .pd-field select:focus { outline: none; border-color: #2fd2ff; box-shadow: 0 0 0 2px rgba(47,210,255,.2); }
 .pd-photo { display: flex; align-items: center; gap: 14px; margin-bottom: 16px; flex-wrap: wrap; }
 .pd-photo img { width: 160px; height: 110px; object-fit: cover; border-radius: 8px; border: 1px solid var(--line); }
 .pd-photo-empty { width: 160px; height: 110px; border-radius: 8px; border: 1px dashed rgba(120,200,255,.35); display: flex; align-items: center; justify-content: center; color: var(--muted); font-size: 11.5px; text-align: center; padding: 8px; }
@@ -434,31 +434,49 @@ a { color: inherit; text-decoration: none; }
 
 /* ---- Machine Setup: colored command tabs + stage panel ---- */
 .stage-tabs { display: flex; flex-wrap: wrap; gap: 8px; margin: 14px 0 14px; }
-.stage-tab { --sc: #6fe4ff; display: inline-flex; align-items: center; gap: 7px; background: rgba(0,20,45,.55);
+.stage-tab { --sc: #6fe4ff; display: inline-flex; align-items: center; gap: 7px; background: #08182e;
   color: var(--sc); border: 1px solid color-mix(in srgb, var(--sc) 45%, transparent); border-radius: 999px;
   padding: 8px 16px; font-size: 12.5px; font-weight: 800; letter-spacing: .4px; cursor: pointer;
   transition: background .15s, box-shadow .15s; }
 .stage-tab:hover { box-shadow: 0 0 10px color-mix(in srgb, var(--sc) 35%, transparent); }
-.stage-tab.active { background: color-mix(in srgb, var(--sc) 16%, rgba(0,20,45,.6));
+.stage-tab.active { background: color-mix(in srgb, var(--sc) 18%, #08182e);
   box-shadow: 0 0 12px color-mix(in srgb, var(--sc) 40%, transparent); }
 .stage-n { background: var(--sc); color: #06121f; border-radius: 999px; min-width: 18px; height: 18px;
   display: inline-grid; place-items: center; font-size: 11px; padding: 0 5px; }
+/* SOLID panel — like the landing page. The tint is mixed into the opaque
+   panel color so the map backdrop never bleeds through. */
 .stage-panel { --sc: #6fe4ff; border: 1px solid color-mix(in srgb, var(--sc) 30%, transparent);
   border-left: 3px solid var(--sc); border-radius: 12px; padding: 16px;
-  background: linear-gradient(180deg, color-mix(in srgb, var(--sc) 6%, transparent), rgba(0,20,45,.35) 60%); }
-.stage-head { display: flex; flex-wrap: wrap; gap: 12px; justify-content: space-between; align-items: flex-start; }
+  background: linear-gradient(180deg, color-mix(in srgb, var(--sc) 8%, var(--panel)), var(--panel) 55%); }
+.stage-head { display: flex; flex-wrap: wrap; gap: 12px; justify-content: space-between; align-items: flex-start; margin-bottom: 12px; }
 .stage-title { font-size: 19px; font-weight: 900; letter-spacing: .5px; text-transform: uppercase; color: var(--sc); }
 .stage-mission { margin: 6px 0 0; font-size: 13.5px; color: var(--muted); max-width: 76ch; }
-.stage-info { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 12px; margin: 14px 0; }
-.stage-block { background: rgba(0,20,45,.5); border: 1px solid var(--line); border-radius: 10px; padding: 12px 16px; }
-.stage-block-title { font-size: 10.5px; letter-spacing: .7px; text-transform: uppercase; font-weight: 800; color: var(--sc); margin-bottom: 6px; }
-.stage-block ul { margin: 0; padding-left: 18px; font-size: 13px; color: var(--muted); }
-.stage-block li { margin: 2px 0; }
 .stage-next { margin-top: 8px; font-size: 12.5px; color: var(--muted); }
 .stage-next b, .stage-next a { color: var(--sc); }
 .stage-empty { padding: 14px 16px; border: 1px dashed color-mix(in srgb, var(--sc) 40%, transparent);
-  border-radius: 10px; color: var(--muted); font-size: 13.5px; margin-bottom: 10px; }
+  border-radius: 10px; color: var(--muted); font-size: 13.5px; margin-bottom: 10px; background: #081120; }
 .stage-empty b { color: var(--sc); }
+/* full-record section headers, colored per stage */
+.stage-section-title { --sc: #6fe4ff; font-size: 10.5px; letter-spacing: .7px; text-transform: uppercase;
+  font-weight: 800; color: var(--sc); margin: 16px 0 8px; border-top: 1px solid var(--line); padding-top: 10px; }
+/* document space: paste-a-link + real file upload side by side */
+.ff-row { display: flex; gap: 8px; align-items: center; flex-wrap: wrap; }
+.ff-row input { flex: 1; min-width: 160px; background: #0a1626; border: 1px solid var(--line);
+  border-radius: 8px; padding: 9px 12px; color: #dbe6ff; font-size: 13.5px; }
+.ff-row input:focus { outline: none; border-color: #2fd2ff; box-shadow: 0 0 0 2px rgba(47,210,255,.2); }
+.ff-btn { background: color-mix(in srgb, var(--sc) 14%, #0a1626); color: var(--sc);
+  border: 1px solid color-mix(in srgb, var(--sc) 45%, transparent); border-radius: 8px;
+  padding: 8px 13px; font-size: 12px; font-weight: 800; cursor: pointer; white-space: nowrap; }
+.ff-btn:hover { box-shadow: 0 0 10px color-mix(in srgb, var(--sc) 30%, transparent); }
+.ff-btn:disabled { opacity: .6; cursor: wait; }
+.ff-open { font-size: 12.5px; color: var(--sc); white-space: nowrap; font-weight: 700; }
+/* stage-only ↔ full-record toggle */
+.rec-toggle { background: none; border: 1px dashed var(--line); color: var(--muted);
+  border-radius: 8px; padding: 7px 13px; font-size: 12px; font-weight: 700; cursor: pointer; }
+.rec-toggle:hover { color: #dbe6ff; border-color: color-mix(in srgb, var(--sc) 45%, transparent); }
+/* verified recap grid */
+.vr-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 10px; font-size: 13.5px; color: #dbe6ff; }
+.vr-item span { display: block; font-size: 10px; text-transform: uppercase; letter-spacing: .6px; color: var(--muted); font-weight: 800; margin-bottom: 2px; }
 
 /* build stamp — bottom-right, always tells you which version you're looking at */
 .build-stamp { position: fixed; right: 10px; bottom: 8px; z-index: 90; font-size: 10.5px;

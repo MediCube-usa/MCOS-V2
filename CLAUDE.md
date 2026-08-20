@@ -106,7 +106,10 @@ Fully automated, cloud-side, no browser, no Vercel env. All in **Supabase Edge F
   purchasing protocol) → shipping/port (LA default) + paperwork/dates → Brendamour pickup →
   warehouse → contract → MAP CARD (walk-out location, Google Maps pin, photos, directions,
   access time, contacts, follow-up) → setup (router online, TCN registered, decals) →
-  verified (TCN machine_id links to Machine Ops). `setup_machines` extended.
+  verified (TCN machine_id links to Machine Ops). `setup_machines` extended. LIVE-USE REWORK
+  2026-08-20: colored tabs each render their stage's REAL form (no descriptive lists), stage
+  panels solid/opaque, invoice + paperwork + signed contract have paste-a-link OR real file
+  upload (Storage bucket `mcos-docs`, anon-verified), full-record toggle per machine.
 - **Restocking** — SPEC v1 + BUILT (2026-08-19, `docs/blocks/restocking.md`): task pipeline
   (alert → accept/re-offer-next-day → map card → on-site verify → key+refill codes →
   replenish list from live slots → photo → Drive/email filed), refiller setup
@@ -127,6 +130,13 @@ Fully automated, cloud-side, no browser, no Vercel env. All in **Supabase Edge F
 - Boston (Nayax) machines: not set up; planograms may only exist on Nayax (secondary, optional).
 
 ## SESSION LOG (newest first)
+- 2026-08-20: Machine Setup goes LIVE-USE per Joe ("no placeholder examples — I am finishing
+  this site"): stage panels made solid/opaque like the landing page (map backdrop no longer
+  bleeds through); every colored tab now renders its stage's ACTUAL form — the machine card
+  opens straight into that stage's fields, "Show full record" reveals all 8 sections; real
+  document uploads for invoice/paperwork/signed contract via new public Storage bucket
+  `mcos-docs` (anon upload verified live w/ pg_net, 200) + `setup_machines.contract_url`.
+  Browser-verified 13/13 with mocked rows.
 - 2026-08-19 (h): BUILT THE MAP CARD on Maps & Routes (docs/blocks/maps.md — every field from
   Joe's dumps: address, Google pin, walk-out spot, directions to+THROUGH machine, fill times,
   access time, follow-up, contacts, 3 photo link spaces, refill videos/docs/notes, access
