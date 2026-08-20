@@ -54,7 +54,7 @@ function rowsText(title: string, rows: object[], max = 40): string {
 }
 
 async function liveSnapshot(): Promise<string> {
-  const [fleet, products, machines, restock, setup, locations, orders, appts, templates] = await Promise.all([
+  const [fleet, products, machines, restock, setup, locations, orders, appts, templates, nayax] = await Promise.all([
     getLiveFleet(),
     sb<{ name: string; default_price: string | null }>('products?select=name,default_price&order=name.asc'),
     sb<object>('machines?select=machine_id,label,role,assigned_template_id&order=machine_id.asc'),
@@ -64,6 +64,7 @@ async function liveSnapshot(): Promise<string> {
     sb<object>('warehouse_orders?select=title,status,eta'),
     sb<object>('appointments?select=department,title,starts_at,has_time,location,notes&done=eq.false&order=starts_at.asc'),
     sb<object>('templates?select=id,name,status'),
+    sb<object>('nayax_machines?select=machine_id,name,synced_at&order=name.asc'),
   ]);
 
   const fleetLines: string[] = [];
@@ -92,6 +93,7 @@ async function liveSnapshot(): Promise<string> {
     rowsText('OPEN WAREHOUSE ORDERS', orders, 25),
     rowsText('APPOINTMENTS & REMINDERS (open, soonest first)', appts, 40),
     rowsText('PLANOGRAM TEMPLATES', templates, 20),
+    rowsText('NAYAX MACHINES (Boston campuses — SECONDARY feed via Lynx API; OurVend stays the primary system)', nayax, 15),
   ].join('\n\n');
 }
 

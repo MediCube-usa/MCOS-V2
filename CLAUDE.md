@@ -83,6 +83,13 @@ Fully automated, cloud-side, no browser, no Vercel env. All in **Supabase Edge F
   product-catalog spec), plus utilities `catalog-thumbs` + `ourvend-sales-probe` (read-only,
   no cron, safe to delete).
 - Public keys/URLs in `lib/config.ts`. Anon JWT is used by the dashboard Refresh button + crons.
+- **NAYAX LYNX (secondary feed, LIVE 2026-08-20):** `nayax-lynx` edge fn reads
+  `secrets.nayax_lynx_token` (the Lynx token IS the Bearer directly — no exchange;
+  production host `lynx.nayax.com/operational/v1`, the docs' lynx-api host is a doc bug)
+  → GET /machines → upserts `nayax_machines` (6 Boston machines, first pull verified:
+  277 Babcock, 33 Harry Agganis, 150 Riverway, 775 Commonwealth, 72 E. Concord +1).
+  Cron `nayax-lynx-sync` every 30 min. READ-ONLY toward Nayax. OurVend stays THE system
+  (hard rule 2 unchanged) — this is the Boston-campuses side view. Atlas sees the table.
 
 ## APP ARCHITECTURE
 - Next.js 15 App Router / React 19 / TS on Vercel. Push to `main` → auto-deploy.
@@ -174,6 +181,19 @@ product placement — refreshed every cycle (reconfirmed by Joe 2026-08-20).
 - Boston (Nayax) machines: not set up; planograms may only exist on Nayax (secondary, optional).
 
 ## SESSION LOG (newest first)
+- 2026-08-20 (i): NAYAX CONNECTED (Joe's ask; secondary feed, rule 2 intact) — Joe
+  generated a Lynx token in Nayax Core (User Tokens → "Lynx token", not App Token) and
+  pasted it into secrets as nayax_lynx_token; nayax-lynx edge fn + nayax_machines table
+  + 30-min cron; first real pull returned HTTP 200 with 6 Boston machines, names saved.
+  Learned: token works as direct Bearer (all issue-access-token endpoints 401), prod
+  host is lynx.nayax.com. Atlas snapshot now includes the Nayax table. Also same
+  evening: Atlas live-verified end-to-end after fixing the Vercel env var (key was
+  Preview-only → ticked Production + redeploy); Atlas self-diagnoses missing keys and
+  finds sk-ant- keys under any env name. Front page re-portioned per Joe's markups
+  (Atlas big box; right column full-height from page top: even video placeholder +
+  real mini month-grid calendar). Coil Setup tab = six tray rows like the machine face.
+  Git-push credentials broke for ~30 min mid-evening (pushed via GitHub API, healed,
+  histories realigned).
 - 2026-08-20 (h): ATLAS GETS A BRAIN (docs/blocks/agent.md) — Joe added ANTHROPIC_API_KEY
   to Vercel mcos-v2-site (Production+Preview; the env-var NAME is ours, the key's own
   label doesn't matter). Built the chat INTO the Atlas card: AgentChat.tsx +
