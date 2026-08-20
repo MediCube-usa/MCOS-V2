@@ -591,3 +591,17 @@ a { color: inherit; text-decoration: none; }
 .build-stamp { position: fixed; right: 10px; bottom: 8px; z-index: 90; font-size: 10.5px;
   letter-spacing: .4px; color: rgba(140,170,210,.55); background: rgba(4,12,26,.7);
   border: 1px solid rgba(111,228,255,.15); border-radius: 6px; padding: 3px 8px; pointer-events: none; }
+
+/* ---- Atlas chat (Command Center agent card) ---- */
+.atlas-log { margin-top: 8px; max-height: 190px; overflow-y: auto; display: flex; flex-direction: column; gap: 6px; padding-right: 4px; }
+.atlas-msg { font-size: 12.5px; line-height: 1.45; padding: 7px 10px; border-radius: 8px; max-width: 92%; white-space: pre-wrap; word-break: break-word; }
+.atlas-msg.user { align-self: flex-end; color: #eaf2ff; background: rgba(0,229,255,.12); border: 1px solid rgba(0,229,255,.35); }
+.atlas-msg.bot { align-self: flex-start; color: var(--muted); background: rgba(255,255,255,.04); border: 1px solid rgba(255,255,255,.08); }
+.atlas-thinking { color: var(--muted); font-size: 11.5px; padding: 2px; animation: atlaspulse 1.2s ease-in-out infinite; }
+@keyframes atlaspulse { 0%,100% { opacity: .45; } 50% { opacity: 1; } }
+.atlas-row { display: flex; gap: 8px; margin-top: 10px; }
+.atlas-input { flex: 1; min-width: 0; background: #050d1a; border: 1px solid rgba(0,229,255,.35); border-radius: 8px; color: #eaf2ff; font-size: 12.5px; padding: 8px 10px; outline: none; }
+.atlas-input:focus { border-color: var(--cyan); box-shadow: 0 0 10px rgba(0,229,255,.25); }
+.atlas-input::placeholder { color: rgba(159,176,204,.55); }
+.atlas-send { background: rgba(0,229,255,.15); border: 1px solid var(--cyan); color: var(--cyan); font-weight: 800; font-size: 12px; border-radius: 8px; padding: 8px 14px; cursor: pointer; text-transform: uppercase; letter-spacing: .4px; }
+.atlas-send:disabled { opacity: .5; cursor: default; }

@@ -1,9 +1,9 @@
 import Link from 'next/link';
 import { Sidebar } from '@/components/Sidebar';
 import { AgentBadge } from '@/components/AgentBadge';
+import { AgentChat } from '@/components/AgentChat';
 import { BoxAlertCount } from '@/components/BoxAlertCount';
 import { CalendarPanel } from '@/components/CalendarPanel';
-import { LogoRainbow } from '@/components/Logo';
 import { blockDepartments } from '@/lib/departments';
 import { FLEET, neverSynced } from '@/lib/fleet';
 
@@ -113,13 +113,7 @@ export default async function CommandCenter() {
             <b>One system runs the whole company.</b>
             <span>Every machine, school, product, restock, payout, and report moves through MCOS.</span>
           </div>
-          <div className="agent-card">
-            <div className="agentbadge"><LogoRainbow size={56} /><span className="agent-name">Atlas</span><span className="agent-sub" style={{ color: '#b9a6ff' }}>Executive</span></div>
-            <div className="agent-card-body">
-              <div className="t">Command Agent</div>
-              <div className="note">{ready} live, {building} in build, {shell} parked. Atlas reaches into every department. Click any block to open it.</div>
-            </div>
-          </div>
+          <AgentChat greeting={`${ready} live, ${building} in build, ${shell} parked. Ask me about the fleet, stock, or any date — or say "remind me…" and I'll put it on the calendar.`} />
         </div>
 
         <section className="grid">

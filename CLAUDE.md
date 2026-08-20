@@ -92,6 +92,13 @@ Fully automated, cloud-side, no browser, no Vercel env. All in **Supabase Edge F
 - Machine Operations + Inventory pages are server-rendered (`force-dynamic`) off `live_slots`.
 - Product Catalog uses `components/CatalogBoard.tsx` (reads `products`, shows image+description).
 - Site is password-gated (`app/api/login`, `lib/auth.ts`) — separate from OurVend login.
+- **Atlas agent**: `app/api/agent/route.ts` (server route, behind the gate) + Anthropic API.
+  Key = `ANTHROPIC_API_KEY` env var on Vercel `mcos-v2-site` ONLY (Joe added 2026-08-20;
+  never in repo/browser). Fresh Supabase snapshot per message; one write tool
+  (`set_reminder` → `appointments`).
+- **`gateway/` = the MCOS↔TCN/Yunshu machine-protocol server (FunCodes 1000–5001).
+  DO NOT TOUCH IT (Joe, 2026-08-20)** — separate from the website; its field names are
+  vendor-exact on purpose.
 
 ---
 
@@ -128,6 +135,14 @@ Fully automated, cloud-side, no browser, no Vercel env. All in **Supabase Edge F
   not built. `restock_tasks` table; machines gained map_card_url + refill videos/docs links.
 - Facilities, Warehouse, Payments, Documents, Finance, Marketing, Contacts —
   scaffolded, not deeply built. Vouchers, Video Ads — parked shells.
+- **Atlas Command Agent (front page)** — SPEC v1 + BUILT 2026-08-20
+  (`docs/blocks/agent.md`): chat box inside the Atlas card on the Command Center →
+  `/api/agent` → claude-opus-5 with a fresh all-block Supabase snapshot every message
+  (fleet slots, catalog, restock, setup, locations, orders, appointments) +
+  `set_reminder` tool that files into `appointments` (= calendar + ⏰ badges + block
+  alerts). READ-ONLY toward OurVend/machines. Later: per-block knowledge packs (Joe
+  will supply exact info per block). NOT YET LIVE — sits on the work branch, needs
+  merge to `main` + first real call to verify the key.
 - **Calendar & alerts (cross-block)** — BUILT 2026-08-20 (`docs/blocks/calendar.md`):
   Google Calendar panel top-right of Command Center (pills removed), small ⏰ appt
   count under each box's logo, per-block alert rows + appointment book on every dept
@@ -135,6 +150,20 @@ Fully automated, cloud-side, no browser, no Vercel env. All in **Supabase Edge F
   ＋GCal template links — no OAuth).
 
 ## OPEN / NEXT
+**JOE'S LOCKED ROADMAP (2026-08-20 brain-dump — do these in order, don't get lost):**
+1. Atlas chat live on the front (BUILT, needs merge to main + live verify of the key).
+2. Calendar through Atlas — catch every date + who + where in conversation, set
+   reminders/alerts on each box that needs looking at (v1 tool built; deepen it).
+3. **INVENTORY — most important** (`docs/blocks/inventory.md`): exact contents of each
+   machine per slot; tracking inventory from sales; Joe-set parameters for when
+   shipping orders and refill orders go back out; every outgoing order carries the map
+   card + text/email template + instructions + preloaded instructional videos + map +
+   lock info (placeholders OK to keep moving).
+4. Sweep EVERY block: all products, planograms, images sorted per block.
+5. Fill the last 2 parked blocks (Vouchers, Video Ads) when ready.
+The OurVend private-API connection stays THE source for all info — machine data, sales,
+product placement — refreshed every cycle (reconfirmed by Joe 2026-08-20).
+
 - Planogram Phase 3: reconciliation diff (assigned planogram vs live_slots).
 - The MCOS→OurVend→machine WRITE (push) path — needs Joe to confirm the exact "clone a machine"
   steps before any write code (still read-only until then). Product swap / price change
@@ -145,6 +174,19 @@ Fully automated, cloud-side, no browser, no Vercel env. All in **Supabase Edge F
 - Boston (Nayax) machines: not set up; planograms may only exist on Nayax (secondary, optional).
 
 ## SESSION LOG (newest first)
+- 2026-08-20 (h): ATLAS GETS A BRAIN (docs/blocks/agent.md) — Joe added ANTHROPIC_API_KEY
+  to Vercel mcos-v2-site (Production+Preview; the env-var NAME is ours, the key's own
+  label doesn't matter). Built the chat INTO the Atlas card: AgentChat.tsx +
+  /api/agent (claude-opus-5, fresh all-block snapshot per message, set_reminder →
+  appointments so reminders hit calendar + badges + block alerts; refusal fallback to
+  opus-4-8; honest "not in my data" rules baked in). Captured Joe's roadmap verbatim:
+  calendar-through-Atlas → INVENTORY IN FULL (new docs/blocks/inventory.md: per-slot
+  truth, sales draw-down, ship/refill trigger parameters, map card + text/email
+  template + instructional videos with every order, placeholders OK) → per-block sweep
+  → last 2 blocks. Joe reconfirmed: OurVend private API = the source for everything,
+  refresh every time; gateway/ (TCN protocol server) is NOT to be touched. Work sits
+  on branch claude/mcos-2v-site-server-g2g8f9 — only main deploys, so Atlas goes live
+  on merge; verify the key with a real chat after.
 - 2026-08-20 (g): Calendar face + function pass per Joe: corner box default = NEON face
   (site-styled list, 300×132) that now includes REAL Google events — new /api/gcal server
   route reads the public ICS feed (browsers can't cross-origin it), merged as
