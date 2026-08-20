@@ -29,6 +29,10 @@ dashboard. (This confusion cost a whole evening on 2026-08-19.)
    with real calls, don't describe. (This has burned trust before — check before claiming.)
 5. **Never commit secrets** (OurVend credentials, cookies) to the repo. They live only in the
    Supabase `secrets` table.
+6. **NEVER delete the Supabase project "MCOS 2v" (negtepvmbkyefvxiakwu) or anything in it**
+   (Joe, 2026-08-20). It IS the system: the OurVend connection, every table, edge functions,
+   crons, secrets, uploaded documents. All earlier "safe to delete" talk was about old VERCEL
+   dashboard projects only (mcos-v2 / medicube-mcos = old hosted websites) — never Supabase.
 
 ## HOW WE WORK
 - **Block by block.** For each dashboard block: (a) Joe brain-dumps, (b) write/append its spec
