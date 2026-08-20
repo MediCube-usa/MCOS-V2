@@ -2,6 +2,7 @@ import Link from 'next/link';
 import { Sidebar } from '@/components/Sidebar';
 import { ScopeMap } from '@/components/ScopeMap';
 import { RecordBoard, type BoardConfig } from '@/components/RecordBoard';
+import { BlockAlerts } from '@/components/BlockAlerts';
 
 const COLOR = '#3d7cff';
 
@@ -31,6 +32,8 @@ export default function WarehousePurchasing() {
           <div className="crumb"><Link href="/">Command Center</Link> / COMPANY</div>
           <h1>Warehouse &amp; Purchasing</h1>
           <p className="blurb">Supplier ordering and receiving — triggered by inventory need, bundled into economic orders, tracked to the shelf.</p>
+
+          <BlockAlerts dept="warehouse-purchasing" />
 
           <div className="banner" style={{ border: '1px solid rgba(61,124,255,.35)', background: 'rgba(61,124,255,.08)', color: '#b6ccff' }}>
             <b>Track every purchase order to receiving.</b> Draft what to buy, set supplier and item number, then advance the status as it&apos;s approved, ordered, ships, and arrives. Feeds from <Link href="/inventory" style={{ color: '#9cc0ff' }}>Inventory</Link> need.

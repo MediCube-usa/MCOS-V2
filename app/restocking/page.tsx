@@ -2,6 +2,7 @@ import Link from 'next/link';
 import { Sidebar } from '@/components/Sidebar';
 import { ScopeMap } from '@/components/ScopeMap';
 import { RestockBoard } from '@/components/RestockBoard';
+import { BlockAlerts } from '@/components/BlockAlerts';
 
 // Restocking — Joe's flow (docs/blocks/restocking.md): trigger → alert refiller
 // (Instawork/Aramark/student) → accept or roll to next day → map card → QR/push
@@ -18,6 +19,8 @@ export default function Restocking() {
           <p className="blurb">Trigger → alert the refiller → accept (or roll to next day) → map card → verify at the
             machine → key + refill codes → replenish exactly what the screen says → photo → filed → done.
             Shipping refills add the campus check-in stop first.</p>
+
+          <BlockAlerts dept="restocking" />
 
           <RestockBoard />
 

@@ -3,6 +3,7 @@ import { Sidebar } from '@/components/Sidebar';
 import { ScopeMap } from '@/components/ScopeMap';
 import { RefreshOurVend } from '@/components/RefreshOurVend';
 import { getLiveFleet, syncedAgo } from '@/lib/live-slots';
+import { BlockAlerts } from '@/components/BlockAlerts';
 
 // Always render against the freshest live_slots (edge function keeps it current).
 export const dynamic = 'force-dynamic';
@@ -20,6 +21,8 @@ export default async function MachineOperations() {
           <div className="crumb"><Link href="/">Command Center</Link> / OPERATIONS</div>
           <h1>Machine Operations</h1>
           <p className="blurb">Every machine on the account, read live from OurVend. Click a machine to see its slots, prices, and stock.</p>
+
+          <BlockAlerts dept="machine-operations" />
 
           <div className="banner" style={{ border: '1px solid rgba(255,61,242,.35)', background: 'rgba(255,61,242,.07)', color: '#ffc2f6' }}>
             {live ? (

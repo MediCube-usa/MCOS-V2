@@ -2,6 +2,7 @@ import Link from 'next/link';
 import { Sidebar } from '@/components/Sidebar';
 import { ScopeMap } from '@/components/ScopeMap';
 import { SetupBoard } from '@/components/SetupBoard';
+import { BlockAlerts } from '@/components/BlockAlerts';
 
 const COLOR = '#ffb000';
 
@@ -18,6 +19,8 @@ export default function SetupDistribution() {
           <div className="crumb"><Link href="/">Command Center</Link> / OPERATIONS</div>
           <h1>Machine Setup</h1>
           <p className="blurb">The fleet pipeline — every machine from TCN order to verified, coast to coast. Each colored tab is a stage: open it to see exactly what it holds, what completes it, and the machines sitting there.</p>
+
+          <BlockAlerts dept="setup-distribution" />
 
           <SetupBoard />
 

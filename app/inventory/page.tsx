@@ -3,6 +3,7 @@ import { Sidebar } from '@/components/Sidebar';
 import { neverSynced } from '@/lib/fleet';
 import { getLiveFleet, syncedAgo } from '@/lib/live-slots';
 import { ScopeMap } from '@/components/ScopeMap';
+import { BlockAlerts } from '@/components/BlockAlerts';
 
 // Render against the freshest live_slots on every request.
 export const dynamic = 'force-dynamic';
@@ -40,6 +41,8 @@ export default async function Inventory() {
           <div className="crumb"><Link href="/">Command Center</Link> / OPERATIONS</div>
           <h1>Inventory</h1>
           <p className="blurb">What is stocked where, across every machine. Inventory decides what is needed — Restocking does the fieldwork.</p>
+
+          <BlockAlerts dept="inventory" />
 
           <div className="banner" style={{ border: '1px solid rgba(255,140,26,.35)', background: 'rgba(255,140,26,.07)', color: '#ffd39a' }}>
             {live ? <>Live from OurVend — synced <b>{syncedAgo(syncedAt)}</b>. </> : <>Committed snapshot. </>}

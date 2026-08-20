@@ -118,6 +118,11 @@ Fully automated, cloud-side, no browser, no Vercel env. All in **Supabase Edge F
   not built. `restock_tasks` table; machines gained map_card_url + refill videos/docs links.
 - Facilities, Warehouse, Payments, Documents, Finance, Marketing, Contacts —
   scaffolded, not deeply built. Vouchers, Video Ads — parked shells.
+- **Calendar & alerts (cross-block)** — BUILT 2026-08-20 (`docs/blocks/calendar.md`):
+  Google Calendar panel top-right of Command Center (pills removed), small ⏰ appt
+  count under each box's logo, per-block alert rows + appointment book on every dept
+  page, auto-appointments from block dates (`appointments` table, `lib/appointments.ts`,
+  ＋GCal template links — no OAuth).
 
 ## OPEN / NEXT
 - Planogram Phase 3: reconciliation diff (assigned planogram vs live_slots).
@@ -130,6 +135,16 @@ Fully automated, cloud-side, no browser, no Vercel env. All in **Supabase Edge F
 - Boston (Nayax) machines: not set up; planograms may only exist on Nayax (secondary, optional).
 
 ## SESSION LOG (newest first)
+- 2026-08-20 (c): CALENDAR LAYER built (docs/blocks/calendar.md) — Google Calendar
+  panel replaces the Ready/Building/Parked/Machines pills top-right of Command Center;
+  small ⏰ appt-count chips under each box's logo (Joe: "just a small number, not a
+  stripe"); every dept page gets alert rows + an appointment book; auto-appointments
+  read from block dates (setup ETAs/pickups/follow-ups, refill visits, order ETAs).
+  VERCEL CLEANUP: verified old projects mcos-v2 + medicube-mcos had ZERO deploys today
+  (Joe's "other strand" = branch preview builds inside mcos-v2-site); added vercel.json
+  so ONLY main ever builds (branch pushes skipped). Told Joe: OurVend connection lives
+  100% in Supabase — deleting Vercel projects mcos-v2/medicube-mcos cannot touch it;
+  mcos-v2-site must stay.
 - 2026-08-20 (b): Setup tabs FORMS-ALWAYS-VISIBLE — Joe's pipeline was EMPTY (0 rows) so
   tabs showed only text; now every tab renders its real form as a dashed template even with
   zero machines, and the first machine card AUTO-OPENS on tab click. Shipping gained the

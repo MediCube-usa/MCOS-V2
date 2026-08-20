@@ -1,6 +1,8 @@
 import Link from 'next/link';
 import { Sidebar } from '@/components/Sidebar';
 import { AgentBadge } from '@/components/AgentBadge';
+import { BoxAlertCount } from '@/components/BoxAlertCount';
+import { CalendarPanel } from '@/components/CalendarPanel';
 import { LogoRainbow } from '@/components/Logo';
 import { blockDepartments } from '@/lib/departments';
 import { FLEET, neverSynced } from '@/lib/fleet';
@@ -52,12 +54,7 @@ export default function CommandCenter() {
             <h1>Command Center</h1>
             <div className="sub">MEDICUBE HEALTH · LIVE OPERATIONS · JOSEPH</div>
           </div>
-          <div className="pills">
-            <div className="pill">Ready {ready}</div>
-            <div className="pill">Building {building}</div>
-            <div className="pill">Parked {shell}</div>
-            <div className="pill">Machines {a.machines}</div>
-          </div>
+          <CalendarPanel />
         </div>
 
         <div className="agent-band">
@@ -85,7 +82,10 @@ export default function CommandCenter() {
                     <h2>{d.name}</h2>
                     <div className="block-sub">MCOS · {statusWord(d.status)}</div>
                   </div>
-                  {d.agent && d.agent !== '—' && <AgentBadge name={d.agent} color={d.color} size={30} />}
+                  <div className="block-side">
+                    {d.agent && d.agent !== '—' && <AgentBadge name={d.agent} color={d.color} size={30} />}
+                    <BoxAlertCount dept={d.id} />
+                  </div>
                 </div>
 
                 <div className="metric">{d.metric}</div>

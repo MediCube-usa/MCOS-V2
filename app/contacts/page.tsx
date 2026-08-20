@@ -2,6 +2,7 @@ import Link from 'next/link';
 import { Sidebar } from '@/components/Sidebar';
 import { ScopeMap } from '@/components/ScopeMap';
 import { ContactsBoard } from '@/components/ContactsBoard';
+import { BlockAlerts } from '@/components/BlockAlerts';
 
 const COLOR = '#a6b5ff';
 
@@ -17,6 +18,8 @@ export default function Contacts() {
           <div className="crumb"><Link href="/">Command Center</Link> / GROWTH</div>
           <h1>Contacts</h1>
           <p className="blurb">Central directory — every contact lives once, linked by role. Refillers, facility contacts, TCN reps, logistics, vendors, payments — all in one place.</p>
+
+          <BlockAlerts dept="contacts" />
 
           <div className="banner" style={{ border: '1px solid rgba(166,181,255,.35)', background: 'rgba(166,181,255,.07)', color: '#cdd6ff' }}>
             <b>Add everyone once.</b> Filter by category, search by name or org, tap <b>call</b> to dial. Refillers you add here feed Restocking dispatch; facility contacts feed Facilities.

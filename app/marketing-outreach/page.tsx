@@ -2,6 +2,7 @@ import Link from 'next/link';
 import { Sidebar } from '@/components/Sidebar';
 import { ScopeMap } from '@/components/ScopeMap';
 import { RecordBoard, type BoardConfig } from '@/components/RecordBoard';
+import { BlockAlerts } from '@/components/BlockAlerts';
 
 const COLOR = '#00ffea';
 
@@ -30,6 +31,8 @@ export default function MarketingOutreach() {
           <div className="crumb"><Link href="/">Command Center</Link> / GROWTH</div>
           <h1>Marketing &amp; Outreach</h1>
           <p className="blurb">School launches, announcements, and new-facility onboarding — tied to each facility&apos;s go-live.</p>
+
+          <BlockAlerts dept="marketing-outreach" />
 
           <div className="banner" style={{ border: '1px solid rgba(0,255,234,.3)', background: 'rgba(0,255,234,.07)', color: '#9ffff5' }}>
             <b>Plan every launch and announcement.</b> Add a campaign, tie it to a facility and a run date, pick the channel, and move it planned → scheduled → sent. Reads launch rules from <Link href="/facilities" style={{ color: '#7ffff2' }}>Facilities</Link>.

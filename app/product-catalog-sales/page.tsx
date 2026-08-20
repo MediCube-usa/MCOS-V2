@@ -3,6 +3,7 @@ import { Sidebar } from '@/components/Sidebar';
 import { ScopeMap } from '@/components/ScopeMap';
 import { ProductHub } from '@/components/ProductHub';
 import { FLEET } from '@/lib/fleet';
+import { BlockAlerts } from '@/components/BlockAlerts';
 
 const COLOR = '#00ffaa';
 
@@ -34,6 +35,8 @@ export default function ProductCatalogSales() {
             decisions lives here. Build and assess products, shop the suppliers, track requested products,
             check what fits which coil. Products exist here first; planogram templates (on the
             <Link href="/templates-config" style={{ color: '#7dffc8' }}> Templates block</Link>) consume them.</p>
+
+          <BlockAlerts dept="product-catalog-sales" />
 
           <ProductHub carriers={carriers} />
 
