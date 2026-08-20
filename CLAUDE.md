@@ -130,6 +130,12 @@ Fully automated, cloud-side, no browser, no Vercel env. All in **Supabase Edge F
 - Boston (Nayax) machines: not set up; planograms may only exist on Nayax (secondary, optional).
 
 ## SESSION LOG (newest first)
+- 2026-08-20 (b): Setup tabs FORMS-ALWAYS-VISIBLE — Joe's pipeline was EMPTY (0 rows) so
+  tabs showed only text; now every tab renders its real form as a dashed template even with
+  zero machines, and the first machine card AUTO-OPENS on tab click. Shipping gained the
+  port-release call fields (container #, seal/sea #, bill of lading #, release contact,
+  invoice surfaced there too; 4 new setup_machines cols). Joe will send a per-tab list of
+  exact sections — BUILD IT VERBATIM when it arrives (docs/blocks/setup-distribution.md).
 - 2026-08-20: Machine Setup goes LIVE-USE per Joe ("no placeholder examples — I am finishing
   this site"): stage panels made solid/opaque like the landing page (map backdrop no longer
   bleeds through); every colored tab now renders its stage's ACTUAL form — the machine card

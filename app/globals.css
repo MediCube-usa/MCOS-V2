@@ -456,6 +456,10 @@ a { color: inherit; text-decoration: none; }
 .stage-empty { padding: 14px 16px; border: 1px dashed color-mix(in srgb, var(--sc) 40%, transparent);
   border-radius: 10px; color: var(--muted); font-size: 13.5px; margin-bottom: 10px; background: #081120; }
 .stage-empty b { color: var(--sc); }
+/* template form on empty stages — the real fields, waiting for a machine */
+.stage-template { min-width: 0; margin: 0 0 10px; padding: 14px 16px 4px;
+  border: 1px dashed color-mix(in srgb, var(--sc) 35%, transparent); border-radius: 10px; background: #081120; }
+.stage-template :is(input, textarea, select, button) { opacity: .7; }
 /* full-record section headers, colored per stage */
 .stage-section-title { --sc: #6fe4ff; font-size: 10.5px; letter-spacing: .7px; text-transform: uppercase;
   font-weight: 800; color: var(--sc); margin: 16px 0 8px; border-top: 1px solid var(--line); padding-top: 10px; }

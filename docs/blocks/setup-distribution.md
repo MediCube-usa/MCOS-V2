@@ -55,8 +55,20 @@ Machine Operations.
   registry (Machine Ops) — address/access data is entered there (machine_locations feeds
   the Maps block). Map-card info lives on the setup record for the distribution run.
 
+FORMS-ALWAYS-VISIBLE (2026-08-20, Joe: "the tabs have to be info that can be put in and
+adjusted, like a form"): every tab now renders its REAL form even with zero machines — a
+dashed "template" copy of the stage's actual fields (disabled until a machine is there), so
+what each tab takes is never just described. When machines exist, the first card at the
+stage AUTO-OPENS on tab click straight into that stage's live form. Shipping gained the
+PORT-RELEASE CALL fields (Joe: "when someone calls to release it from the port"): container
+number, seal/sea number, bill of lading number, port release contact, plus the invoice
+document surfaced on the Shipping tab (same file as Order). Joe to deliver a per-tab list
+of exact sections/fields — build it verbatim when it lands.
+
 ## Data (additions 2026-08-20)
 - `setup_machines.contract_url` — the signed contract file/link lives on the Contract tab.
+- `setup_machines.container_number / seal_number / bol_number / release_contact` — the
+  port-release call info on the Shipping tab.
 - Storage bucket `mcos-docs` (public) — pipeline documents uploaded straight from the tabs
   land at `setup/<machine-id>/<kind>-<ts>.<ext>`; anon insert/select/update policies.
 

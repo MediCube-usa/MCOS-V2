@@ -27,6 +27,10 @@ interface SetupMachine {
   port: string | null;
   shipping_info: string | null;
   paperwork_url: string | null;
+  container_number: string | null;
+  seal_number: string | null;
+  bol_number: string | null;
+  release_contact: string | null;
   order_date: string | null;
   arrived_date: string | null;
   pickup_date: string | null;
@@ -175,11 +179,17 @@ function StageForm({ sid, m, patch, toggleCheck, flash }: {
     );
     case 'shipping': return (
       <div className="pd-grid">
-        <label className="pd-field"><span>Port</span><input value={m.port || 'Los Angeles'} onChange={(e) => patch(m.id, { port: e.target.value })} /></label>
-        <label className="pd-field"><span>ETA</span><input type="date" value={m.eta || ''} onChange={(e) => patch(m.id, { eta: e.target.value })} /></label>
-        <label className="pd-field pd-wide"><span>Shipping info — carrier, container, broker</span><textarea rows={2} value={m.shipping_info || ''} onChange={(e) => patch(m.id, { shipping_info: e.target.value })} /></label>
+        <label className="pd-field"><span>Port (where it lands)</span><input value={m.port || 'Los Angeles'} onChange={(e) => patch(m.id, { port: e.target.value })} /></label>
+        <label className="pd-field"><span>ETA — date it arrives</span><input type="date" value={m.eta || ''} onChange={(e) => patch(m.id, { eta: e.target.value })} /></label>
+        <label className="pd-field"><span>Container #</span><input value={m.container_number || ''} onChange={(e) => patch(m.id, { container_number: e.target.value })} /></label>
+        <label className="pd-field"><span>Seal / sea number</span><input value={m.seal_number || ''} onChange={(e) => patch(m.id, { seal_number: e.target.value })} /></label>
+        <label className="pd-field"><span>Bill of lading #</span><input value={m.bol_number || ''} onChange={(e) => patch(m.id, { bol_number: e.target.value })} /></label>
+        <label className="pd-field"><span>Port release contact — name / phone</span><input value={m.release_contact || ''} onChange={(e) => patch(m.id, { release_contact: e.target.value })} /></label>
+        <label className="pd-field pd-wide"><span>Shipping info — carrier, vessel, broker</span><textarea rows={2} value={m.shipping_info || ''} onChange={(e) => patch(m.id, { shipping_info: e.target.value })} /></label>
         <FileField label="Paperwork — link or upload the file" value={m.paperwork_url} machineId={m.id} kind="paperwork"
           onChange={(url) => patch(m.id, { paperwork_url: url })} onError={flash} />
+        <FileField label="Invoice — the same document from the Order tab, here for the release call" value={m.invoice_url} machineId={m.id} kind="invoice"
+          onChange={(url) => patch(m.id, { invoice_url: url })} onError={flash} />
       </div>
     );
     case 'arrived': return (
@@ -252,6 +262,20 @@ function StageForm({ sid, m, patch, toggleCheck, flash }: {
 
 const ORDER_OF = (sid: string) => STAGES.findIndex((s) => s.id === sid);
 
+// Blank record backing the always-visible template form on stages with no
+// machines yet — so every tab shows its real fields, not a description.
+const BLANK: SetupMachine = {
+  id: '', name: '', model: '', order_ref: '', stage: 'ordered', facility: '', eta: '', notes: '',
+  checklist: {}, machine_type: '', qty: 1, color: '', description: '', invoice_url: '',
+  port: '', shipping_info: '', paperwork_url: '', container_number: '', seal_number: '',
+  bol_number: '', release_contact: '', order_date: '', arrived_date: '', pickup_date: '',
+  warehouse_date: '', contract_date: '', contract_url: '', campus_ship_date: '',
+  walkout_location: '', google_maps_url: '', photos_uploaded: false, directions: '',
+  access_time: '', contact_numbers: '', follow_up_date: '', map_card_sent: false,
+  machine_id: '', router_verified: false, tcn_registered: false, decals_verified: false,
+};
+const NOOP = () => {};
+
 export function SetupBoard() {
   const [rows, setRows] = useState<SetupMachine[]>([]);
   const [status, setStatus] = useState<'loading' | 'ready' | 'error'>('loading');
@@ -267,6 +291,7 @@ export function SetupBoard() {
     try {
       const data = await dbSelect<SetupMachine>('setup_machines', 'select=*&order=created_at.asc');
       setRows(data.map((r) => ({ ...r, checklist: r.checklist || {} })));
+      setOpen((cur) => cur ?? data.find((r) => r.stage === 'ordered')?.id ?? null);
       setStatus('ready');
     } catch (e) { setStatus('error'); setMsg(e instanceof Error ? e.message : 'load failed'); }
   };
@@ -316,7 +341,10 @@ export function SetupBoard() {
               key={s.id}
               className={`stage-tab ${view === s.id ? 'active' : ''}`}
               style={{ ['--sc' as string]: s.color }}
-              onClick={() => setView(s.id)}
+              onClick={() => {
+                setView(s.id); setFullId(null);
+                setOpen(rows.find((r) => r.stage === s.id)?.id ?? null);
+              }}
             >
               {s.label}{n > 0 ? <span className="stage-n">{n}</span> : null}
             </button>
@@ -351,11 +379,16 @@ export function SetupBoard() {
         </div>
 
         {status === 'ready' && here.length === 0 && (
-          <div className="stage-empty">
-            {stage.id === 'ordered'
-              ? <>No orders yet — hit <b>+ New TCN order</b> and this form opens on the order.</>
-              : <>No machines at this stage right now — they arrive here from <b>{prev?.label}</b>, and this tab holds their {stage.label.toLowerCase()} record when they do.</>}
-          </div>
+          <>
+            <div className="stage-empty">
+              {stage.id === 'ordered'
+                ? <>The {stage.label} form, below. Hit <b>+ New TCN order</b> and it goes live — everything you put in saves to that machine and travels with it tab to tab.</>
+                : <>The {stage.label} form, below. Every machine that reaches this stage from <b>{prev?.label}</b> gets its own copy, carrying everything already filled — it unlocks on the machine&apos;s card.</>}
+            </div>
+            <fieldset className="stage-template" disabled>
+              <StageForm sid={stage.id} m={BLANK} patch={NOOP} toggleCheck={NOOP} flash={NOOP} />
+            </fieldset>
+          </>
         )}
 
         <div className="req-grid">
