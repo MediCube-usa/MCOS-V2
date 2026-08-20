@@ -100,16 +100,18 @@ export default async function CommandCenter() {
     <div className="shell">
       <Sidebar active="command-center" />
       <main className="main">
-        <div className="topbar">
-          <div>
-            <h1>Command Center</h1>
-            <div className="sub">MEDICUBE HEALTH · LIVE OPERATIONS · JOSEPH</div>
+        {/* Per Joe's markup: right column (video + calendar, even sizes) runs the FULL
+            height from the page top; Atlas + title fill the left. */}
+        <div className="cc-top atlas-band">
+          <div className="cc-left">
+            <div className="topbar">
+              <div>
+                <h1>Command Center</h1>
+                <div className="sub">MEDICUBE HEALTH · LIVE OPERATIONS · JOSEPH</div>
+              </div>
+            </div>
+            <AgentChat greeting={`${ready} live, ${building} in build, ${shell} parked. Ask me about the fleet, stock, or any date — or say "remind me…" and I'll put it on the calendar.`} />
           </div>
-        </div>
-
-        {/* Atlas gets the big box (room to type); right column = video feed over calendar */}
-        <div className="agent-band atlas-band">
-          <AgentChat greeting={`${ready} live, ${building} in build, ${shell} parked. Ask me about the fleet, stock, or any date — or say "remind me…" and I'll put it on the calendar.`} />
           <div className="side-stack">
             <div className="video-box">
               <div className="video-head"><span>📺 Screen Feed</span><span className="video-tag">NATIONWIDE</span></div>
