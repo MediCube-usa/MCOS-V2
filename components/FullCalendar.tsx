@@ -8,8 +8,8 @@
 import { useEffect, useMemo, useState } from 'react';
 import Link from 'next/link';
 import {
-  CalItem, alertLevel, dayKey, fetchAlertsOffShared, fetchCalendarShared,
-  fmtWhen, gcalUrl, groupByDay, monthMatrix,
+  CalItem, GOOGLE_DEPT, alertLevel, dayKey, fetchAlertsOffShared, fetchCalendarShared,
+  fmtWhen, gcalUrl, groupByDay, itemColor, monthMatrix,
 } from '@/lib/appointments';
 import { DEPARTMENTS, getDepartment } from '@/lib/departments';
 import { CAL_DEFAULTS, CalSettings, fetchCalSettings } from '@/lib/site-settings';
@@ -35,6 +35,8 @@ export function FullCalendar() {
   const todayKey = dayKey(now);
   const missed = items.filter((i) => alertLevel(i) === 'overdue');
   const deptsInUse = DEPARTMENTS.filter((d) => items.some((i) => i.department === d.id));
+  const hasGoogle = items.some((i) => i.department === GOOGLE_DEPT);
+  const itemHref = (i: CalItem) => (i.department === GOOGLE_DEPT ? 'https://calendar.google.com/calendar/r' : `/${i.department}`);
 
   const move = (d: 1 | -1) => setYm(([y, m]) => {
     const x = new Date(y, m + d, 1); return [x.getFullYear(), x.getMonth()];
@@ -57,7 +59,7 @@ export function FullCalendar() {
         <div className="fc-missed">
           <b>⚠ NOT MET — needs attention:</b>
           {missed.slice(0, 6).map((i) => (
-            <Link key={i.key} href={`/${i.department}`} className="fc-missed-item">
+            <Link key={i.key} href={itemHref(i)} className="fc-missed-item">
               {i.title} · {fmtWhen(i)}
             </Link>
           ))}
@@ -76,6 +78,7 @@ export function FullCalendar() {
           {deptsInUse.map((d) => (
             <Link key={d.id} href={`/${d.id}`} className="fc-leg"><i style={{ background: d.color }} />{d.name}</Link>
           ))}
+          {hasGoogle && <a className="fc-leg" href="https://calendar.google.com/calendar/r" target="_blank" rel="noreferrer"><i style={{ background: '#eaf7ff' }} />Google Calendar</a>}
         </div>
       </div>
 
@@ -95,10 +98,10 @@ export function FullCalendar() {
                 return (
                   <Link
                     key={i.key}
-                    href={`/${i.department}`}
+                    href={itemHref(i)}
                     className={`fc-chip ${lvl === 'overdue' ? 'missed' : ''}`}
-                    style={{ ['--dc' as string]: getDepartment(i.department)?.color || '#6fe4ff' }}
-                    title={`${i.title} — ${fmtWhen(i)} (${i.source}). Click to open the block.`}
+                    style={{ ['--dc' as string]: itemColor(i, getDepartment(i.department)?.color) }}
+                    title={`${i.title} — ${fmtWhen(i)} (${i.source}).`}
                   >
                     {i.title}
                   </Link>
@@ -119,9 +122,9 @@ export function FullCalendar() {
             <div key={i.key} className={`cal-row ${alertLevel(i)}`}>
               <span className="cal-when">{fmtWhen(i)}</span>
               <span className="cal-what">
-                <i className="cal-dot" style={{ background: getDepartment(i.department)?.color || '#6fe4ff' }} />
+                <i className="cal-dot" style={{ background: itemColor(i, getDepartment(i.department)?.color) }} />
                 {i.title}
-                <span className="ph-tag">{getDepartment(i.department)?.name || i.department}</span>
+                <span className="ph-tag">{getDepartment(i.department)?.name || (i.department === GOOGLE_DEPT ? 'Google Calendar' : i.department)}</span>
                 {alertLevel(i) === 'overdue' && <span className="ph-tag" style={{ color: '#ff8095', borderColor: 'rgba(255,80,120,.4)' }}>NOT MET</span>}
               </span>
               <a className="cal-add" href={gcalUrl(i)} target="_blank" rel="noreferrer">＋GCal</a>

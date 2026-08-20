@@ -34,6 +34,12 @@ export interface CalItem {
 
 export type AlertLevel = 'overdue' | 'today' | 'soon' | 'later';
 
+// Google Calendar events carry this pseudo-department (they belong to the
+// whole company, not one block).
+export const GOOGLE_DEPT = 'google-calendar';
+export const itemColor = (i: CalItem, fallback = '#6fe4ff') =>
+  i.department === GOOGLE_DEPT ? '#eaf7ff' : fallback;
+
 // ---- month-grid helpers (header calendar box + /calendar page) ----
 export const dayKey = (d: Date) => `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`;
 
@@ -169,12 +175,33 @@ export async function fetchAuto(dept?: string): Promise<CalItem[]> {
   return out;
 }
 
-// Everything a page needs: manual + auto, deduped keys, old noise dropped
-// (anything more than 30 days past), soonest first.
+// Real events from the MediCube ops Google Calendar, read through our own
+// server (/api/gcal). Today-forward only — a past Google meeting is history,
+// not a NOT-MET alert. Global views only (they belong to no single block).
+export async function fetchGoogle(): Promise<CalItem[]> {
+  try {
+    const r = await fetch('/api/gcal');
+    if (!r.ok) return [];
+    const { events } = (await r.json()) as { events: { title: string; start: string; allDay: boolean; location: string | null }[] };
+    const dayStart = new Date(); dayStart.setHours(0, 0, 0, 0);
+    return (events || [])
+      .map((e, idx): CalItem => ({
+        key: `g-${idx}-${e.start}`, department: GOOGLE_DEPT, title: e.title,
+        when: new Date(e.start), hasTime: !e.allDay, location: e.location, notes: null,
+        remindDays: 1, auto: true, source: 'Google Calendar',
+      }))
+      .filter((i) => !isNaN(i.when.getTime()) && i.when.getTime() >= dayStart.getTime());
+  } catch { return []; }
+}
+
+// Everything a page needs: manual + auto (+ Google on global views), old
+// noise dropped (more than 30 days past), soonest first.
 export async function fetchCalendar(dept?: string): Promise<CalItem[]> {
-  const [manual, auto] = await Promise.all([fetchManual(dept), fetchAuto(dept)]);
+  const [manual, auto, google] = await Promise.all([
+    fetchManual(dept), fetchAuto(dept), dept ? Promise.resolve([]) : fetchGoogle(),
+  ]);
   const cutoff = Date.now() - 30 * 86400000;
-  return [...manual, ...auto]
+  return [...manual, ...auto, ...google]
     .filter((i) => i.when.getTime() >= cutoff)
     .sort((a, b) => a.when.getTime() - b.when.getTime());
 }

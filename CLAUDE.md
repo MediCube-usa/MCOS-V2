@@ -145,6 +145,14 @@ Fully automated, cloud-side, no browser, no Vercel env. All in **Supabase Edge F
 - Boston (Nayax) machines: not set up; planograms may only exist on Nayax (secondary, optional).
 
 ## SESSION LOG (newest first)
+- 2026-08-20 (g): Calendar face + function pass per Joe: corner box default = NEON face
+  (site-styled list, 300×132) that now includes REAL Google events — new /api/gcal server
+  route reads the public ICS feed (browsers can't cross-origin it), merged as
+  GOOGLE_DEPT items on corner + /calendar (white dots, legend entry, never NOT-MET,
+  never on block pages). Google embed still available as a face in ⚙ settings
+  (NEON/AGENDA/WEEK/MONTH). Front-box stat lines went LIVE: catalog=products count,
+  restocking=open tasks (server fetch, 120s revalidate, '—' fallback), inventory=low
+  signals, machine-ops=fleet count. Alert badge spot confirmed = under each box logo.
 - 2026-08-20 (f): Medi Cube ops Google account live (medicubehub1@gmail.com, public —
   verified via ics feed 200): real Google grid renders in the corner box (pinned 300×132,
   agent-box width/header height) + /calendar. Self-serve ⚙ Calendar settings panel on

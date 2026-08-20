@@ -4,21 +4,23 @@
 import { dbSelect, dbInsert, dbUpdate } from '@/lib/db';
 import { GCAL_EMBED_ID } from '@/lib/config';
 
-export type CalMode = 'AGENDA' | 'WEEK' | 'MONTH';
+// NEON = the site's own calendar face (Google events pulled in through
+// /api/gcal); the embed modes show Google's raw widget instead.
+export type CalMode = 'NEON' | 'AGENDA' | 'WEEK' | 'MONTH';
 export interface CalSettings {
-  mode: CalMode;        // how the corner box shows the Google calendar
-  dark: boolean;        // dark filter over Google's white embed
-  calendar_id: string;  // which Google calendar the site shows
+  mode: CalMode;        // how the corner box shows the calendar
+  dark: boolean;        // dark filter over Google's white embed (embed modes)
+  calendar_id: string;  // which Google calendar the site reads/shows
 }
 
-export const CAL_DEFAULTS: CalSettings = { mode: 'AGENDA', dark: true, calendar_id: GCAL_EMBED_ID };
+export const CAL_DEFAULTS: CalSettings = { mode: 'NEON', dark: true, calendar_id: GCAL_EMBED_ID };
 
 export async function fetchCalSettings(): Promise<CalSettings> {
   try {
     const rows = await dbSelect<{ key: string; value: string }>('site_settings', 'select=key,value&key=like.cal_*');
     const m = Object.fromEntries(rows.map((r) => [r.key, r.value]));
     return {
-      mode: (['AGENDA', 'WEEK', 'MONTH'].includes(m.cal_mode) ? m.cal_mode : CAL_DEFAULTS.mode) as CalMode,
+      mode: (['NEON', 'AGENDA', 'WEEK', 'MONTH'].includes(m.cal_mode) ? m.cal_mode : CAL_DEFAULTS.mode) as CalMode,
       dark: m.cal_dark !== undefined ? m.cal_dark === 'true' : CAL_DEFAULTS.dark,
       calendar_id: m.cal_id !== undefined ? m.cal_id : CAL_DEFAULTS.calendar_id,
     };

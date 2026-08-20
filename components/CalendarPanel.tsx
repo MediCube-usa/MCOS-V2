@@ -1,32 +1,24 @@
 'use client';
 
-// THE CALENDAR BOX — top right of the Command Center header. Agent-box width,
-// header height, dark, and a real working calendar: a month grid fed live by
-// every block (manual appointments + the dates typed into block forms).
-// Click a day → its items. Click the title → /calendar, everything at once.
-//
-// When Joe supplies the MediCube ops Google account's Calendar ID
-// (lib/config.ts GCAL_EMBED_ID), the actual Google Calendar grid renders here
-// instead, dark-filtered. His personal account is never used.
+// THE CALENDAR BOX — top right of the Command Center header, pinned to
+// 300×132 (agent-box width, header height). Default face is the site's own
+// neon list: the next things happening across every block PLUS the real
+// events on the MediCube ops Google Calendar (read server-side, no embed,
+// no white). Click the title → /calendar for everything. The raw Google
+// embed is still available as a face in ⚙ Calendar settings.
 
-import { useEffect, useMemo, useState } from 'react';
+import { useEffect, useState } from 'react';
 import Link from 'next/link';
 import {
-  CalItem, alertLevel, dayKey, fetchAlertsOffShared, fetchCalendarShared,
-  fmtWhen, gcalUrl, groupByDay, monthMatrix,
+  CalItem, alertLevel, fetchAlertsOffShared, fetchCalendarShared, fmtWhen, gcalUrl, itemColor,
 } from '@/lib/appointments';
 import { getDepartment } from '@/lib/departments';
 import { CAL_DEFAULTS, CalSettings, embedUrl, fetchCalSettings } from '@/lib/site-settings';
 
-const MONTHS = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
-
 export function CalendarPanel() {
-  const now = new Date();
   const [items, setItems] = useState<CalItem[]>([]);
   const [status, setStatus] = useState<'loading' | 'ready' | 'error'>('loading');
   const [cfg, setCfg] = useState<CalSettings | null>(null);
-  const [ym, setYm] = useState<[number, number]>([now.getFullYear(), now.getMonth()]);
-  const [sel, setSel] = useState<string>(dayKey(now));
 
   useEffect(() => {
     fetchCalSettings().then(setCfg).catch(() => setCfg(CAL_DEFAULTS));
@@ -35,18 +27,10 @@ export function CalendarPanel() {
       .catch(() => setStatus('error'));
   }, []);
 
-  const byDay = useMemo(() => groupByDay(items), [items]);
-  const cells = useMemo(() => monthMatrix(ym[0], ym[1]), [ym]);
-  const todayKey = dayKey(now);
-  const selItems = (byDay.get(sel) || []).slice(0, 3);
-
-  const move = (d: 1 | -1) => setYm(([y, m]) => {
-    const x = new Date(y, m + d, 1); return [x.getFullYear(), x.getMonth()];
-  });
-
   if (!cfg) return <div className="calpanel"><div className="cal-head"><span className="cal-title">📅 Calendar</span></div></div>;
 
-  if (cfg.calendar_id) {
+  // Google's own widget, if that face is chosen in settings
+  if (cfg.mode !== 'NEON' && cfg.calendar_id) {
     return (
       <div className="calpanel">
         <div className="cal-head">
@@ -60,51 +44,24 @@ export function CalendarPanel() {
     );
   }
 
+  const next = items.slice(0, 4);
   return (
     <div className="calpanel">
       <div className="cal-head">
         <Link className="cal-title" href="/calendar" title="open the full calendar — every block, everything">📅 Calendar — see all →</Link>
-        <span className="mini-nav">
-          <button onClick={() => move(-1)} aria-label="previous month">‹</button>
-          <b>{MONTHS[ym[1]].slice(0, 3)} {ym[0]}</b>
-          <button onClick={() => move(1)} aria-label="next month">›</button>
-        </span>
+        <a className="cal-open" href="https://calendar.google.com/calendar/r" target="_blank" rel="noreferrer">Google ↗</a>
       </div>
-
-      <div className="mini-grid" role="grid">
-        {['S', 'M', 'T', 'W', 'T', 'F', 'S'].map((w, i) => <span key={`w${i}`} className="mini-wd">{w}</span>)}
-        {cells.map((d) => {
-          const k = dayKey(d);
-          const day = byDay.get(k) || [];
-          const out = d.getMonth() !== ym[1];
-          const missed = day.some((i) => alertLevel(i) === 'overdue');
-          return (
-            <button
-              key={k}
-              className={`mini-day ${out ? 'out' : ''} ${k === todayKey ? 'today' : ''} ${k === sel ? 'sel' : ''} ${missed ? 'missed' : ''}`}
-              onClick={() => setSel(k)}
-            >
-              {d.getDate()}
-              {day.length > 0 && (
-                <span className="mini-dots">
-                  {day.slice(0, 3).map((i) => (
-                    <i key={i.key} style={{ background: getDepartment(i.department)?.color || '#6fe4ff' }} />
-                  ))}
-                </span>
-              )}
-            </button>
-          );
-        })}
-      </div>
-
       <div className="cal-list">
+        {status === 'loading' && <div className="cal-empty">loading…</div>}
         {status === 'error' && <div className="cal-empty">could not load — reload</div>}
-        {status === 'ready' && selItems.length === 0 && <div className="cal-empty">nothing on this day</div>}
-        {selItems.map((i) => (
+        {status === 'ready' && next.length === 0 && (
+          <div className="cal-empty">clear calendar — set appointments on any block&apos;s page or in Google Calendar</div>
+        )}
+        {next.map((i) => (
           <div key={i.key} className={`cal-row ${alertLevel(i)}`}>
             <span className="cal-when">{fmtWhen(i)}</span>
-            <span className="cal-what" title={i.title}>
-              <i className="cal-dot" style={{ background: getDepartment(i.department)?.color || '#6fe4ff' }} />
+            <span className="cal-what" title={`${i.title} — ${i.source}`}>
+              <i className="cal-dot" style={{ background: itemColor(i, getDepartment(i.department)?.color) }} />
               {i.title}
             </span>
             <a className="cal-add" href={gcalUrl(i)} target="_blank" rel="noreferrer" title="add to Google Calendar">＋GCal</a>

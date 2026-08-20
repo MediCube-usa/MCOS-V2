@@ -29,12 +29,42 @@ function fleetAlerts() {
   return { low, unsynced, priceVaries, machines: machines.length };
 }
 
-export default function CommandCenter() {
+export const revalidate = 120;
+
+// Live counts for the block stat lines — real numbers, refreshed every couple
+// of minutes; falls back to the static metric if the database is unreachable.
+async function liveCounts(): Promise<{ products: number | null; openTasks: number | null }> {
+  const { SUPABASE_URL, SUPABASE_KEY } = await import('@/lib/config');
+  const headers = { apikey: SUPABASE_KEY, Authorization: `Bearer ${SUPABASE_KEY}` };
+  const count = async (q: string) => {
+    try {
+      const r = await fetch(`${SUPABASE_URL}/rest/v1/${q}`, { headers, next: { revalidate: 120 } });
+      if (!r.ok) return null;
+      return ((await r.json()) as unknown[]).length;
+    } catch { return null; }
+  };
+  const [products, openTasks] = await Promise.all([
+    count('products?select=barcode'),
+    count('restock_tasks?select=id&status=not.eq.done'),
+  ]);
+  return { products, openTasks };
+}
+
+export default async function CommandCenter() {
   const blocks = blockDepartments();
   const ready = blocks.filter((d) => d.status === 'ready').length;
   const building = blocks.filter((d) => d.status === 'building').length;
   const shell = blocks.filter((d) => d.status === 'shell').length;
   const a = fleetAlerts();
+  const live = await liveCounts();
+
+  // the stat line on each box — live wherever we have real data
+  const METRICS: Record<string, string> = {
+    'product-catalog-sales': live.products !== null ? String(live.products) : '—',
+    'inventory': String(a.low),
+    'restocking': live.openTasks !== null ? String(live.openTasks) : '—',
+    'machine-operations': String(a.machines),
+  };
 
   // per-department alert line: real where we have data, else a neutral status
   const ALERTS: Record<string, string> = {
@@ -87,7 +117,7 @@ export default function CommandCenter() {
                   </div>
                 </div>
 
-                <div className="metric">{d.metric}</div>
+                <div className="metric">{METRICS[d.id] ?? d.metric}</div>
                 <div className="label">{d.metricLabel}</div>
 
                 <div className="block-alert">

@@ -31,11 +31,12 @@ export function CalendarSettings() {
       {msg && <div className="sb-msg">{msg}</div>}
       <div className="pd-grid">
         <label className="pd-field">
-          <span>Corner box view (Command Center)</span>
+          <span>Calendar face (Command Center corner)</span>
           <select value={cfg.mode} onChange={(e) => save('cal_mode', e.target.value, { mode: e.target.value as CalMode })}>
-            <option value="AGENDA">Agenda — upcoming list</option>
-            <option value="WEEK">Week grid</option>
-            <option value="MONTH">Month grid</option>
+            <option value="NEON">MCOS neon — Google events included (recommended)</option>
+            <option value="AGENDA">Google widget — agenda</option>
+            <option value="WEEK">Google widget — week</option>
+            <option value="MONTH">Google widget — month</option>
           </select>
         </label>
         <label className="pd-field">
