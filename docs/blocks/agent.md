@@ -54,3 +54,10 @@ inventory.md: exact per-machine contents, sales-driven tracking, ship/refill tri
 parameters, map card + text/email templates + instructional videos) → sweep every
 block (products, planograms, images sorted per block) → fill the last 2 parked blocks
 (Vouchers, Video Ads) when ready.
+
+## Key troubleshooting (learned 2026-08-20)
+The key must be ticked for the PRODUCTION environment in Vercel (Preview-only was
+the original miss — the live site is a Production deployment). After any change to
+the variable, a fresh deploy is required to load it. Atlas self-reports: ask it
+anything and it says exactly whether a key is visible (names only, never values),
+and it accepts an sk-ant- key under any variable name.
