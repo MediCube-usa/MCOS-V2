@@ -64,3 +64,13 @@ it and Google fires its own phone/email reminders. The embed shows the live agen
 MCOS alerts (box counts + block alert rows) come from our own table + block dates and
 work with no Google login at all. If Joe later wants MCOS to write straight into his
 Google Calendar server-side, that's an OAuth/service setup — ask first.
+
+## REVISION 4 (2026-08-20) — corner box = real mini month grid, even band
+Joe's markup pass: front band re-portioned — Atlas chat in the big left box,
+right column = SCREEN FEED placeholder box + CALENDAR box at EQUAL sizes
+(176px each; agent card matches the stack height). The corner calendar's
+NEON face is now a real compact month grid (nav, today ring, per-block
+colored dots per day — white = Google) + next-up rows, reusing the mini-*
+grid CSS. The dots/rows are the SAME appointments feed that drives the ⏰
+badges and block alert rows — calendar and block alerts were already one
+system; the grid just makes it visible. Google embed faces unchanged in ⚙.
