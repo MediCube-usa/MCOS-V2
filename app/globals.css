@@ -70,7 +70,7 @@ a { color: inherit; text-decoration: none; }
 .statement b { display: block; font-size: 22px; font-weight: 900; text-transform: uppercase; text-shadow: 0 0 18px rgba(0,213,255,.6); }
 .statement span { display: block; margin-top: 8px; color: var(--muted); font-size: 13px; font-weight: 600; }
 .agent-card { display: flex; gap: 14px; align-items: flex-start; border-radius: 10px; padding: 16px 18px; border: 1px solid var(--cyan); background: #0a1526; box-shadow: 0 0 24px rgba(0,229,255,.2); }
-.agent-card-body { flex: 1; }
+.agent-card-body { flex: 1; min-width: 0; }
 .agent-card .t { color: var(--cyan); font-size: 15px; font-weight: 900; text-transform: uppercase; text-shadow: 0 0 12px rgba(0,229,255,.55); }
 .agent-card .note { margin-top: 8px; color: var(--muted); font-size: 12.5px; line-height: 1.45; font-weight: 500; }
 
@@ -605,3 +605,24 @@ a { color: inherit; text-decoration: none; }
 .atlas-input::placeholder { color: rgba(159,176,204,.55); }
 .atlas-send { background: rgba(0,229,255,.15); border: 1px solid var(--cyan); color: var(--cyan); font-weight: 800; font-size: 12px; border-radius: 8px; padding: 8px 14px; cursor: pointer; text-transform: uppercase; letter-spacing: .4px; }
 .atlas-send:disabled { opacity: .5; cursor: default; }
+
+/* ---- Atlas band: big chat box left, video + calendar stacked right ---- */
+.atlas-band .agent-card { min-height: 296px; }
+.atlas-band .agent-card-body { display: flex; flex-direction: column; }
+.atlas-band .atlas-log { flex: 1; max-height: none; min-height: 0; }
+.side-stack { display: flex; flex-direction: column; gap: 12px; width: min(300px, 100%); }
+.video-box { width: min(300px, 100%); height: 152px; display: flex; flex-direction: column; overflow: hidden;
+  background: #0a0f1e; border: 1px solid rgba(179,102,255,.55); border-radius: 10px; box-shadow: 0 0 20px rgba(179,102,255,.18); }
+.video-head { display: flex; align-items: center; justify-content: space-between; padding: 7px 10px 5px;
+  font-size: 11px; font-weight: 800; letter-spacing: .5px; text-transform: uppercase; color: #b366ff; }
+.video-tag { font-size: 9px; color: #eaf2ff; background: rgba(179,102,255,.25); border: 1px solid rgba(179,102,255,.5);
+  border-radius: 4px; padding: 1px 6px; letter-spacing: .8px; }
+.video-screen { flex: 1; margin: 0 10px; border-radius: 6px; display: flex; align-items: center; justify-content: center;
+  background: linear-gradient(160deg, #0d1330 0%, #070b18 60%, #12083a 100%);
+  border: 1px solid rgba(179,102,255,.25); }
+.video-play { width: 34px; height: 34px; display: flex; align-items: center; justify-content: center; border-radius: 50%;
+  color: #b366ff; border: 1px solid rgba(179,102,255,.6); font-size: 13px; padding-left: 3px;
+  box-shadow: 0 0 14px rgba(179,102,255,.35); }
+.video-note { font-size: 9.5px; color: var(--muted); padding: 5px 10px 7px; }
+@media (max-width: 900px) { .side-stack { width: 100%; } .side-stack .calpanel, .video-box { width: 100%; } }
+.atlas-band .agent-card { align-items: stretch; }

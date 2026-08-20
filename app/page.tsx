@@ -105,15 +105,19 @@ export default async function CommandCenter() {
             <h1>Command Center</h1>
             <div className="sub">MEDICUBE HEALTH · LIVE OPERATIONS · JOSEPH</div>
           </div>
-          <CalendarPanel />
         </div>
 
-        <div className="agent-band">
-          <div className="statement">
-            <b>One system runs the whole company.</b>
-            <span>Every machine, school, product, restock, payout, and report moves through MCOS.</span>
-          </div>
+        {/* Atlas gets the big box (room to type); right column = video feed over calendar */}
+        <div className="agent-band atlas-band">
           <AgentChat greeting={`${ready} live, ${building} in build, ${shell} parked. Ask me about the fleet, stock, or any date — or say "remind me…" and I'll put it on the calendar.`} />
+          <div className="side-stack">
+            <div className="video-box">
+              <div className="video-head"><span>📺 Screen Feed</span><span className="video-tag">NATIONWIDE</span></div>
+              <div className="video-screen"><span className="video-play">▶</span></div>
+              <div className="video-note">placeholder — will mirror what&apos;s playing on the machine screens</div>
+            </div>
+            <CalendarPanel />
+          </div>
         </div>
 
         <section className="grid">
