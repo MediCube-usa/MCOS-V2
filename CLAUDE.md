@@ -145,6 +145,13 @@ Fully automated, cloud-side, no browser, no Vercel env. All in **Supabase Edge F
 - Boston (Nayax) machines: not set up; planograms may only exist on Nayax (secondary, optional).
 
 ## SESSION LOG (newest first)
+- 2026-08-20 (e): REAL CALENDAR BOX (Joe was firm — actual functioning calendar, dark, in
+  the corner): interactive month grid in the header (nav, today, per-block dots, red
+  not-met days, day-click items) + /calendar full page (grid + chips + NOT MET strip +
+  everything list) + not-met intelligence (milestone fields decide met/missed — refiller
+  no-show, machine-not-at-port alerts live). TRUE Google grid slots into the same box the
+  moment Joe supplies the MediCube ops account's Calendar ID (GCAL_EMBED_ID in
+  lib/config.ts, dark via CSS invert). docs/blocks/calendar.md REVISION 3.
 - 2026-08-20 (d): Joe's edit list on the calendar, executed verbatim: personal Google
   embed REMOVED (no personal account on the site — MediCube ops calendar to be added
   later via calendar ID; ＋GCal links are account-agnostic); header calendar compact/dark,

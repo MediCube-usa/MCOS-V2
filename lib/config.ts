@@ -21,6 +21,12 @@ export const SUPABASE_ANON_JWT =
   process.env.NEXT_PUBLIC_SUPABASE_ANON_JWT ||
   'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im5lZ3RlcHZtYmt5ZWZ2eGlha3d1Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODU5OTAyMDYsImV4cCI6MjEwMTU2NjIwNn0.lxxt_mJfYCLCyc3v_h_2qHqZuBnt2GTZ28HfuIhhRIM';
 
+// The MediCube ops Google Calendar (NOT Joe's personal account). When Joe
+// creates the MediCube Google account and supplies its Calendar ID, set it
+// here (or via env) and the real Google Calendar grid renders dark in the
+// Command Center corner box and on /calendar. Empty = MCOS's own calendar UI.
+export const GCAL_EMBED_ID = process.env.NEXT_PUBLIC_GCAL_ID || '';
+
 // The permanent, cloud-side OurVend fleet reader (Supabase Edge Function).
 // It reads the OurVend cookie from the RLS-locked secrets table server-side,
 // pulls every stocked slot, and writes live_slots. pg_cron runs it every ~20

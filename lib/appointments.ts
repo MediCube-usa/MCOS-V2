@@ -34,6 +34,26 @@ export interface CalItem {
 
 export type AlertLevel = 'overdue' | 'today' | 'soon' | 'later';
 
+// ---- month-grid helpers (header calendar box + /calendar page) ----
+export const dayKey = (d: Date) => `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`;
+
+// 42 cells (6 weeks) starting on the Sunday on/before the 1st of the month.
+export function monthMatrix(year: number, month: number): Date[] {
+  const first = new Date(year, month, 1);
+  const start = new Date(year, month, 1 - first.getDay());
+  return Array.from({ length: 42 }, (_, i) => new Date(start.getFullYear(), start.getMonth(), start.getDate() + i));
+}
+
+export function groupByDay(items: CalItem[]): Map<string, CalItem[]> {
+  const m = new Map<string, CalItem[]>();
+  for (const i of items) {
+    const k = dayKey(i.when);
+    if (!m.has(k)) m.set(k, []);
+    m.get(k)!.push(i);
+  }
+  return m;
+}
+
 const pad = (n: number) => String(n).padStart(2, '0');
 
 export function alertLevel(i: CalItem, now = new Date()): AlertLevel {
@@ -107,23 +127,27 @@ export async function fetchAuto(dept?: string): Promise<CalItem[]> {
     out.push({ key, department, title, when, hasTime, location: null, notes: null, remindDays, auto: true, source });
   };
 
+  // Each auto item knows whether its milestone was MET (machine actually
+  // arrived, refiller actually verified on site…). Met items drop off the
+  // calendar; a passed date with the milestone NOT met fires a NOT-MET alert.
   const jobs: Promise<void>[] = [];
   if (want('setup-distribution')) {
-    jobs.push(dbSelect<{ id: string; name: string; stage: string; eta: string | null; pickup_date: string | null; campus_ship_date: string | null; follow_up_date: string | null }>(
-      'setup_machines', 'select=id,name,stage,eta,pickup_date,campus_ship_date,follow_up_date',
+    jobs.push(dbSelect<{ id: string; name: string; stage: string; eta: string | null; pickup_date: string | null; campus_ship_date: string | null; follow_up_date: string | null; arrived_date: string | null; warehouse_date: string | null; map_card_sent: boolean | null }>(
+      'setup_machines', 'select=id,name,stage,eta,pickup_date,campus_ship_date,follow_up_date,arrived_date,warehouse_date,map_card_sent',
     ).then((rows) => rows.forEach((r) => {
-      add('setup-distribution', 'Machine Setup form', `su-eta-${r.id}`, `${r.name} — arrives at port (ETA)`, r.eta);
-      add('setup-distribution', 'Machine Setup form', `su-pk-${r.id}`, `${r.name} — Brendamour pickup`, r.pickup_date);
-      add('setup-distribution', 'Machine Setup form', `su-cs-${r.id}`, `${r.name} — ships to campus`, r.campus_ship_date);
-      add('setup-distribution', 'Machine Setup form', `su-fu-${r.id}`, `${r.name} — map card follow-up`, r.follow_up_date);
+      const atCampus = ['mapcard', 'setup', 'verified'].includes(r.stage);
+      if (!r.arrived_date) add('setup-distribution', 'Machine Setup form', `su-eta-${r.id}`, `${r.name} — arrives at port (ETA)`, r.eta);
+      if (!r.warehouse_date) add('setup-distribution', 'Machine Setup form', `su-pk-${r.id}`, `${r.name} — Brendamour pickup`, r.pickup_date);
+      if (!atCampus) add('setup-distribution', 'Machine Setup form', `su-cs-${r.id}`, `${r.name} — ships to campus`, r.campus_ship_date);
+      if (!r.map_card_sent) add('setup-distribution', 'Machine Setup form', `su-fu-${r.id}`, `${r.name} — map card follow-up`, r.follow_up_date);
     })).catch(() => {}));
   }
   if (want('restocking')) {
-    jobs.push(dbSelect<{ id: string; machine_id: string | null; status: string; scheduled_date: string | null; scheduled_time: string | null; reoffer_date: string | null }>(
-      'restock_tasks', 'select=id,machine_id,status,scheduled_date,scheduled_time,reoffer_date&status=not.eq.done',
+    jobs.push(dbSelect<{ id: string; machine_id: string | null; status: string; scheduled_date: string | null; scheduled_time: string | null; reoffer_date: string | null; onsite_verified: boolean | null; accepted: boolean | null }>(
+      'restock_tasks', 'select=id,machine_id,status,scheduled_date,scheduled_time,reoffer_date,onsite_verified,accepted&status=not.eq.done',
     ).then((rows) => rows.forEach((r) => {
-      add('restocking', 'Restocking task', `rs-sd-${r.id}`, `Refill visit — ${r.machine_id || 'machine'}`, r.scheduled_date, r.scheduled_time, 1);
-      add('restocking', 'Restocking task', `rs-ro-${r.id}`, `Re-offer refiller — ${r.machine_id || 'machine'}`, r.reoffer_date, null, 1);
+      if (!r.onsite_verified) add('restocking', 'Restocking task', `rs-sd-${r.id}`, `Refill visit — ${r.machine_id || 'machine'}`, r.scheduled_date, r.scheduled_time, 1);
+      if (!r.accepted) add('restocking', 'Restocking task', `rs-ro-${r.id}`, `Re-offer refiller — ${r.machine_id || 'machine'}`, r.reoffer_date, null, 1);
     })).catch(() => {}));
   }
   if (want('maps-distribution')) {
@@ -137,7 +161,8 @@ export async function fetchAuto(dept?: string): Promise<CalItem[]> {
     jobs.push(dbSelect<{ id: string; title: string; status: string; eta: string | null }>(
       'warehouse_orders', 'select=id,title,status,eta&eta=not.is.null',
     ).then((rows) => rows.forEach((r) => {
-      add('warehouse-purchasing', 'Warehouse order', `wo-${r.id}`, `${r.title} — order ETA`, r.eta);
+      if (!['received', 'delivered', 'done', 'closed'].includes((r.status || '').toLowerCase()))
+        add('warehouse-purchasing', 'Warehouse order', `wo-${r.id}`, `${r.title} — order ETA`, r.eta);
     })).catch(() => {}));
   }
   await Promise.all(jobs);

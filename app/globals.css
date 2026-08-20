@@ -499,6 +499,54 @@ a { color: inherit; text-decoration: none; }
 .cal-add { font-size: 11px; font-weight: 800; color: #6fe4ff; white-space: nowrap; }
 .cal-empty { font-size: 12px; color: var(--muted); }
 
+/* the interactive month grid inside the header calendar box */
+.mini-nav { display: inline-flex; align-items: center; gap: 6px; font-size: 11.5px; color: #dbe6ff; }
+.mini-nav button { background: #081120; color: #6fe4ff; border: 1px solid var(--line); border-radius: 6px;
+  width: 20px; height: 20px; line-height: 1; cursor: pointer; font-size: 12px; padding: 0; }
+.mini-nav button:hover { border-color: #2fd2ff; }
+.mini-grid { display: grid; grid-template-columns: repeat(7, 1fr); gap: 2px; }
+.mini-wd { text-align: center; font-size: 9px; font-weight: 800; color: var(--muted); letter-spacing: .5px; }
+.mini-day { position: relative; height: 24px; border: 1px solid transparent; border-radius: 6px; background: #081120;
+  color: #dbe6ff; font-size: 10.5px; font-weight: 700; cursor: pointer; padding: 0; line-height: 1; }
+.mini-day:hover { border-color: rgba(111,228,255,.4); }
+.mini-day.out { color: rgba(140,170,210,.35); background: transparent; }
+.mini-day.today { border-color: #2fd2ff; color: #6fe4ff; }
+.mini-day.sel { background: rgba(47,210,255,.16); border-color: #2fd2ff; }
+.mini-day.missed { border-color: rgba(255,80,120,.55); }
+.mini-dots { position: absolute; left: 0; right: 0; bottom: 2px; display: flex; gap: 2px; justify-content: center; }
+.mini-dots i { width: 4px; height: 4px; border-radius: 999px; display: inline-block; }
+
+/* real Google Calendar embed, forced dark (invert trick) */
+.gcal-dark { border: 1px solid var(--line); border-radius: 8px; overflow: hidden; background: #0b0f16; }
+.gcal-dark iframe { width: 100%; height: 200px; border: 0; display: block;
+  filter: invert(0.92) hue-rotate(180deg) saturate(0.8) contrast(0.95); background: #fff; }
+.gcal-dark.gcal-month iframe { height: 560px; }
+
+/* ---- /calendar — the full month grid, everything at once ---- */
+.fc-bar { display: flex; flex-wrap: wrap; gap: 12px; align-items: center; justify-content: space-between; margin: 14px 0 10px; }
+.fc-nav { display: flex; align-items: center; gap: 8px; }
+.fc-nav h2 { margin: 0 0 0 6px; font-size: 20px; letter-spacing: .5px; }
+.fc-nav .pd-link { padding: 6px 12px; }
+.fc-legend { display: flex; flex-wrap: wrap; gap: 6px 12px; }
+.fc-leg { display: inline-flex; align-items: center; gap: 6px; font-size: 11.5px; color: var(--muted); font-weight: 700; }
+.fc-leg i { width: 8px; height: 8px; border-radius: 999px; display: inline-block; }
+.fc-grid { display: grid; grid-template-columns: repeat(7, 1fr); gap: 4px; }
+.fc-wd { text-align: center; font-size: 10.5px; font-weight: 800; letter-spacing: .6px; color: var(--muted); padding: 4px 0; text-transform: uppercase; }
+.fc-day { min-height: 92px; background: var(--panel); border: 1px solid var(--line); border-radius: 8px; padding: 4px; display: flex; flex-direction: column; gap: 3px; overflow: hidden; }
+.fc-day.out { opacity: .45; }
+.fc-day.today { border-color: #2fd2ff; box-shadow: 0 0 10px rgba(47,210,255,.2) inset; }
+.fc-num { font-size: 11px; font-weight: 800; color: var(--muted); }
+.fc-day.today .fc-num { color: #6fe4ff; }
+.fc-chip { --dc: #6fe4ff; display: block; font-size: 10.5px; font-weight: 700; color: #dbe6ff; text-decoration: none;
+  background: color-mix(in srgb, var(--dc) 16%, #081120); border-left: 3px solid var(--dc); border-radius: 4px;
+  padding: 2px 5px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.fc-chip:hover { background: color-mix(in srgb, var(--dc) 30%, #081120); }
+.fc-chip.missed { border-left-color: #ff5078; background: rgba(255,80,120,.14); color: #ffb3c2; }
+.fc-more { font-size: 10px; color: var(--muted); }
+.fc-missed { display: flex; flex-wrap: wrap; gap: 8px 14px; align-items: center; border: 1px solid rgba(255,80,120,.5);
+  background: rgba(255,80,120,.1); color: #ffb3c2; border-radius: 10px; padding: 10px 14px; margin: 12px 0; font-size: 12.5px; }
+.fc-missed-item { color: #ffd7de; font-weight: 700; text-decoration: underline; }
+
 /* the calendar alert on a Command Center box — round badge the size of the
    block's logo, sitting right under it */
 .block-side { display: flex; flex-direction: column; align-items: center; gap: 6px; }

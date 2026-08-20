@@ -13,7 +13,7 @@ import { dbDelete, dbInsert, dbUpdate } from '@/lib/db';
 import { getDepartment } from '@/lib/departments';
 import { Appointment, CalItem, alertLevel, fetchAlertsOff, fetchCalendar, fmtWhen, fromRow, gcalUrl, setAlertsEnabled } from '@/lib/appointments';
 
-const LEVEL_LABEL = { overdue: 'OVERDUE', today: 'TODAY', soon: 'COMING UP' } as const;
+const LEVEL_LABEL = { overdue: 'NOT MET — did not happen', today: 'TODAY', soon: 'COMING UP' } as const;
 
 export function BlockAlerts({ dept }: { dept: string }) {
   const color = getDepartment(dept)?.color || '#6fe4ff';

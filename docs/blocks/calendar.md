@@ -1,5 +1,26 @@
 # Calendar, appointments & alerts (cross-block layer)
 
+REVISION 3 (2026-08-20, Joe: "I want an actual real google calendar box in that corner,
+dark mode, real and functionable… stay right here until this is completely working"):
+- The header corner box is now a REAL INTERACTIVE MONTH CALENDAR (dark, agent-box width):
+  month grid, ‹ › month nav, today marked, colored dots per block's items, red outline on
+  NOT-MET days, click a day → its items, title click → /calendar.
+- **/calendar page** — "see every single thing": full month grid, chips colored by block
+  (click → the block), NOT-MET strip up top, legend, and the complete ordered list of
+  every item. Linked from the header box.
+- **NOT-MET intelligence**: every auto item knows whether its milestone actually happened
+  (ETA↔arrived_date, pickup↔warehouse_date, ship-to-campus↔stage, follow-up↔map_card_sent,
+  refill visit↔onsite_verified, re-offer↔accepted, order ETA↔status). Met = drops off the
+  calendar. Date passed + not met = red NOT MET alert (page, box badge, calendar, /calendar
+  strip) — "refiller didn't show / machine didn't reach port" alerts, live now.
+- **Google hookup** (pending ONE input from Joe): create the MediCube ops Google account →
+  Google Calendar → Settings → "Integrate calendar" → copy the Calendar ID → make the
+  calendar public (Settings → Access permissions) → give the ID to Claude. Set it in
+  `lib/config.ts` GCAL_EMBED_ID (or env NEXT_PUBLIC_GCAL_ID) and the TRUE Google grid
+  renders in the corner box + /calendar, forced dark via CSS invert filter (.gcal-dark).
+  Phase 2 (after account exists): Apps Script bridge on that account so MCOS writes events
+  into Google automatically + invites workers (they RSVP; agents chase no-shows).
+
 Status: SPEC + BUILT 2026-08-20 (Joe: "google Calendar front page top right corner…
 set appointments for every department… alerts and reminders that appear as alerts
 in the front page of each block" + refinement: "not a stripe, just a small alert
