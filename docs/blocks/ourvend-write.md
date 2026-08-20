@@ -50,3 +50,38 @@ exact request the portal sends when a human presses save — one capture supplie
 - [ ] Joe checks the old workstation `output/` folder
 - [ ] OR one-save HAR capture (Claude walks Joe through it click-by-click)
 - [ ] `ourvend-write` edge fn built + first approved live write verified
+
+## ✅ CAPTURED 2026-08-20 (Joe's HAR, os.ourvend.com) — the write recipes are KNOWN
+
+All are POST, `application/x-www-form-urlencoded`, riding the same authenticated
+session cookie our readers already use. Real values from the capture:
+
+### Edit a product — POST /CommodityInfo/EditCI
+Fields: PrID (the product's GUID), ProductCode, ProductName, PrSpecification (size),
+PrRetailPrice, Manufacturers (GUID), CiType, PrCostPrice, QualityPeriod, ImgPath
+(existing OSS path OR data:image base64), PrContent (description),
+PrAdultLimit=false, PrAliAdultLimit=false. → 200.
+
+### Add a NEW product — POST /CommodityInfo/AddCI
+Same fields as EditCI but NO PrID; ImgPath sent as `data:image/png;base64,...`.
+Verified live: created "MCOS TEST" code 9999999999999. → 200.
+
+### Image — POST /WxMallProduct/AuditImge
+Single field `image` = `data:image/png;base64,...`. (Image is also embeddable
+directly in Add/Edit via ImgPath base64, so a separate upload may be optional.)
+
+### Supporting reads already used by the edit screen
+GetProductData (load one product), GetManufacturer, GetCitype/GetType (dropdowns),
+ListJson (catalog). Slot side: Selection/GetSoltInfo, Selection/GetProduct.
+
+### NOTE — live test residue to clean up
+- A test product **"MCOS TEST" (code 9999999999999)** was CREATED live in OurVend —
+  delete it in Commodity Management (or capture the delete endpoint doing so).
+- AXE Spray (code 1050) description/price were edited then restored during testing —
+  confirm it reads normal in OurVend.
+
+### Build plan
+`ourvend-write` edge fn: one function, action switch (editProduct / addProduct /
+uploadImage), reads cookie from secrets, self-heals via ourvend-login like the
+readers. Per-item approval before any real write (hard rule 3). Slot/coil write
+(Selection/*) still needs its own capture — the machine test was skipped tonight.
