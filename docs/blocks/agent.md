@@ -61,3 +61,31 @@ the original miss — the live site is a Production deployment). After any chang
 the variable, a fresh deploy is required to load it. Atlas self-reports: ask it
 anything and it says exactly whether a key is visible (names only, never values),
 and it accepts an sk-ant- key under any variable name.
+
+## ATLAS OPERATOR MODE — Joe's direction 2026-08-20 (read + WRITE + act)
+Goal (Joe): Atlas doesn't just answer — it OPERATES the system with him. Update
+OurVend, send refill orders, send purchase orders, work alongside him.
+
+Atlas gets action tools, each wired to real backends:
+- **OurVend writes** → the `ourvend-write` edge fn (editProduct, addProduct+image,
+  deleteProduct; later price + planogram/coil). This is the MCOS→OurVend→machine push.
+- **Refill orders** → create `restock_tasks` (already the restock pipeline) + send the
+  map card + text/email template + instructional videos (inventory.md).
+- **Purchase orders** → create `warehouse_orders` + send the PO to the supplier
+  (Weiner's LTD etc. from supplier_links / contacts).
+
+### SAFETY GATE (non-negotiable, = hard rule 3)
+Every action that touches OurVend, a live machine, or sends something OUT to a
+supplier/refiller is CONFIRM-FIRST: Atlas shows exactly what it will do (the product,
+the price, the order, the recipient) and Joe taps approve before it fires. One item at
+a time. Reads and our-own-DB writes (reminders, draft orders) need no gate. This is
+what makes giving Atlas power safe on live partner machines — approve fast, but approve.
+
+### Build order (proposed)
+1. Verify Atlas itself is live (API key / real chat) — prerequisite.
+2. Wire OurVend write tools into /api/agent with the confirm gate (edit price/desc/image,
+   add product) — the highest-value "update my system" piece.
+3. Refill-order tool (draft → approve → create task + send package).
+4. Purchase-order tool (draft → approve → create order + send to supplier). Needs Joe to
+   confirm send channel (email address/really send vs. draft-for-review) + supplier contacts.
+5. Planogram/coil write once that capture exists.
