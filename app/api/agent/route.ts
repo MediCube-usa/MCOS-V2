@@ -114,13 +114,31 @@ Keep replies under ~150 words unless Joe asks for a full rundown.`;
 
 interface ChatMsg { role: 'user' | 'assistant'; content: string; }
 
+// Find the Anthropic key even if it was saved under a different NAME in Vercel —
+// the value is recognizable (Anthropic keys start with sk-ant-). Values never
+// leave the server; when nothing matches, only variable NAMES are reported so
+// Joe can see what the box actually holds.
+function findAnthropicKey(): { key: string | null; foundAs: string | null; nearMisses: string[] } {
+  const exact = process.env.ANTHROPIC_API_KEY;
+  if (exact && exact.trim()) return { key: exact.trim(), foundAs: 'ANTHROPIC_API_KEY', nearMisses: [] };
+  for (const [name, value] of Object.entries(process.env)) {
+    if (value && /^sk-ant-/.test(value.trim())) return { key: value.trim(), foundAs: name, nearMisses: [] };
+  }
+  const near = Object.keys(process.env).filter((k) => /anthropic|claude|api.?key/i.test(k)).sort();
+  return { key: null, foundAs: null, nearMisses: near };
+}
+
 export async function POST(req: NextRequest) {
   if (req.cookies.get(AUTH_COOKIE)?.value !== AUTH_TOKEN) {
     return NextResponse.json({ error: 'not signed in' }, { status: 401 });
   }
-  if (!process.env.ANTHROPIC_API_KEY) {
+  const found = findAnthropicKey();
+  if (!found.key) {
+    const seen = found.nearMisses.length
+      ? `I can see server variables named ${found.nearMisses.join(', ')} — but none of them holds an Anthropic key (the value should start with sk-ant-).`
+      : 'No variable on the server looks like an Anthropic key at all.';
     return NextResponse.json({
-      reply: 'My API key is not loaded yet. Add ANTHROPIC_API_KEY in Vercel → mcos-v2-site → Settings → Environment Variables, then redeploy.',
+      reply: `My API key isn't connected yet. ${seen}\n\nFix in Vercel → project mcos-v2-site → Settings → Environment Variables: Key = ANTHROPIC_API_KEY, Value = the whole key starting with sk-ant-, tick PRODUCTION, Save — then Deployments → ⋯ on the newest → Redeploy. Ask me again after.`,
     });
   }
 
@@ -137,7 +155,7 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ error: 'last message must be from the user' }, { status: 400 });
   }
 
-  const client = new Anthropic();
+  const client = new Anthropic({ apiKey: found.key });
   const snapshot = await liveSnapshot();
   const deptIds = blockDepartments().map((d) => d.id);
 
