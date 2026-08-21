@@ -21,6 +21,9 @@ interface Product { barcode: string; name: string; }
 const SCOPE = [
   'Price points (ours vs online vs local)',
   'Popularity & demand signals',
+  'Packaging size + warehouse SKU',
+  'Coil-fit check — which of our coils it fits (by size)',
+  'Popularity by venue type — gym vs dorm vs hospital vs stadium',
   'Demographics — who buys it, on which campuses',
   'Online sales & reviews',
   'Where it sells / where it does not (our fleet)',

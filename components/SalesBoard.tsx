@@ -67,18 +67,23 @@ export function SalesBoard() {
         </div>
         <div className="tablewrap">
           <table className="dtable">
-            <thead><tr><th>Product</th><th className="num">Units sold</th><th className="num">On machines</th></tr></thead>
+            <thead><tr><th>Product</th><th className="num">Units sold</th><th className="num">Week</th><th className="num">Month</th><th className="num">Year</th><th className="num">On machines</th></tr></thead>
             <tbody>
               {est.map((r) => (
                 <tr key={`${r.product}-${r.barcode}`}>
                   <td>{r.product}</td>
                   <td className="num">{(r.units_sold || 0).toLocaleString()}</td>
+                  <td className="num">—</td>
+                  <td className="num">—</td>
+                  <td className="num">—</td>
                   <td className="num">{r.machines || 0}</td>
                 </tr>
               ))}
             </tbody>
           </table>
         </div>
+        <p className="tbl-cap">Weekly / Monthly / Annual fill in as the counter builds history (a few days of
+          snapshots make a week, and so on). They drive the slow-mover swaps and the algos.</p>
         <p className="tbl-cap">Where-it-sells detail (per machine) and cost/margin math land here as the counter
           accumulates. Cost and sell price per product are on the <b>Products</b> tab.</p>
       </div>

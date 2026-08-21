@@ -693,14 +693,14 @@ body::before {
     radial-gradient(1px 1px at 200px 50px, #bcd6ff, transparent),
     radial-gradient(1px 1px at 260px 200px, #ffffff, transparent),
     radial-gradient(1.4px 1.4px at 320px 120px, #eaf7ff, transparent);
-  background-size: 360px 260px; opacity: .35; animation: starsFar 120s linear infinite;
+  background-size: 250px 185px; opacity: .42; animation: starsFar 120s linear infinite;
 }
 body::after {
   background-image:
     radial-gradient(1.8px 1.8px at 50px 80px, #ffffff, transparent),
     radial-gradient(2px 2px at 180px 160px, #d8ecff, transparent),
     radial-gradient(1.6px 1.6px at 300px 40px, #ffffff, transparent);
-  background-size: 420px 320px; opacity: .5; animation: starsNear 60s linear infinite;
+  background-size: 300px 230px; opacity: .58; animation: starsNear 60s linear infinite;
 }
 @keyframes starsFar { from { background-position: 0 0; } to { background-position: 0 -2600px; } }
 @keyframes starsNear { from { background-position: 0 0; } to { background-position: 0 -3200px; } }
@@ -742,3 +742,8 @@ body::after {
 .atlas-no { background: none; color: var(--muted); border: 1px solid var(--line); border-radius: 7px; padding: 7px 13px; font-weight: 700; font-size: 12px; cursor: pointer; }
 
 .cat-headfields { flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 8px; }
+
+/* coil facings/size line + even (centered) rows to mirror the machine face */
+.coil-row-even { justify-content: center; }
+.coil { display: inline-flex; flex-direction: column; align-items: center; gap: 2px; }
+.coil-meta { font-style: normal; font-size: 8.5px; font-weight: 700; color: var(--muted); line-height: 1; }
