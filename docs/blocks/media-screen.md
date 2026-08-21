@@ -59,6 +59,19 @@ Explorer (sdcard root) + a config/manifest text file.
 - Ads must land on the **main TCN Android 7.1.2 interface** (NOT a card-reader clip like Nayax/Cantaloupe).
 - Fragile idea (kill YS app → load → restart): watchdog re-kills; unreliable. Avoid.
 
+### ES APP IDENTIFIED = ES File Explorer 4.0.2 (old full version)
+Joe sent it (came as an iOS placeholder link, not the APK bytes, but the filename = ES文件浏览器_4.0.2).
+ES 4.0.2 has a built-in **FTP server / "Remote Manager"** + LAN/SMB + cloud client. HONEST CATCH:
+the machine is behind **WAN/SIM NAT** — a server hosted ON the machine (inbound) generally CAN'T be
+reached from the internet (cellular = carrier NAT, campus WAN = firewalled). So "machine as FTP server"
+only works on a LOCAL network, NOT remotely across campuses. NAT-friendly = the machine must PULL
+(outbound), not be pushed to. So the remote answer is NOT ES-as-server.
+### THE MAKE-OR-BREAK = advert.txt's format
+- If **advert.txt / config can point at a REMOTE URL** → machine pulls ads outbound from MCOS-hosted
+  media (works through NAT, nothing to install, nothing for the watchdog to kill) = SOLVED. Best case.
+- If **local-files-only** → remote delivery must ride an OUTBOUND remote-control channel that's
+  automatable: AirDroid Business (IF actually running — TeamViewer/AirDroid work BECAUSE the machine
+  dials OUT to their cloud, beating NAT) or scripted TeamViewer, dropping files to the advert folder.
 ### SHARPENED NEXT STEPS (given the lockdown)
 1. **`advert.txt` contents = THE key** — reveals the ad playlist format AND whether it can point at a
    remote URL/FTP (if yes = host media in MCOS, machine pulls it, no rogue app needed). GET THIS.
