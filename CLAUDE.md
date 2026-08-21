@@ -188,6 +188,20 @@ code/participant against the shared DB, generates/tracks the pickup code, dispen
 redemption. Do NOT build IMPACT into MCOS; keep them separate. OPEN: confirm WHERE the shared
 verification DB lives (same Supabase, or a separate shared one) before building the MCOS code side.
 
+### COMMAND-PAGE IN-WINDOW EMBEDS (Joe, 2026-08-21 — stay-inside-MCOS)
+Joe wants two things to open INSIDE MCOS (sidebar/tabs stay on the left, the rest of the page
+becomes the content — never leave mcos-v2-site):
+1. **TeamViewer** in the Command page box where the video "Screen Feed" placeholder is now — use it
+   right in that box (machines have TeamViewer).
+2. **Weiner's LTD shop** (weinersltd.com, our supplier) — click it and shop in the window, in-page,
+   without leaving MCOS (same for other suppliers added later).
+HONEST TECH NOTE: this = an iframe, which only works if the site ALLOWS embedding. Many sites send
+X-Frame-Options/CSP frame-ancestors that BLOCK iframing — TeamViewer's web app almost certainly
+can't be plain-iframed (look at TeamViewer's embed/API or a session panel instead); weinersltd.com
+needs a check (if it blocks, options = a framed panel, a proxy, or an in-app catalog). BUILD PLAN:
+add an in-page "workspace" view that keeps the sidebar and swaps the main area to the embedded
+tool; test each URL for embeddability first, fall back gracefully where blocked.
+
 **JOE'S LOCKED ROADMAP (2026-08-20 brain-dump — do these in order, don't get lost):**
 1. Atlas chat live on the front (BUILT, needs merge to main + live verify of the key).
 2. Calendar through Atlas — catch every date + who + where in conversation, set
