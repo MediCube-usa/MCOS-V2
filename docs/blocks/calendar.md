@@ -1,5 +1,37 @@
 # Calendar, appointments & alerts (cross-block layer)
 
+## REVISION 4 (2026-08-21) — LIVE GOOGLE CONNECTION (read + WRITE)
+Joe's call: don't rebuild calendar/drive/mail inside MCOS — connect to Google's real
+services and let Atlas COMMAND them. Google = engine, MCOS = controls. Everything company =
+**medicubehub1@gmail.com** (a consumer Gmail, NOT Workspace → service accounts can't act as
+it for Calendar/Gmail, so full OAuth is the correct/only path). Joe's personal account stays out.
+
+**Auth model (mirrors the OurVend pattern — all cloud-side, secrets never in browser/repo):**
+- OAuth **refresh token** stored in `secrets.google_refresh_token`; client creds in
+  `secrets.google_client_id` / `google_client_secret` (Joe pastes from Google Cloud).
+- Consent screen published to **Production** → refresh token does NOT expire (sign in ONCE).
+  (In "Testing" it would die every 7 days — so we publish.) Access token auto-refreshes
+  hourly, server-side, self-healing.
+- Redirect URI: `https://negtepvmbkyefvxiakwu.supabase.co/functions/v1/google-oauth/callback`
+
+**Built + deployed 2026-08-21 (edge functions):**
+- `google-oauth` (public): `/connect` → 302 to Google consent; `/callback` → exchanges the
+  code, stores the refresh token in secrets. Shows on-brand success/why-failed pages.
+- `google-calendar` (JWT): actions `status | listEvents | createEvent | updateEvent |
+  deleteEvent` on the company account's primary calendar. Mints a fresh access token each call.
+- Scope this pass: **Calendar only**. Drive + Gmail next pass (Gmail = restricted scope → extra
+  Google review; don't let it block calendar). Maps = separate API key (already wired).
+
+**Joe's one-time setup (Google Cloud, signed in as medicubehub1):** create project MCOS →
+enable Google Calendar API → OAuth consent screen (External, app MCOS, publish to Production)
+→ create OAuth Web client with the redirect URI above → send Client ID + Secret (go into
+secrets). Then hit the `/connect` link once to link the calendar.
+
+**NEXT once connected:** wire Atlas tools (create/list/update events) into `/api/agent` so it
+files dates from chat straight onto the real Google calendar; point the corner box + /calendar
+at the authenticated feed (replacing the public-ICS read).
+
+
 REVISION 3 (2026-08-20, Joe: "I want an actual real google calendar box in that corner,
 dark mode, real and functionable… stay right here until this is completely working"):
 - The header corner box is now a REAL INTERACTIVE MONTH CALENDAR (dark, agent-box width):

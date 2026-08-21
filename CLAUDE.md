@@ -186,6 +186,20 @@ product placement — refreshed every cycle (reconfirmed by Joe 2026-08-20).
 - Boston (Nayax) machines: not set up; planograms may only exist on Nayax (secondary, optional).
 
 ## SESSION LOG (newest first)
+- 2026-08-21 (b): GOOGLE CALENDAR — LIVE CONNECTION started (Joe: connect to Google's real
+  services, don't rebuild; Atlas commands them). Company account = medicubehub1@gmail.com
+  (consumer Gmail → OAuth is the only path for Calendar/Gmail RW; personal account stays out).
+  Built + deployed 2 edge functions: `google-oauth` (public — /connect consent + /callback
+  stores refresh token in secrets) and `google-calendar` (JWT — status/list/create/update/delete
+  on the company primary calendar, self-refreshing access token). Seeded secrets rows
+  google_client_id / google_client_secret / google_refresh_token (empty). Consent screen →
+  PRODUCTION so the refresh token never expires (sign in once). Scope this pass = Calendar only
+  (Drive+Gmail next; Gmail is restricted). Redirect URI =
+  https://negtepvmbkyefvxiakwu.supabase.co/functions/v1/google-oauth/callback . BLOCKED on Joe:
+  create the OAuth Web client in Google Cloud (medicubehub1) + paste Client ID/Secret → then hit
+  /connect once. AFTER connect: wire Atlas create/list-event tools into /api/agent + point the
+  corner box/ /calendar at the authenticated feed. NOTE: this sandbox's proxy 403s the supabase.co
+  host, so functions were deploy-verified (ACTIVE) not curl-verified; live test = Joe's connect click.
 - 2026-08-21: COIL MAP → PITCH MODEL. Every tray made the SAME width (doubles span 2
   single-units, singles span 1 — 5 doubles = 10 singles, machine-true). Then wired the real
   data model per Joe: store each coil's physical PITCH (mm), not a vague "5/15-coil". New
