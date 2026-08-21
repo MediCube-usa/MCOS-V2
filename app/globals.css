@@ -678,3 +678,60 @@ a { color: inherit; text-decoration: none; }
   color: #eaf2ff; font-size: 14px; padding: 8px 11px; cursor: pointer; }
 .atlas-mic.live { border-color: #ff5078; box-shadow: 0 0 12px rgba(255,80,120,.5); animation: micpulse 1s infinite; }
 @keyframes micpulse { 0%,100% { box-shadow: 0 0 6px rgba(255,80,120,.4);} 50% { box-shadow: 0 0 16px rgba(255,80,120,.8);} }
+
+/* ================= DEMO POLISH: motion & glow (Joe, "to the moon") ================= */
+/* Drifting starfield behind everything — subtle so text stays crisp. */
+body::before, body::after {
+  content: ""; position: fixed; inset: 0; z-index: 0; pointer-events: none;
+  background-repeat: repeat;
+}
+body::before {
+  background-image:
+    radial-gradient(1px 1px at 20px 30px, #ffffff, transparent),
+    radial-gradient(1px 1px at 130px 90px, #cfefff, transparent),
+    radial-gradient(1.6px 1.6px at 70px 160px, #ffffff, transparent),
+    radial-gradient(1px 1px at 200px 50px, #bcd6ff, transparent),
+    radial-gradient(1px 1px at 260px 200px, #ffffff, transparent),
+    radial-gradient(1.4px 1.4px at 320px 120px, #eaf7ff, transparent);
+  background-size: 360px 260px; opacity: .35; animation: starsFar 120s linear infinite;
+}
+body::after {
+  background-image:
+    radial-gradient(1.8px 1.8px at 50px 80px, #ffffff, transparent),
+    radial-gradient(2px 2px at 180px 160px, #d8ecff, transparent),
+    radial-gradient(1.6px 1.6px at 300px 40px, #ffffff, transparent);
+  background-size: 420px 320px; opacity: .5; animation: starsNear 60s linear infinite;
+}
+@keyframes starsFar { from { background-position: 0 0; } to { background-position: 0 -2600px; } }
+@keyframes starsNear { from { background-position: 0 0; } to { background-position: 0 -3200px; } }
+
+/* Atlas card — slow rotating multicolor halo RING (the hero). The ::after is a
+   solid inner panel so the color only shows as a glowing border, never through. */
+.atlas-band .agent-card { position: relative; z-index: 0; background: transparent; }
+.atlas-band .agent-card::before {
+  content: ""; position: absolute; inset: -4px; z-index: -2; border-radius: 15px;
+  background: conic-gradient(from 0deg, #ff3df2, #00e5ff, #caff00, #8b5cff, #ff3b3b, #00ffaa, #ff3df2);
+  filter: blur(11px); opacity: .68; animation: atlasHalo 11s linear infinite;
+}
+.atlas-band .agent-card::after {
+  content: ""; position: absolute; inset: 0; z-index: -1; border-radius: 10px;
+  background: #0a1526;
+}
+@keyframes atlasHalo { to { transform: rotate(1turn); } }
+
+/* Calendar box — signature amber glow (ties to the ⏰ alert-count color). */
+.cc-top .side-stack .calpanel {
+  border-color: rgba(255,176,0,.55);
+  animation: calGlow 3.6s ease-in-out infinite;
+}
+@keyframes calGlow {
+  0%,100% { box-shadow: 0 0 12px rgba(255,176,0,.22); }
+  50%     { box-shadow: 0 0 26px rgba(255,176,0,.55); }
+}
+
+/* Respect users who ask the OS to reduce motion — freeze animations, keep the look. */
+@media (prefers-reduced-motion: reduce) {
+  body::before, body::after, .atlas-band .agent-card::before, .cc-top .side-stack .calpanel {
+    animation: none !important;
+  }
+}
