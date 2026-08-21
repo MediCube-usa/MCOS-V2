@@ -705,24 +705,21 @@ body::after {
 @keyframes starsFar { from { background-position: 0 0; } to { background-position: 0 -2600px; } }
 @keyframes starsNear { from { background-position: 0 0; } to { background-position: 0 -3200px; } }
 
-/* Atlas card — crisp multicolor border LINE + soft glow, same weight as the
-   other blocks' borders (colors change ~every 15% around the perimeter). */
+/* Atlas card — clean cyan glow border (hero), same weight as the other blocks. */
 .atlas-band .agent-card {
-  border: 2px solid transparent; border-radius: 10px;
-  background:
-    linear-gradient(#0a1526, #0a1526) padding-box,
-    conic-gradient(from 0deg, #ff3df2, #00e5ff, #caff00, #ffd84d, #ff3b3b, #00ffaa, #8b5cff, #ff3df2) border-box;
-  box-shadow: 0 0 20px rgba(120,120,255,.30);
+  border: 2px solid var(--cyan); border-radius: 10px;
+  background: #0a1526;
+  box-shadow: 0 0 20px rgba(0,229,255,.30);
 }
 
 /* Calendar box — signature amber glow (ties to the ⏰ alert-count color). */
 .cc-top .side-stack .calpanel {
-  border-color: rgba(255,176,0,.55);
+  border-color: rgba(255,255,255,.6);
   animation: calGlow 3.6s ease-in-out infinite;
 }
 @keyframes calGlow {
-  0%,100% { box-shadow: 0 0 12px rgba(255,176,0,.22); }
-  50%     { box-shadow: 0 0 26px rgba(255,176,0,.55); }
+  0%,100% { box-shadow: 0 0 12px rgba(255,255,255,.20); }
+  50%     { box-shadow: 0 0 28px rgba(255,255,255,.55); }
 }
 
 /* Respect users who ask the OS to reduce motion — freeze animations, keep the look. */
