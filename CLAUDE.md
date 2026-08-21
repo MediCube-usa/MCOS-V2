@@ -188,19 +188,20 @@ code/participant against the shared DB, generates/tracks the pickup code, dispen
 redemption. Do NOT build IMPACT into MCOS; keep them separate. OPEN: confirm WHERE the shared
 verification DB lives (same Supabase, or a separate shared one) before building the MCOS code side.
 
-### COMMAND-PAGE IN-WINDOW EMBEDS (Joe, 2026-08-21 — stay-inside-MCOS)
-Joe wants two things to open INSIDE MCOS (sidebar/tabs stay on the left, the rest of the page
-becomes the content — never leave mcos-v2-site):
-1. **TeamViewer** in the Command page box where the video "Screen Feed" placeholder is now — use it
-   right in that box (machines have TeamViewer).
-2. **Weiner's LTD shop** (weinersltd.com, our supplier) — click it and shop in the window, in-page,
-   without leaving MCOS (same for other suppliers added later).
-HONEST TECH NOTE: this = an iframe, which only works if the site ALLOWS embedding. Many sites send
-X-Frame-Options/CSP frame-ancestors that BLOCK iframing — TeamViewer's web app almost certainly
-can't be plain-iframed (look at TeamViewer's embed/API or a session panel instead); weinersltd.com
-needs a check (if it blocks, options = a framed panel, a proxy, or an in-app catalog). BUILD PLAN:
-add an in-page "workspace" view that keeps the sidebar and swaps the main area to the embedded
-tool; test each URL for embeddability first, fall back gracefully where blocked.
+### COMMAND-PAGE "SCREEN FEED" BOX (Joe, 2026-08-21 — updated goodnight)
+DROPPED: the in-window TeamViewer + Weiner's-shop embed idea — Joe has another way, don't build it.
+NEW ask for the Screen Feed box (where the video placeholder is now), best → acceptable:
+1. **BEST CASE: mirror what's playing ON THE MACHINES** — show the machine ad media in that box so
+   Joe can see what's on the screens. FEASIBILITY: real live pixel-mirroring is NOT possible (these
+   TCN/Yunshu vending machines don't stream their screens). BUT if we can get the machine AD PLAYLIST
+   / media SOURCE, MCOS can play the SAME playlist in the box. OPEN: find where the machine ad media
+   lives (OurVend media manager? a separate ad/screen system? Joe uploads it where?).
+2. **Play videos in the box** — EASY & doable: Joe gives ad video files/links → box becomes an
+   autoplay muted looping player, + a Picture-in-Picture (PiP) pop-out button.
+3. **Social media in the box** — YouTube embeds cleanly; Instagram/TikTok have embed widgets with
+   limits; a full social "app" only if it allows iframing (same X-Frame rule as before).
+"Can we load an app in there?" — YES for our own mini-apps + embed-friendly content; external apps
+only if they permit iframing. Start with #2 (video player) — it's the sure thing — then chase #1.
 
 **JOE'S LOCKED ROADMAP (2026-08-20 brain-dump — do these in order, don't get lost):**
 1. Atlas chat live on the front (BUILT, needs merge to main + live verify of the key).
