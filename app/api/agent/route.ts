@@ -40,6 +40,36 @@ async function sb<T>(q: string): Promise<T[]> {
   }
 }
 
+// Real Google Calendar (company account) via the google-calendar edge function.
+// Our OWN calendar — Atlas writes to it directly (not OurVend/machines/payments),
+// so no approval gate. Best-effort: if Google isn't reachable, callers degrade.
+async function callCalendar(payload: Record<string, unknown>): Promise<Record<string, unknown>> {
+  try {
+    const r = await fetch(`${SUPABASE_URL}/functions/v1/google-calendar`, {
+      method: 'POST',
+      headers: { apikey: SUPABASE_ANON_JWT, Authorization: `Bearer ${SUPABASE_ANON_JWT}`, 'Content-Type': 'application/json' },
+      body: JSON.stringify(payload),
+    });
+    return (await r.json().catch(() => ({ ok: false, error: 'bad response' }))) as Record<string, unknown>;
+  } catch {
+    return { ok: false, error: 'calendar unreachable' };
+  }
+}
+// A timed event → naive local start/end strings (edge fn stamps the Vegas TZ).
+// End clamps to same day to avoid rollover math — fine for reminders.
+function timedRange(date: string, hhmm: string): { start: string; end: string } {
+  const [h, m] = hhmm.split(':').map(Number);
+  const pad = (n: number) => String(n).padStart(2, '0');
+  const eh = Math.min(h + 1, 23);
+  return { start: `${date}T${pad(h)}:${pad(m)}:00`, end: `${date}T${pad(eh)}:${pad(m)}:00` };
+}
+// All-day Google events use an EXCLUSIVE end date (next day).
+function nextDay(date: string): string {
+  const d = new Date(`${date}T00:00:00Z`);
+  d.setUTCDate(d.getUTCDate() + 1);
+  return d.toISOString().slice(0, 10);
+}
+
 // Rows → compact one-per-line text the model can read; nulls dropped so the
 // snapshot stays small.
 function rowsText(title: string, rows: object[], max = 40): string {
@@ -108,8 +138,9 @@ DATA RULES (these matter — trust has been burned before):
 1. Answer ONLY from the live snapshot in this conversation. Every number you give must come from it. If the snapshot doesn't contain something, say plainly "that's not in my data yet" — NEVER estimate or invent a figure.
 2. The snapshot refreshes from the OurVend connection about every 20 minutes. Quote the sync age when talking about stock.
 3. You can PROPOSE changes to a product in OurVend — price, description, name, or size — with the propose_ourvend_change tool, using the product's exact CODE from the catalog snapshot. This does NOT change anything itself: it shows Joe an Approve button, and only his tap makes it live. So NEVER say you changed something — say you've "put it up for approval" and let the card do the rest. You still cannot touch planograms, coils/slots, or per-machine prices yet (not built) — say so if asked.
-4. set_reminder — files a reminder/appointment on a block (shows on the calendar, the ⏰ badge, and the block's alerts). Use it whenever Joe mentions a date, visit, deadline, or follow-up — capture who/where in the title/location/notes. Confirm what you set, with the date.
-5. When a question needs a block that is still a shell (parked), say the block isn't built yet.
+4. set_reminder — files a date on a block AND drops it on the real MediCube Google Calendar in one shot (shows on the ⏰ badge, the block's alerts, and the actual Google Calendar). Use it whenever Joe mentions a date, visit, deadline, or follow-up — capture who/where in the title/location/notes. Confirm what you set, with the date; the tool tells you if it also reached Google Calendar.
+5. list_calendar_events — reads what's actually on the Google Calendar. Use it when Joe asks what's coming up / on the schedule. If it says the calendar isn't reachable, tell him plainly (the connection may need a reconnect).
+6. When a question needs a block that is still a shell (parked), say the block isn't built yet.
 
 Keep replies under ~150 words unless Joe asks for a full rundown.`;
 }
@@ -236,7 +267,16 @@ export async function POST(req: NextRequest) {
       body: JSON.stringify(row),
     });
     if (!r.ok) return `ERROR: could not save (${r.status} ${await r.text().catch(() => '')})`;
-    return `SAVED: "${title}" on ${date}${time ? ` at ${time}` : ''} → ${dept} block (calendar + badge + alerts).`;
+
+    // Also drop it on the REAL Google Calendar (best-effort — the block badge/alert
+    // is already saved above regardless of whether Google is reachable).
+    const calPayload: Record<string, unknown> = time
+      ? { action: 'createEvent', summary: title, location: row.location ?? undefined, description: row.notes ?? undefined, allDay: false, ...timedRange(date, time) }
+      : { action: 'createEvent', summary: title, location: row.location ?? undefined, description: row.notes ?? undefined, allDay: true, start: date, end: nextDay(date) };
+    const cal = await callCalendar(calPayload);
+    const onGoogle = cal.ok ? ' + Google Calendar' : '';
+
+    return `SAVED: "${title}" on ${date}${time ? ` at ${time}` : ''} → ${dept} block (badge + alerts)${onGoogle}.`;
   }
 
   const proposeChangeTool = {
@@ -255,6 +295,30 @@ export async function POST(req: NextRequest) {
     },
   };
 
+  const listCalendarTool = {
+    name: 'list_calendar_events',
+    description:
+      "Read upcoming events from the real MediCube Google Calendar. Use when Joe asks what's on the calendar / schedule / coming up.",
+    input_schema: {
+      type: 'object' as const,
+      properties: {
+        days: { type: 'integer', description: 'How many days ahead to look (default 14)' },
+      },
+    },
+  };
+
+  async function runListCalendar(input: Record<string, unknown>): Promise<string> {
+    const days = Number.isInteger(input.days) && (input.days as number) > 0 ? (input.days as number) : 14;
+    const now = new Date();
+    const max = new Date(now.getTime() + days * 86400000);
+    const cal = await callCalendar({ action: 'listEvents', timeMin: now.toISOString(), timeMax: max.toISOString(), maxResults: 50 });
+    if (!cal.ok) return `ERROR: Google Calendar not reachable right now (${cal.error || '?'}).`;
+    const events = (cal.events as { start?: string; summary?: string; location?: string }[]) || [];
+    if (!events.length) return `No events on the Google Calendar in the next ${days} days.`;
+    return `Google Calendar — next ${days} days:\n` +
+      events.map((e) => `- ${e.start}: ${e.summary || '(no title)'}${e.location ? ` @ ${e.location}` : ''}`).join('\n');
+  }
+
   const pending: PendingAction[] = [];
   const messages: Anthropic.Beta.BetaMessageParam[] = history.map((m) => ({ role: m.role, content: m.content }));
 
@@ -271,7 +335,7 @@ export async function POST(req: NextRequest) {
           { type: 'text', text: staticSystem(), cache_control: { type: 'ephemeral' } },
           { type: 'text', text: `LIVE SNAPSHOT (fetched for this message):\n\n${snapshot}` },
         ],
-        tools: [setReminderTool, proposeChangeTool],
+        tools: [setReminderTool, listCalendarTool, proposeChangeTool],
         messages,
       });
 
@@ -291,6 +355,8 @@ export async function POST(req: NextRequest) {
           let out: string;
           if (block.name === 'set_reminder') {
             out = await runSetReminder(block.input as Record<string, unknown>);
+          } else if (block.name === 'list_calendar_events') {
+            out = await runListCalendar(block.input as Record<string, unknown>);
           } else if (block.name === 'propose_ourvend_change') {
             const inp = block.input as Record<string, unknown>;
             const code = String(inp.product_code ?? '').trim();
