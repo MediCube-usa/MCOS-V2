@@ -740,3 +740,5 @@ body::after {
 .atlas-yes { background: #00e5a8; color: #06121f; border: none; border-radius: 7px; padding: 7px 15px; font-weight: 800; font-size: 12px; cursor: pointer; }
 .atlas-yes:disabled { opacity: .6; cursor: default; }
 .atlas-no { background: none; color: var(--muted); border: 1px solid var(--line); border-radius: 7px; padding: 7px 13px; font-weight: 700; font-size: 12px; cursor: pointer; }
+
+.cat-headfields { flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 8px; }

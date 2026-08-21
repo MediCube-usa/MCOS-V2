@@ -118,10 +118,13 @@ export function CatalogBoard({ carriers }: { carriers: Record<string, string[]> 
                     <div className="cat-thumb lg">
                       {p.image_url ? <img src={p.image_url} alt={p.name} /> : <span className="cat-noimg">no image</span>}
                     </div>
-                    <label className="pd-btn">
-                      {p.image_url ? 'Replace image' : '📷 Add image'}
-                      <input type="file" accept="image/*" hidden onChange={(e) => onImage(p.barcode, e)} />
-                    </label>
+                    <div className="cat-headfields">
+                      <label className="pd-btn">
+                        {p.image_url ? 'Replace image' : '📷 Add image'}
+                        <input type="file" accept="image/*" hidden onChange={(e) => onImage(p.barcode, e)} />
+                      </label>
+                      <label className="pd-field pd-wide"><span>Description — loads to OurVend with the image</span><textarea rows={4} value={p.description || ''} onChange={(e) => patch(p.barcode, { description: e.target.value })} placeholder="What it is, size, key details — shown on the machine + used in planograms" /></label>
+                    </div>
                   </div>
                   <div className="pd-grid">
                     <label className="pd-field"><span>Name</span><input value={p.name} onChange={(e) => patch(p.barcode, { name: e.target.value })} /></label>
@@ -132,8 +135,7 @@ export function CatalogBoard({ carriers }: { carriers: Record<string, string[]> 
                     <label className="pd-field"><span>Cost</span><input value={p.cost || ''} onChange={(e) => patch(p.barcode, { cost: e.target.value })} /></label>
                     <label className="pd-field"><span>Supplier</span><input value={p.supplier || ''} onChange={(e) => patch(p.barcode, { supplier: e.target.value })} /></label>
                     <label className="pd-field"><span>Barcode / ID</span><input value={p.barcode} readOnly style={{ opacity: .6 }} /></label>
-                    <label className="pd-field pd-wide"><span>Description</span><textarea rows={2} value={p.description || ''} onChange={(e) => patch(p.barcode, { description: e.target.value })} placeholder="What it is, size, key details for the planogram and machine display" /></label>
-                    <label className="pd-field pd-wide"><span>Notes</span><textarea rows={2} value={p.notes || ''} onChange={(e) => patch(p.barcode, { notes: e.target.value })} /></label>
+                    <label className="pd-field pd-wide"><span>Notes (internal — not sent to OurVend)</span><textarea rows={2} value={p.notes || ''} onChange={(e) => patch(p.barcode, { notes: e.target.value })} /></label>
                   </div>
                   {machines.length > 0 && <div className="cat-onlist">On: {machines.join(', ')}</div>}
                   <button className="sb-remove" onClick={() => remove(p.barcode)}>Remove product</button>
