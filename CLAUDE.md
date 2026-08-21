@@ -168,6 +168,17 @@ Fully automated, cloud-side, no browser, no Vercel env. All in **Supabase Edge F
   ＋GCal template links — no OAuth).
 
 ## OPEN / NEXT
+### ⭐ OURVEND WRITE PATH — RECIPES CAPTURED, READY TO BUILD (2026-08-21) — COME BACK TO THIS
+Joe's HAR gave every remaining OurVend write (full recipes in `docs/blocks/ourvend-write.md`):
+- **AddCI** (+AuditImge) = add product + image inline → the **Catalog→OurVend bulk loader** (Piece A)
+- **Selection/Edit** = write a coil (product/price/**SiCapacity**=pitch units/stock) → **slot push** (Piece D)
+- **Selection/ClMachine** = clone a machine = **apply a planogram** (Piece D)
+- **PickUpCode/MassProductionCode** (+ListJsoin) = generate/read **pickup codes**
+Build these into `ourvend-write` as actions BEHIND per-item approval (hard rule 3, never auto).
+**PICKUP CODES — PARKED FOR JOE'S USE-CASE:** 8-digit per-machine security codes (free-vend /
+promo / refiller-access?). Joe to explain how he uses them → likely becomes the **Vouchers block**.
+Do NOT build the code flow until Joe defines the use.
+
 **JOE'S LOCKED ROADMAP (2026-08-20 brain-dump — do these in order, don't get lost):**
 1. Atlas chat live on the front (BUILT, needs merge to main + live verify of the key).
 2. Calendar through Atlas — catch every date + who + where in conversation, set
