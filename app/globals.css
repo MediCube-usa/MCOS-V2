@@ -705,19 +705,15 @@ body::after {
 @keyframes starsFar { from { background-position: 0 0; } to { background-position: 0 -2600px; } }
 @keyframes starsNear { from { background-position: 0 0; } to { background-position: 0 -3200px; } }
 
-/* Atlas card — slow rotating multicolor halo RING (the hero). The ::after is a
-   solid inner panel so the color only shows as a glowing border, never through. */
-.atlas-band .agent-card { position: relative; z-index: 0; background: transparent; }
-.atlas-band .agent-card::before {
-  content: ""; position: absolute; inset: -4px; z-index: -2; border-radius: 15px;
-  background: conic-gradient(from 0deg, #ff3df2, #00e5ff, #caff00, #8b5cff, #ff3b3b, #00ffaa, #ff3df2);
-  filter: blur(11px); opacity: .68; animation: atlasHalo 11s linear infinite;
+/* Atlas card — crisp multicolor border LINE + soft glow, same weight as the
+   other blocks' borders (colors change ~every 15% around the perimeter). */
+.atlas-band .agent-card {
+  border: 2px solid transparent; border-radius: 10px;
+  background:
+    linear-gradient(#0a1526, #0a1526) padding-box,
+    conic-gradient(from 0deg, #ff3df2, #00e5ff, #caff00, #ffd84d, #ff3b3b, #00ffaa, #8b5cff, #ff3df2) border-box;
+  box-shadow: 0 0 20px rgba(120,120,255,.30);
 }
-.atlas-band .agent-card::after {
-  content: ""; position: absolute; inset: 0; z-index: -1; border-radius: 10px;
-  background: #0a1526;
-}
-@keyframes atlasHalo { to { transform: rotate(1turn); } }
 
 /* Calendar box — signature amber glow (ties to the ⏰ alert-count color). */
 .cc-top .side-stack .calpanel {
