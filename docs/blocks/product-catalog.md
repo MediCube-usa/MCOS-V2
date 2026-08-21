@@ -230,3 +230,34 @@ sales, where sold/not sold) so launches and pre-orders are staged from here.
 3. OurVend **Sales Report reader** (read-only edge fn) → per-product sold totals on the
    Sales tab. Next data build on this block.
 4. Planograms + push: other block — `docs/blocks/planograms.md`.
+
+## COIL-SIZE / FACINGS STRATEGY + RESEARCH FIT-CHECK (Joe brain-dump 2026-08-20) — THE PROFIT ENGINE
+This is core money-making IP. Capture now; wire as Joe supplies the coil sizes.
+
+- **Coil layout = the real machine face.** 51 moves to the BOTTOM row; rows centered/even on
+  both sides so it mirrors the physical machine. (Done in CoilMap.)
+- **Each coil has a SIZE, and size sets how many FACINGS (products deep) that coil holds.**
+  More facings = more units before empty = fewer refills = more profit. A coil only ~5 deep
+  can sell out before it trips a refill → lost sales. So facings drive the refill trigger and
+  the reorder math.
+- **Joe will load the coil sizes** → we populate, per coil: size + facings (units it holds).
+  That also seeds INVENTORY capacity per slot (how many it holds) for the whole inventory/
+  refill algo. First few weeks = manual strategy + teach partner; then algos tune it.
+- **Research fit-check (Research tab):** as partner scouts new products, each product carries
+  its PACKAGING SIZE + warehouse SKU. Run the product's packaging size against the coil sizes
+  → show which coils it fits / doesn't. Maximizes product count (pick the size/brand/packaging
+  that fits the best coil). If a wanted product doesn't fit a size, find same product different
+  packaging or a smaller size. Need: where to pull packaging-size data per product to check.
+- **Sales performance (Sales tab):** per product add WEEKLY / MONTHLY / ANNUAL rows (not just
+  cumulative) so we see performance windows, swap slow movers, and feed the algos.
+- **Bulk load (Catalog):** one file to drop that carries image + description + price (+ size)
+  to load products in bulk — into MCOS and then mirrored to OurVend catalog. (ES folder =
+  machine-side price/slot layer; catalog = image+desc; keep distinct.)
+- **AI knowledge store:** Joe loads reference info into Supabase for Atlas to read when needed
+  (manual checks: size, sales, price, count; plus outside signals — product popularity at
+  other sites, and by VENUE TYPE: gym member vs dorm resident vs hospital vs stadium foot
+  traffic differ). Placeholder now; structured store next.
+- **Demo/type templates for cloning:** OurVend clones a MACHINE onto another (no template
+  object). Set up not-in-use "template" machines by venue type — Gym, Dorm, Hallway, Stadium,
+  Hospital — filled, then clone onto real machines. Capture the clone recipe (pending HAR),
+  then MCOS/Atlas builds the type-template library and clones on command.
