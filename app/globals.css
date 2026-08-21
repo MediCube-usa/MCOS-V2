@@ -705,12 +705,19 @@ body::after {
 @keyframes starsFar { from { background-position: 0 0; } to { background-position: 0 -2600px; } }
 @keyframes starsNear { from { background-position: 0 0; } to { background-position: 0 -3200px; } }
 
-/* Atlas card — clean cyan glow border (hero), same weight as the other blocks. */
-.atlas-band .agent-card {
-  border: 2px solid var(--cyan); border-radius: 10px;
-  background: #0a1526;
-  box-shadow: 0 0 20px rgba(0,229,255,.30);
+/* Atlas card — rotating multicolor halo (the hero). ::after is a solid inner
+   panel so the color stays a glowing aura around the box, text always crisp. */
+.atlas-band .agent-card { position: relative; z-index: 0; background: transparent; }
+.atlas-band .agent-card::before {
+  content: ""; position: absolute; inset: -4px; z-index: -2; border-radius: 15px;
+  background: conic-gradient(from 0deg, #ff3df2, #00e5ff, #caff00, #8b5cff, #ff3b3b, #00ffaa, #ff3df2);
+  filter: blur(11px); opacity: .68; animation: atlasHalo 11s linear infinite;
 }
+.atlas-band .agent-card::after {
+  content: ""; position: absolute; inset: 0; z-index: -1; border-radius: 10px;
+  background: #0a1526;
+}
+@keyframes atlasHalo { to { transform: rotate(1turn); } }
 
 /* Calendar box — signature amber glow (ties to the ⏰ alert-count color). */
 .cc-top .side-stack .calpanel {
