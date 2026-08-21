@@ -654,3 +654,17 @@ a { color: inherit; text-decoration: none; }
 .cc-top .side-stack .calpanel { height: auto; flex: 1; min-height: 205px; }
 .cc-top .calpanel .mini-day { height: 17px; font-size: 9.5px; }
 .cc-top .calpanel .mini-wd { font-size: 8px; }
+
+/* ---- LOCK the top row height (Joe): conversation scrolls INSIDE the Atlas box,
+   the page never grows/pushes down. Row height = video 205 + gap 12 + calendar 205. ---- */
+@media (min-width: 901px) {
+  .cc-top { height: 422px; }
+  .cc-top .cc-left { height: 100%; min-height: 0; }
+  .cc-top .agent-card { flex: 1 1 auto; min-height: 0; height: auto; }
+  .cc-top .agent-card-body { min-height: 0; }
+  .cc-top .atlas-log { flex: 1; min-height: 0; max-height: none; overflow-y: auto; }
+}
+/* On phone the columns stack; cap the chat log so it scrolls instead of stretching the page. */
+@media (max-width: 900px) {
+  .atlas-band .atlas-log { max-height: 46vh; overflow-y: auto; }
+}
