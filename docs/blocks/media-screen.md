@@ -115,6 +115,29 @@ router (RMS/VPN) → ES File Explorer FTP** pipeline (or TeamViewer as fallback)
 schedule. Remaining unknowns before build: (a) media folder path for AdContent, (b) video AdType value,
 (c) does the YS app hot-reload advert.txt or need a nudge/reboot. All small, answerable by 1-2 tests.
 
+### ⭐⭐ LIVE RECON RESULTS (2026-08-21 AM, via TeamViewer into "UNLV Tonopah Hall")
+- **AD MEDIA FOLDER = `VideoAndImageRemote`** (self-named "video and image, remote"). This is almost
+  certainly where the ad player pulls `AdContent1` files from. FINAL CONFIRM PENDING: that
+  `a2f1d5b7-…png` + `All adGummies.mp4` sit inside it + its exact full path (likely
+  `/sdcard/VideoAndImageRemote` or `/storage/emulated/0/VideoAndImageRemote`).
+- **VIDEO ADS = `.mp4`** — confirmed: `All adGummies.mp4` in the ad-media set. (Still need the numeric
+  video `AdType` value in advert.txt; image `AdType`=2.)
+- **Ad-creative library seen:** Creatine Gummies, AxeSpray, Neosporin, TRESemmé (several), Dove, PregTest,
+  Medi Cube HIGH RES, Neutrogena/Simple wipes — human-named .jpg/.png plus the .mp4.
+- **`imageloader` = ES's OWN thumbnail cache** (number-named files) — NOT the ad folder. Ruled out.
+- **ES "Remote Manager" = built-in FTP server**, confirmed present, on the **RUT241_ED94** network
+  (Teltonika RUT241 router). "Turn on" exposes an `ftp://…` endpoint (get the address; set a user/pass
+  in its ⚙ before production). Local-net now; remote via the RUT241 (RMS/VPN/port-forward).
+- **Installed user apps:** TcnVending (kiosk), YsSystem + "service" (Yunshu system), Host (TeamViewer
+  unattended), ComAssistant (serial/485), ES File Explorer, AirDroid Business daemon (APK present).
+- ES library counts: Images 298, Movies 5, storage 1.56/4.09 GB (keep video files modest).
+
+### COMPLETE RECIPE (pending the one path confirm)
+Drop image/`.mp4` into **VideoAndImageRemote** + append an entry to **advert.txt** (root:
+AdSite/AdType/PlayTime/EndTime/AdContent1) → deliver over **ES FTP through the RUT241** → the TCN
+player shows it on schedule. MCOS = the ad manager (campaigns, media, machines, schedule, billing)
+that generates advert.txt + pushes files. Nothing installed on the machine; nothing for the watchdog to kill.
+
 ### THE MAKE-OR-BREAK = advert.txt's format
 - If **advert.txt / config can point at a REMOTE URL** → machine pulls ads outbound from MCOS-hosted
   media (works through NAT, nothing to install, nothing for the watchdog to kill) = SOLVED. Best case.
