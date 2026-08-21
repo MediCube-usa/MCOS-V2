@@ -716,7 +716,7 @@ body::after {
 
 /* Calendar box — signature amber glow (ties to the ⏰ alert-count color). */
 .cc-top .side-stack .calpanel {
-  border-color: rgba(255,255,255,.6);
+  border: 2px solid rgba(255,255,255,.7);
   animation: calGlow 3.6s ease-in-out infinite;
 }
 @keyframes calGlow {
