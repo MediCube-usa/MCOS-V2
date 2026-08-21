@@ -86,6 +86,35 @@ write `advert.txt` → ads change.** All Joe's own gear (router + the TCN-approv
 chain from MCOS. NEEDS: (1) Joe manages the RUT241 (login / Teltonika RMS account); (2) enable ES FTP once;
 (3) advert.txt format. This routes AROUND TCN entirely.
 
+### ✅✅ advert.txt FORMAT CRACKED (2026-08-21) — it's plain JSON, scheduling built in
+Opened via ES Note Editor. `advert.txt` = a JSON ARRAY of ad entries. Real example from the machine:
+```
+[{"AdSite":2,"AdType":2,"DefaultAds":"true","IsDefault":"0","PlayTime":"0-24",
+  "EndTime":"2099-12-30T00:00:00","AdContent1":"a2f1d5b7-2291-4fa5-8fa3-13852180084.png"},
+ {"AdSite":6,"AdType":2,"DefaultAds":"true","IsDefault":"0","PlayTime":"0-24",
+  "EndTime":"2099-12-30T00:00:00","AdContent1":"...e153b4ef48be.png"}]
+```
+Fields decoded:
+- **AdContent1** = the media FILE NAME (GUID.png here) — LOCAL file (not a URL). Media must live on the
+  machine; advert.txt points to it by name. (OPEN: which folder holds these — likely `imageloader`/`look`/
+  `Pictures`; confirm.)
+- **AdType** = media type. `2` = IMAGE (.png). Video type # unknown (the `Movies` folder implies video is
+  supported — need ONE video-ad example or a test to learn the video AdType value).
+- **AdSite** = screen zone/slot (`2` and `6` seen — e.g. idle full-screen vs another region; confirm mapping).
+- **PlayTime** = "0-24" → HOURS-OF-DAY SCHEDULE window. ← SCHEDULING IS BUILT IN.
+- **EndTime** = expiry timestamp ("2099-...": never). ← campaign expiry built in.
+- **DefaultAds**/**IsDefault** = default-ad flags.
+⇒ We do NOT need to build a scheduler — TCN's player already schedules via PlayTime + EndTime. To change
+ads = (1) drop the media file on the machine, (2) write advert.txt entries referencing it with the
+AdSite/AdType/PlayTime/EndTime you want. THAT'S THE WHOLE CONTROL SURFACE.
+
+### FULL SOLUTION (now concrete)
+MCOS becomes the **ad manager**: campaigns (advertiser, media, machines, schedule via PlayTime/EndTime,
+price → billing) → generates `advert.txt` + delivers media → pushes to each machine over the **RUT241
+router (RMS/VPN) → ES File Explorer FTP** pipeline (or TeamViewer as fallback) → the machine plays on
+schedule. Remaining unknowns before build: (a) media folder path for AdContent, (b) video AdType value,
+(c) does the YS app hot-reload advert.txt or need a nudge/reboot. All small, answerable by 1-2 tests.
+
 ### THE MAKE-OR-BREAK = advert.txt's format
 - If **advert.txt / config can point at a REMOTE URL** → machine pulls ads outbound from MCOS-hosted
   media (works through NAT, nothing to install, nothing for the watchdog to kill) = SOLVED. Best case.
