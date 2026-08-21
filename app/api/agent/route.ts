@@ -89,6 +89,32 @@ async function storeAttachment(name: string, mediaType: string, dataBase64: stri
   }
 }
 
+// ---- OurVend write (Atlas acts directly) ----------------------------------
+// Atlas performs the work — product placement, inventory, planograms, prices —
+// through the ourvend-write edge fn (rides the live reader session). No approval
+// gate; every call is recorded in atlas_actions so the work is reviewable.
+interface OurVendResult { ok?: boolean; error?: string; response?: string; [k: string]: unknown; }
+async function ourvendWrite(action: string, payload: Record<string, unknown>): Promise<OurVendResult> {
+  try {
+    const r = await fetch(`${SUPABASE_URL}/functions/v1/ourvend-write`, {
+      method: 'POST',
+      headers: { apikey: SUPABASE_ANON_JWT, Authorization: `Bearer ${SUPABASE_ANON_JWT}`, 'Content-Type': 'application/json' },
+      body: JSON.stringify({ action, ...payload }),
+    });
+    return (await r.json().catch(() => ({ ok: false, error: 'bad response' }))) as OurVendResult;
+  } catch {
+    return { ok: false, error: 'ourvend-write unreachable' };
+  }
+}
+async function logAction(action: string, target: string, detail: Record<string, unknown>, ok: boolean, response: string): Promise<void> {
+  try {
+    await fetch(`${SUPABASE_URL}/rest/v1/atlas_actions`, {
+      method: 'POST', headers: { ...sbHeaders, 'Content-Type': 'application/json', Prefer: 'return=minimal' },
+      body: JSON.stringify({ action, target, detail, ok, response: response.slice(0, 500) }),
+    });
+  } catch { /* logging is best-effort — never blocks the write */ }
+}
+
 // Real Google Calendar (company account) via the google-calendar edge function.
 // Our OWN calendar — Atlas writes to it directly (not OurVend/machines/payments),
 // so no approval gate. Best-effort: if Google isn't reachable, callers degrade.
@@ -186,7 +212,13 @@ ${blocks}
 DATA RULES (these matter — trust has been burned before):
 1. Answer ONLY from the live snapshot in this conversation. Every number you give must come from it. If the snapshot doesn't contain something, say plainly "that's not in my data yet" — NEVER estimate or invent a figure.
 2. The snapshot refreshes from the OurVend connection about every 20 minutes. Quote the sync age when talking about stock.
-3. You can PROPOSE changes to a product in OurVend — price, description, name, or size — with the propose_ourvend_change tool, using the product's exact CODE from the catalog snapshot. This does NOT change anything itself: it shows Joe an Approve button, and only his tap makes it live. So NEVER say you changed something — say you've "put it up for approval" and let the card do the rest. You still cannot touch planograms, coils/slots, or per-machine prices yet (not built) — say so if asked.
+3. OURVEND — you have FULL read + write and you ACT on it directly. This is the whole point: DO the work, don't just advise. You can, live and immediately:
+   • ourvend_update_product — change a catalog product's price/description/name/size/cost (by CODE)
+   • ourvend_add_product — add a new product to the catalog (for items not yet in it)
+   • ourvend_write_slot — set one coil on a machine: product placement + price + inventory (capacity/stock)
+   • ourvend_push_planogram — push a saved MCOS planogram to a machine coil-by-coil (make OurVend match the photo-built truth in MCOS)
+   • ourvend_clone_machine — copy one machine's layout onto another
+   When Joe tells you to do something, DO IT with these tools, then report what you did in the past tense with the result — do not ask for approval and do not hand him a to-do list. The ONE thing you never do is spend money / make purchases. Use exact product CODES and machine ids from the snapshot. If something fails, say exactly what failed. MCOS is the source of truth (photo-built planograms); you push that OUT to OurVend, not the reverse.
 4. set_reminder — files a date on a block AND drops it on the real MediCube Google Calendar in one shot (shows on the ⏰ badge, the block's alerts, and the actual Google Calendar). Use it whenever Joe mentions a date, visit, deadline, or follow-up — capture who/where in the title/location/notes. Confirm what you set, with the date; the tool tells you if it also reached Google Calendar.
 5. list_calendar_events — reads what's actually on the Google Calendar. Use it when Joe asks what's coming up / on the schedule. If it says the calendar isn't reachable, tell him plainly (the connection may need a reconnect).
 6. When a question needs a block that is still a shell (parked), say the block isn't built yet.
@@ -336,21 +368,135 @@ export async function POST(req: NextRequest) {
     return `SAVED: "${title}" on ${date}${time ? ` at ${time}` : ''} → ${dept} block (badge + alerts)${onGoogle}.`;
   }
 
-  const proposeChangeTool = {
-    name: 'propose_ourvend_change',
+  // ---- OurVend WRITE tools — Atlas performs these directly (no approval gate) ----
+  const updateProductTool = {
+    name: 'ourvend_update_product',
     description:
-      "Propose a change to a product in OurVend — price, description, name, or size. This does NOT change anything; it shows Joe an Approve button and only his tap makes it live. Use the product's exact CODE from the catalog snapshot.",
+      "Change a product in the OurVend catalog LIVE — price, description, name, size, or cost. Use the product CODE from the catalog snapshot. This applies immediately.",
     input_schema: {
       type: 'object' as const,
       properties: {
-        product_code: { type: 'string', description: 'The OurVend product code (from the catalog snapshot)' },
-        product_name: { type: 'string', description: 'Product name, for the confirmation card' },
-        change: { type: 'string', enum: ['price', 'description', 'name', 'size'], description: 'What to change' },
+        code: { type: 'string', description: 'The OurVend product code (from the catalog snapshot)' },
+        name: { type: 'string', description: 'Product name, for the confirmation' },
+        change: { type: 'string', enum: ['price', 'description', 'name', 'size', 'cost'], description: 'What to change' },
         new_value: { type: 'string', description: 'The new value (a price is a number like 3.99)' },
       },
-      required: ['product_code', 'change', 'new_value'],
+      required: ['code', 'change', 'new_value'],
     },
   };
+  async function runUpdateProduct(inp: Record<string, unknown>): Promise<string> {
+    const code = String(inp.code ?? '').trim();
+    const change = String(inp.change ?? '');
+    const value = String(inp.new_value ?? '');
+    const name = String(inp.name ?? '');
+    if (!code || !['price', 'description', 'name', 'size', 'cost'].includes(change) || !value) return 'ERROR: need code, change (price|description|name|size|cost), and new_value';
+    if ((change === 'price' || change === 'cost') && !/^\d+(\.\d{1,2})?$/.test(value)) return 'ERROR: a price/cost must be a number like 3.99';
+    const r = await ourvendWrite('editProductByCode', { code, set: { [change]: value } });
+    await logAction('editProduct', code, { change, value, name }, !!r.ok, JSON.stringify(r));
+    return r.ok ? `DONE (live in OurVend): ${name || code} — ${change} set to "${value}".` : `ERROR: OurVend did not confirm (${r.error || 'no ok'}). Nothing changed.`;
+  }
+
+  const addProductTool = {
+    name: 'ourvend_add_product',
+    description:
+      "Add a NEW product to the OurVend catalog LIVE. Needs code + name; price/size/description/cost optional. (OurVend pulls the product IMAGE from its preloaded catalog — mention if an image still needs loading.)",
+    input_schema: {
+      type: 'object' as const,
+      properties: {
+        code: { type: 'string' }, name: { type: 'string' }, price: { type: 'string' },
+        size: { type: 'string' }, description: { type: 'string' }, cost: { type: 'string' },
+      },
+      required: ['code', 'name'],
+    },
+  };
+  async function runAddProduct(inp: Record<string, unknown>): Promise<string> {
+    const code = String(inp.code ?? '').trim();
+    const name = String(inp.name ?? '').trim();
+    if (!code || !name) return 'ERROR: need code and name';
+    const product = { code, name, price: String(inp.price ?? ''), size: String(inp.size ?? ''), description: String(inp.description ?? ''), cost: String(inp.cost ?? '') };
+    const r = await ourvendWrite('addProduct', { product });
+    await logAction('addProduct', code, { name }, !!r.ok, JSON.stringify(r));
+    return r.ok ? `DONE (live): added "${name}" (code ${code}) to the OurVend catalog.` : `ERROR: could not add it (${r.error || 'no ok'}).`;
+  }
+
+  const writeSlotTool = {
+    name: 'ourvend_write_slot',
+    description:
+      "Set ONE coil on a machine in OurVend LIVE — product placement + price + inventory. Give the machine id, coil number, product CODE, and (optional) machine_price, capacity, stock. Applies immediately.",
+    input_schema: {
+      type: 'object' as const,
+      properties: {
+        machine_id: { type: 'string' }, coil: { type: 'integer' }, product_code: { type: 'string' },
+        machine_price: { type: 'string' }, capacity: { type: 'string' }, stock: { type: 'string' },
+      },
+      required: ['machine_id', 'coil', 'product_code'],
+    },
+  };
+  async function runWriteSlot(inp: Record<string, unknown>): Promise<string> {
+    const machineId = String(inp.machine_id ?? '').trim();
+    const coil = Number(inp.coil);
+    const code = String(inp.product_code ?? '').trim();
+    if (!machineId || !coil || !code) return 'ERROR: need machine_id, coil, product_code';
+    const r = await ourvendWrite('editSlot', { machineId, coil, productCode: code, machinePrice: String(inp.machine_price ?? ''), capacity: String(inp.capacity ?? ''), stock: String(inp.stock ?? '') });
+    await logAction('editSlot', `${machineId}#${coil}`, { code, price: inp.machine_price, capacity: inp.capacity }, !!r.ok, JSON.stringify(r));
+    return r.ok ? `DONE (live): machine ${machineId} coil ${coil} → ${code}.` : `ERROR: coil write failed (${r.error || 'no ok'}).`;
+  }
+
+  const pushPlanogramTool = {
+    name: 'ourvend_push_planogram',
+    description:
+      "Push a saved MCOS planogram to a machine in OurVend LIVE, coil by coil — makes OurVend match MCOS (the photo-built truth). Give the planogram name (or id) and the target machine id. Coils not in the catalog are skipped.",
+    input_schema: {
+      type: 'object' as const,
+      properties: {
+        template_name: { type: 'string', description: 'Planogram name, e.g. "ASU West Campus 1"' },
+        template_id: { type: 'string', description: 'Planogram id (alternative to name)' },
+        machine_id: { type: 'string', description: 'Target OurVend machine id' },
+      },
+      required: ['machine_id'],
+    },
+  };
+  async function runPushPlanogram(inp: Record<string, unknown>): Promise<string> {
+    const machineId = String(inp.machine_id ?? '').trim();
+    if (!machineId) return 'ERROR: need machine_id';
+    const q = inp.template_id
+      ? `templates?id=eq.${encodeURIComponent(String(inp.template_id))}&select=name,slots`
+      : `templates?name=eq.${encodeURIComponent(String(inp.template_name ?? ''))}&select=name,slots`;
+    const rows = await sb<{ name: string; slots: { coil: number; product: string; barcode: string | null; retail_price: string; capacity: string }[] }>(q);
+    if (!rows.length) return 'ERROR: planogram not found — check the name.';
+    const tpl = rows[0];
+    const slots = (tpl.slots || []).filter((s) => s.product && s.barcode);
+    if (!slots.length) return 'ERROR: that planogram has no catalog-matched coils to push.';
+    let ok = 0; const fails: number[] = [];
+    for (const s of slots) {
+      const r = await ourvendWrite('editSlot', { machineId, coil: s.coil, productPrId: s.barcode, machinePrice: String(s.retail_price ?? ''), capacity: String(s.capacity ?? ''), stock: String(s.capacity ?? '') });
+      if (r.ok) ok++; else fails.push(s.coil);
+    }
+    await logAction('pushPlanogram', machineId, { template: tpl.name, coils: slots.length, ok }, fails.length === 0, `ok ${ok}/${slots.length}`);
+    return `Pushed "${tpl.name}" → machine ${machineId}: ${ok}/${slots.length} coils written LIVE${fails.length ? `; failed coils: ${fails.join(', ')}` : ''}. Coils not in the catalog were skipped.`;
+  }
+
+  const cloneMachineTool = {
+    name: 'ourvend_clone_machine',
+    description:
+      "Clone one machine's whole layout onto another in OurVend LIVE (OurVend's own 'apply planogram'). Give source and target machine ids. Use to make machines identical.",
+    input_schema: {
+      type: 'object' as const,
+      properties: {
+        source_machine_id: { type: 'string' }, target_machine_id: { type: 'string' },
+        start_coil: { type: 'integer' }, end_coil: { type: 'integer' },
+      },
+      required: ['source_machine_id', 'target_machine_id'],
+    },
+  };
+  async function runCloneMachine(inp: Record<string, unknown>): Promise<string> {
+    const source = String(inp.source_machine_id ?? '').trim();
+    const target = String(inp.target_machine_id ?? '').trim();
+    if (!source || !target) return 'ERROR: need source_machine_id and target_machine_id';
+    const r = await ourvendWrite('cloneMachine', { sourceMachineId: source, targetMachineId: target, startCoil: inp.start_coil ?? 1, endCoil: inp.end_coil ?? '' });
+    await logAction('cloneMachine', `${source}->${target}`, { start: inp.start_coil, end: inp.end_coil }, !!r.ok, JSON.stringify(r));
+    return r.ok ? `DONE (live): cloned ${source} onto ${target}.` : `ERROR: clone failed (${r.error || 'no ok'}).`;
+  }
 
   const listCalendarTool = {
     name: 'list_calendar_events',
@@ -537,7 +683,7 @@ export async function POST(req: NextRequest) {
           { type: 'text', text: staticSystem(), cache_control: { type: 'ephemeral' } },
           { type: 'text', text: `LIVE SNAPSHOT (fetched for this message):\n\n${snapshot}` },
         ],
-        tools: [setReminderTool, listCalendarTool, proposeChangeTool, savePlanogramTool, fileDocumentTool],
+        tools: [setReminderTool, listCalendarTool, savePlanogramTool, fileDocumentTool, updateProductTool, addProductTool, writeSlotTool, pushPlanogramTool, cloneMachineTool],
         messages,
       });
 
@@ -563,18 +709,16 @@ export async function POST(req: NextRequest) {
             out = await runSavePlanogram(block.input as Record<string, unknown>);
           } else if (block.name === 'file_document') {
             out = await runFileDocument(block.input as Record<string, unknown>);
-          } else if (block.name === 'propose_ourvend_change') {
-            const inp = block.input as Record<string, unknown>;
-            const code = String(inp.product_code ?? '').trim();
-            const change = String(inp.change ?? '');
-            const value = String(inp.new_value ?? '');
-            const name = String(inp.product_name ?? '');
-            if (code && ['price', 'description', 'name', 'size'].includes(change) && value) {
-              pending.push({ code, name, change: change as OurVendChange, value });
-              out = `Proposed ${change} of "${name || code}" → "${value}". Shown to Joe with an Approve button — NOT applied yet.`;
-            } else {
-              out = 'ERROR: propose needs product_code, change (price|description|name|size), and new_value';
-            }
+          } else if (block.name === 'ourvend_update_product') {
+            out = await runUpdateProduct(block.input as Record<string, unknown>);
+          } else if (block.name === 'ourvend_add_product') {
+            out = await runAddProduct(block.input as Record<string, unknown>);
+          } else if (block.name === 'ourvend_write_slot') {
+            out = await runWriteSlot(block.input as Record<string, unknown>);
+          } else if (block.name === 'ourvend_push_planogram') {
+            out = await runPushPlanogram(block.input as Record<string, unknown>);
+          } else if (block.name === 'ourvend_clone_machine') {
+            out = await runCloneMachine(block.input as Record<string, unknown>);
           } else {
             out = `ERROR: unknown tool ${block.name}`;
           }
