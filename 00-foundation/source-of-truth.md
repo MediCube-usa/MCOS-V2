@@ -22,7 +22,7 @@ Not allowed:
 
 - copying old structure blindly
 - importing old dashboard assumptions
-- carrying old OurVend references into the V2 build
+- carrying old OurVend dashboard assumptions or implementation into the V2 build
 - treating old mock pages as final design
 - treating old branches as V2 source of truth
 
@@ -51,3 +51,13 @@ Each page blueprint must define:
 - future integrations
 - Command Center block
 - build acceptance criteria
+
+## Current Integration Boundary
+
+OurVend is preserved only as the machine's operational upstream compatibility service during the relay phase. It is not the MCOS V2 source of truth, dashboard, data owner, or workflow system.
+
+The authoritative integration specification is:
+
+- `01-blueprints/machine-yunshu-ourvend-integration-boundary.md`
+
+Useful legacy gateway evidence may be reviewed and selectively reimplemented only after validation. Legacy structure and guessed responses are prohibited.
