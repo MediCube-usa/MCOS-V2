@@ -1,7 +1,9 @@
 // The shared physical coil layout — every machine in the fleet uses this exact
 // arrangement, laid out as SIX TRAY ROWS top-to-bottom like the real machine face
-// (Joe, 2026-08-20). Coil 51 sits on the BOTTOM row. Rows are centered so both
-// sides are even, mirroring the machine.
+// (Joe, 2026-08-20). Coil 51 sits on the BOTTOM row. EVERY TRAY IS THE SAME WIDTH,
+// mirroring the machine: the top three trays and the bottom tray are DOUBLES (each
+// coil spans two single-widths), the middle two trays are SINGLES. So 5 doubles fill
+// the same tray width as 10 singles — the rows line up edge-to-edge like the machine.
 //
 // Each coil has a SIZE that sets its FACINGS (how many products deep it holds) —
 // more facings = fewer refills = more profit. Joe loads the sizes; until then the
@@ -22,14 +24,16 @@ const TRAYS: { label: string; coils: number[]; wide: boolean }[] = [
 const COIL_META: Record<number, { size?: string; facings?: number }> = {};
 
 function CoilRow({ coils, wide, label }: { coils: number[]; wide?: boolean; label: string }) {
+  // Every tray is 10 single-widths across. A DOUBLE spans 2 of those columns, a
+  // SINGLE spans 1 — so a 5-double row and a 10-single row are exactly the same width.
   return (
     <div className="coil-band">
       <div className="coil-band-label">{label}</div>
-      <div className="coil-row coil-row-even">
+      <div className="coil-row-grid">
         {coils.map((c) => {
           const m = COIL_META[c];
           return (
-            <span key={c} className={`coil ${wide ? 'wide' : ''}`}>
+            <span key={c} className={`coil ${wide ? 'wide' : ''}`} style={{ gridColumn: `span ${wide ? 2 : 1}` }}>
               {c}
               <em className="coil-meta">{m?.facings ? `${m.facings}×` : (m?.size || '—')}</em>
             </span>

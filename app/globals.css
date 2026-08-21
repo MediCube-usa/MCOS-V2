@@ -395,12 +395,15 @@ a { color: inherit; text-decoration: none; }
 .req-vote { white-space: nowrap; }
 .req-body { padding: 0 14px 14px; }
 
-/* coil map */
-.coilmap { background: var(--panel); border: 1px solid var(--line); border-radius: 12px; padding: 16px; display: grid; gap: 14px; }
+/* coil map — every tray the SAME width, like the real machine face */
+.coilmap { background: var(--panel); border: 1px solid var(--line); border-radius: 12px; padding: 16px; display: grid; gap: 14px; max-width: 620px; }
 .coil-band-label { font-size: 10.5px; letter-spacing: .6px; text-transform: uppercase; color: var(--muted); font-weight: 800; margin-bottom: 6px; }
 .coil-row { display: flex; flex-wrap: wrap; gap: 6px; }
-.coil { min-width: 34px; text-align: center; padding: 8px 6px; border-radius: 6px; border: 1px solid var(--line); background: rgba(0,20,45,.5); font-variant-numeric: tabular-nums; font-weight: 800; font-size: 12.5px; color: var(--cyan); }
-.coil.wide { min-width: 52px; border-color: rgba(0,255,170,.4); color: #00ffaa; }
+/* 10 single-unit columns per tray: a SINGLE spans 1, a DOUBLE spans 2, so 5 doubles
+   and 10 singles fill the identical tray width and the rows line up edge-to-edge. */
+.coil-row-grid { display: grid; grid-template-columns: repeat(10, 1fr); gap: 6px; }
+.coil { min-width: 0; text-align: center; padding: 8px 6px; border-radius: 6px; border: 1px solid var(--line); background: rgba(0,20,45,.5); font-variant-numeric: tabular-nums; font-weight: 800; font-size: 12.5px; color: var(--cyan); }
+.coil.wide { border-color: rgba(0,255,170,.4); color: #00ffaa; }
 
 /* planogram editor extras */
 .coil-cell { font-variant-numeric: tabular-nums; font-weight: 800; font-size: 12px; color: var(--cyan); }
