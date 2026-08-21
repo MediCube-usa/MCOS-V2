@@ -244,6 +244,28 @@ product placement — refreshed every cycle (reconfirmed by Joe 2026-08-20).
 - Boston (Nayax) machines: not set up; planograms may only exist on Nayax (secondary, optional).
 
 ## SESSION LOG (newest first)
+- 2026-08-21 (e): ATLAS = DROP BOX (upload photos/files) — BUILT + merged to main.
+  AgentChat got a 📎 upload button (images + PDF, UPLOAD ONLY — no camera per Joe);
+  /api/agent now reads images (vision) + PDFs, stores every file in the mcos-docs
+  bucket, and has two filing tools: **save_planogram** (machine photo → reads coils,
+  matches catalog, writes a `templates` row — MCOS DB only, not OurVend) and
+  **file_document** (contract/invoice → `documents` with the stored file linked).
+  PlanogramsBoard now shows the **catalog product image per coil** for visual
+  verification (Joe's ask — confirm each matched product against the real machine;
+  not-in-catalog coils show a red "?"). PLANOGRAM MODEL LOCKED WITH JOE: every machine
+  is DIFFERENT right now; each gets its OWN planogram built from its OWN real photo;
+  **the photo is the truth, OurVend is WRONG**; MCOS holds reality → then MCOS pushes
+  reality OUT to OurVend (not the reverse). Flow per machine: photo → Atlas builds
+  planogram in MCOS → later push to OurVend. Loaded **"ASU West Campus 1"** planogram
+  (machine 2303220332 ASU West Glendale) straight from Joe's coil photo, matched to the
+  49-product catalog (names/barcodes/prices). Note: a few coils were confirmed off the
+  clearer 2nd photo (25 Claritin, 27/29 Neuro Gum, 37 Neuro Mint, 40 Gillette, 41 Olay,
+  53 BITES Creatine Gummies = NOT in catalog yet). AD-SCREEN LIVE TEST (West Campus,
+  partner on-site) did NOT complete — partner couldn't finish the ES-folder file drop
+  (root write blocked / two advert.txt); the real unlock is REMOTE via the machines'
+  Teltonika RUT241 routers on the partner's Teltonika RMS account (need the RMS login or
+  an RMS API token to push ad files from MCOS — awaiting from Joe/partner). advert.txt +
+  VideoAndImageRemote format still valid (see media-screen.md).
 - 2026-08-21 (d): GOOGLE CALENDAR CONNECTED — LIVE + PERMANENT ✅ — Joe finished the Google
   Cloud OAuth setup (medicubehub1 account, project "My First Project"; had to clear the new
   2SV/MFA enforcement + skip the billing/trial nag; "Google Auth Platform" = renamed consent
