@@ -89,3 +89,6 @@ what makes giving Atlas power safe on live partner machines — approve fast, bu
 4. Purchase-order tool (draft → approve → create order + send to supplier). Needs Joe to
    confirm send channel (email address/really send vs. draft-for-review) + supplier contacts.
 5. Planogram/coil write once that capture exists.
+
+## VOICE (2026-08-20)
+Atlas box has 🎤 dictation (browser SpeechRecognition; phone keyboard mic is the universal fallback) + 🔊 spoken-reply toggle (SpeechSynthesis reads Atlas answers aloud). Front-end only, no extra service/cost, works on phone. Mic button only shows where the browser supports speech-to-text.
