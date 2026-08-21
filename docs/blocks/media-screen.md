@@ -41,6 +41,31 @@ Explorer (sdcard root) + a config/manifest text file.
 3. **TCN VMMS cloud** (tcnvmms.com) — does Joe have a TCN cloud login? If it pushes APKs by serial, it
    may push ad media too. Worth a look.
 
+## REALITY CHECK — Joe's 2 years of experience (2026-08-21, corrects the optimism above)
+- **TCN gives NO API/SDK to customers.** 2 years in, only channels ever offered = clunky TeamViewer or
+  USB-by-hand. `tcnvmms.com` is TCN's OWN internal update server the machine phones home to — Joe has
+  NO login to it. Cross off "TCN cloud login" as a path.
+- **The machine is KIOSK-LOCKED.** Android **7.1.2**; the YS app (`com.tcn.tcnstand`) auto-starts and
+  **keeps other apps off / restricted** — it's effectively the launcher/device-owner with a watchdog.
+  Joe & partner have tried repeatedly to install their OWN APK agent to phone home / control the box;
+  **the agents get killed or "just disappear."** → So "build & install our own player app" (Path B) is
+  EXACTLY what keeps failing. Do NOT lead with that. AirDroidBiz folder may be a DEAD leftover from such
+  an attempt, not a working install — CONFIRM before trusting it.
+- **The ONLY channel that reliably works = dropping files into the ES/advert folder** (USB or TeamViewer).
+- Key implication: the win must run THROUGH the allowed file-drop + `advert.txt`, NOT through a rogue app.
+- Joe is sending the **ES Explorer APK** TCN shipped for the new machines. ES File Explorer is TCN-approved
+  (so it's ALLOWED to run) and has built-in **FTP server / LAN / cloud** features — leveraging the app
+  that's already permitted to receive files over the network is more promising than a killed rogue agent.
+- Ads must land on the **main TCN Android 7.1.2 interface** (NOT a card-reader clip like Nayax/Cantaloupe).
+- Fragile idea (kill YS app → load → restart): watchdog re-kills; unreliable. Avoid.
+
+### SHARPENED NEXT STEPS (given the lockdown)
+1. **`advert.txt` contents = THE key** — reveals the ad playlist format AND whether it can point at a
+   remote URL/FTP (if yes = host media in MCOS, machine pulls it, no rogue app needed). GET THIS.
+2. **Inspect the ES APK Joe sends** — version + whether its FTP/remote/cloud features are usable as the
+   push channel (the allowed app doing the file delivery).
+3. Confirm whether AirDroidBiz is actually RUNNING or just a dead folder.
+
 ## PATHS TO SOLVE (ranked — cheapest/most-proper first)
 ### A. OurVend's own Advertisement/Media module (CHECK THIS FIRST — cheapest win)
 Many OurVend/TCN cloud portals have an **Advertisement / Media / Screen** section to upload media +
