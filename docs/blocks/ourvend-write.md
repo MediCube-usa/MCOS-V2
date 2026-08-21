@@ -3,6 +3,45 @@
 Written 2026-08-20 after Joe reported the write capability "lost". This file is the
 permanent truth so this never has to be re-figured-out again.
 
+## ✅ FULL WRITE RECIPES CAPTURED (2026-08-21, Joe's HAR 3833afae-os.ourvend.com_5)
+One capture pass gave every remaining write. All are `POST`, `application/x-www-form-urlencoded`,
+on the shared reader session (cookie in `secrets.ourvend_cookie`), each preceded by the usual
+`<Controller>/getSession` gate; all returned **`OK`**. Machine IDs seen: 2602080931 & 2602080924
+(empty template machines — only the test coil now), 2602080991 = "Murad".
+
+### A. Add a product to the catalog (Commodity) — Piece A
+1. `POST /WxMallProduct/AuditImge` — body `image=<data:image/png;base64,...>` → `OK` (image moderation/prep)
+2. `POST /CommodityInfo/AddCI` — fields:
+   `ProductCode` (barcode/code) · `ProductName` · `PrSpecification` (size, e.g. "1ea") ·
+   `PrRetailPrice` · `Manufacturers` (GUID from `/CommodityInfo/GetManufacturer`) ·
+   `CiType` (category id from `/CommodityInfo/GetType`|`GetCitype`) · `PrCostPrice` (opt) ·
+   `QualityPeriod` (opt) · `PrContent` (description) · `PrAdultLimit=false` · `PrAliAdultLimit=false` ·
+   **`ImgPath=<data:image/png;base64,...>`** (image goes INLINE as a data URI — this is how one-at-a-time
+   image loading is automated). → `OK`
+   ⇒ Catalog→OurVend loader is fully unblocked; a product + its image can be added in one automated shot.
+
+### B. Set / change a coil (slot) on a machine — Piece D (slot write)
+`POST /Selection/Edit` — fields:
+  `MachineID` · `SiCoilId` (coil #) · `SiBarCode` = the product's **PrID GUID** (list via `/Selection/GetProduct`) ·
+  `SiPrice` (cloud price) · `SiCustomPrice` (machine price) · **`SiCapacity`** (coil max — this is our pitch→units!) ·
+  `SiExtantQuantity` (current stock) · `WxDiscount`/`AliDiscount`/`IDcardDiscount`=100 · `WarningQuantity` ·
+  `warmTime`/`SelectWarm`/`HotTime`/`EnableHot`/`EnablePunch`/`EnableCustomize`/`CustomizeJson`/`Ext`. → `OK`
+  Reads for context: `/Selection/GetProduct` (PrID+PrName list), `/Selection/GetSoltInfo` (MachineID+HuoDao→current coil),
+  `/Selection/GetPorductPrice` (PrID→default price), `/Selection/GetProductUrl` (PrID→name+image).
+
+### C. Clone a machine (apply a planogram) — Piece D (clone)
+`POST /Selection/ClMachine` — fields:
+  `Machine` (SOURCE machine id) · `CMachieID` (TARGET machine id, copy TO) · `CloneGoods` (0) ·
+  `CStratGoods` (start coil, e.g. 1) · `CEndGoods` (end coil; blank = all). → `OK`
+  ⇒ "planogram = a machine cloned onto others" is exactly this call. (Confirm source/target direction on first live use.)
+
+### D. Pickup / security codes
+- `POST /PickUpCode/MassProductionCode` — `MID` (machine) · `count` (e.g. 10) → `OK` (bulk-generates codes)
+- `POST /PickUpCode/ListJsoin` — grid params → rows: `SecurityCode` (8-digit), `WXSmid` (machine),
+  `SCstatus` (0=unused), `WXScreate` (date), `MGName` (machine group). Use to read back generated codes.
+
+All of the above go into `ourvend-write` as new actions, BEHIND per-item approval (hard rule 3) — never auto/cron.
+
 ## What actually happened (recovered from the OLD repo, Medicube-MCOS, read-only)
 
 - **2026-07-10 working session** (`01-working-sessions/2026-07-10-ourvend-live-connection.md`
