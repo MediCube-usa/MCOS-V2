@@ -650,15 +650,15 @@ a { color: inherit; text-decoration: none; }
 .cc-left { display: flex; flex-direction: column; min-width: 0; }
 .cc-top .agent-card { flex: 1; min-height: 300px; }
 .cc-top .side-stack { height: 100%; }
-.cc-top .video-box { height: auto; flex: 1; min-height: 205px; }
-.cc-top .side-stack .calpanel { height: auto; flex: 1; min-height: 205px; }
+.cc-top .video-box { height: auto; flex: 1; min-height: 248px; }
+.cc-top .side-stack .calpanel { height: auto; flex: 1; min-height: 248px; }
 .cc-top .calpanel .mini-day { height: 17px; font-size: 9.5px; }
 .cc-top .calpanel .mini-wd { font-size: 8px; }
 
 /* ---- LOCK the top row height (Joe): conversation scrolls INSIDE the Atlas box,
    the page never grows/pushes down. Row height = video 205 + gap 12 + calendar 205. ---- */
 @media (min-width: 901px) {
-  .cc-top { height: 422px; }
+  .cc-top { height: 508px; } /* video 248 + gap 12 + calendar 248 = matches a department block each */
   .cc-top .cc-left { height: 100%; min-height: 0; }
   .cc-top .agent-card { flex: 1 1 auto; min-height: 0; height: auto; }
   .cc-top .agent-card-body { min-height: 0; }
