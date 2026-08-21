@@ -203,6 +203,15 @@ product placement — refreshed every cycle (reconfirmed by Joe 2026-08-20).
 - Boston (Nayax) machines: not set up; planograms may only exist on Nayax (secondary, optional).
 
 ## SESSION LOG (newest first)
+- 2026-08-21 (d): GOOGLE CALENDAR CONNECTED LIVE ✅ — Joe finished the Google Cloud OAuth
+  setup (medicubehub1 account, project "My First Project"; had to clear the new 2SV/MFA
+  enforcement + skip the billing/trial nag; Google Auth Platform = renamed consent screen).
+  Client id/secret pasted into secrets; connect flow ran → refresh_token stored (verified,
+  len 103). Calendar + Drive scopes granted. CAVEAT: consent is in "Testing" mode (test-user
+  medicubehub1 added, NOT published) → refresh token EXPIRES IN ~7 DAYS. To make permanent:
+  finish Branding required fields → Audience → Publish app (move to Production). NEXT: wire
+  Atlas create/list-event tools into /api/agent (call google-calendar edge fn) + point the
+  corner calendar box + /calendar at the authenticated feed.
 - 2026-08-21 (c): COMPANY EMAIL — send as info@medicube.net (Joe: brand mail, not personal,
   not gmail). Google stays for calendar/drive ONLY; mail identity = the medicube.net domain.
   Path = Resend (transactional) so app-sent mail is reliable + additive DNS at GoDaddy (does
