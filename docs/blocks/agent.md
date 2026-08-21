@@ -102,3 +102,36 @@ This is the hard-rule-3 gate in code: the LLM cannot fire a live write; only Joe
 Catalog snapshot now includes each product's CODE so Atlas can reference it.
 Next actions to add the same way: add/delete product, then restock + purchase orders.
 NOT yet: planogram/coil/per-machine price (needs the slot capture).
+
+## PERMISSION MODEL v2 — Joe's real rules (2026-08-20, verbatim intent)
+This SUPERSEDES the "tap-approve every OurVend write" framing. The correct model:
+
+1. **Read OurVend continuously, all day** — inventory, sales, product placement. Always on.
+2. **Authorization = Joe's action in MCOS.** Atlas must NEVER write something Joe didn't
+   initiate. But a write that DUPLICATES a Joe action in MCOS is already authorized by that
+   action — no separate tap. When Joe, in MCOS: adds/edits a product (image, description,
+   price, size), changes a product, changes a price, assigns/loads a planogram, or swaps a
+   slot → Atlas mirrors it into OurVend automatically (MCOS→OurVend→machine, hard rule 1).
+3. **Atlas can do everything on the site EXCEPT OurVend-initiated changes and PAYMENTS.**
+   Payments = hands off, always. OurVend writes only ever mirror a Joe/MCOS action.
+4. **Approval QUEUES for outbound work** (not per-item chat taps): Atlas generates shipping
+   orders and, when a machine hits its low point, auto-places a reorder into an "orders ready
+   to approve" list. Joe clicks Approve → it ships + emails the refiller (arrival date,
+   accept/decline flow, etc.). Same pattern for anything that leaves the building.
+5. **Runs overnight, scales heavy** — calendar fill, scheduling, follow-ups, low-point
+   watches. Build for many machines.
+
+### Build order — PIECE BY PIECE (Joe: "I need to do it piece by piece")
+A. **Catalog → OurVend loader** (UNBLOCKED — recipes captured): a product added/edited in the
+   MCOS Catalog (image + description + price + size) pushes to the OurVend catalog via
+   AddCI / EditCI / image. Catalog is the gate, so this is first.
+B. **Low-point watch → reorder queue → approve → ship + email refiller.** Internal DB +
+   email send (needs email channel decision). "Orders ready to approve" screen.
+C. **Calendar/appointments always-on** (set_reminder already writes no-tap; deepen to
+   overnight fills + follow-ups).
+D. **Planogram / slot / per-machine price → OurVend duplication.** BLOCKED: needs a one-time
+   HAR capture of a slot/planogram save in OurVend (Selection/* write), like the catalog capture.
+E. Sweep the rest of the blocks the same way. NEVER payments.
+
+Current v1 (chat propose→approve card for price/desc) stays as the manual path; the mirror
+(auto-duplicate a MCOS action) is the primary path going forward.
