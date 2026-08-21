@@ -14,6 +14,33 @@ Joe: after OurVend API + MCOS + IMPACT, the two MAJOR things left for the whole 
 - **No remote way to control/schedule the ad screen today.** The dev hasn't cracked it. "It's all done
   from dropping a file in a folder, so it can't be that good a system" — likely no real scheduler.
 
+## FINDINGS FROM JOE'S PHOTOS (2026-08-21) — three real seams
+Photos: the machine's Android controller board + a TeamViewer session into the machine's ES File
+Explorer (sdcard root) + a config/manifest text file.
+- **Machine is networked:** controller has **RJ45 WAN** + **SIM port** (+ USB1/2/3, COM1 485, COM2,
+  COM3). So an on-device cloud pull / remote management is viable (it has internet).
+- **`advert.txt` sits in the sdcard root** → almost certainly the **ad config/playlist file** the
+  screen reads. Media folders present: **Movies** (video ads), **Pictures** / **imageloader** /
+  **look** (image ads). Plus `TcnConfig`, `YsConfig`, `TcnFolder`, `YsDownloadFile`, `MachineData`,
+  `TcnKey`, `TcnLog`, `elog.txt`, `tcn_config_dex.txt`, and **`TcnVending.apk`** (the vending app installer).
+- **`AirDroidBiz` is ALREADY INSTALLED on the machine** (AirDroid Business = a full Android **fleet
+  MDM**: remote file push, app management, scheduling, remote view — from a web console + API).
+  This is a remote channel far better than TeamViewer, and it's already there.
+- **TCN cloud backend host = `tcnvmms.com`** — the manifest shows machines (by `androidSN`, e.g.
+  `SUAK1K518QY...`) pulling APK/skin updates from `http://tfs.android.tcnvmms.com:4103/Android/YsSystem/
+  UpdateApp/TCN_SKIN_WxOffline/...apk`. App package = **`com.tcn.tcnstand`**, skin `TCN_SKIN_WxOffline`.
+  So TCN has its own VMMS cloud that pushes files to machines by serial — a possible remote ad-push too.
+
+### NEXT (turn these seams into control)
+1. **Read `advert.txt`** (open it in ES Explorer → send contents). That's the ad playlist format — if we
+   can read+write it and drop files in Movies/Pictures, we CONTROL what plays (the loophole Joe wanted).
+   Also grab `TcnConfig` / `YsConfig` if openable.
+2. **AirDroid Business** — does Joe have the AirDroid Business account/console login? If yes: remote
+   file push + scheduling to ALL machines from one dashboard (and an API we can drive from MCOS). Likely
+   the fastest real remote solution; it's already installed.
+3. **TCN VMMS cloud** (tcnvmms.com) — does Joe have a TCN cloud login? If it pushes APKs by serial, it
+   may push ad media too. Worth a look.
+
 ## PATHS TO SOLVE (ranked — cheapest/most-proper first)
 ### A. OurVend's own Advertisement/Media module (CHECK THIS FIRST — cheapest win)
 Many OurVend/TCN cloud portals have an **Advertisement / Media / Screen** section to upload media +
