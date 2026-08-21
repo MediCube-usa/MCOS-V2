@@ -95,6 +95,12 @@ Fully automated, cloud-side, no browser, no Vercel env. All in **Supabase Edge F
   277 Babcock, 33 Harry Agganis, 150 Riverway, 775 Commonwealth, 72 E. Concord +1).
   Cron `nayax-lynx-sync` every 30 min. READ-ONLY toward Nayax. OurVend stays THE system
   (hard rule 2 unchanged) — this is the Boston-campuses side view. Atlas sees the table.
+- **GOOGLE + EMAIL (2026-08-21, connect-from-outside):** Google account medicubehub1@gmail.com
+  is used for CALENDAR + DRIVE only (edge fns `google-oauth` + `google-calendar`, OAuth
+  refresh-token model, Production consent). COMPANY EMAIL is separate: send as
+  **info@medicube.net** via Resend (edge fn `send-email`). Secrets: google_client_id/secret/
+  refresh_token, resend_api_key, mail_from, mail_reply_to. All three flows dormant until Joe
+  finishes the one-time external setup (Google Cloud OAuth client; Resend domain verify at GoDaddy).
 
 ## APP ARCHITECTURE
 - Next.js 15 App Router / React 19 / TS on Vercel. Push to `main` → auto-deploy.
@@ -186,6 +192,17 @@ product placement — refreshed every cycle (reconfirmed by Joe 2026-08-20).
 - Boston (Nayax) machines: not set up; planograms may only exist on Nayax (secondary, optional).
 
 ## SESSION LOG (newest first)
+- 2026-08-21 (c): COMPANY EMAIL — send as info@medicube.net (Joe: brand mail, not personal,
+  not gmail). Google stays for calendar/drive ONLY; mail identity = the medicube.net domain.
+  Path = Resend (transactional) so app-sent mail is reliable + additive DNS at GoDaddy (does
+  NOT touch the existing info@ mailbox). Built + deployed `send-email` edge fn (JWT; reads
+  resend_api_key / mail_from / mail_reply_to from secrets; actions status|send). Seeded secrets
+  (mail_from='MediCube <info@medicube.net>', mail_reply_to='info@medicube.net', resend_api_key
+  empty). BLOCKED on Joe: create free resend.com account → add domain medicube.net → paste the
+  Resend DNS records into GoDaddy (all under send.medicube.net + a DKIM key — existing mail
+  untouched) → paste API key into secrets. THEN wire an Atlas send tool behind approval
+  (outbound = approval queue, per permission model). Host SMTP via info@ is the fallback if Joe
+  prefers no new service.
 - 2026-08-21 (b): GOOGLE CALENDAR — LIVE CONNECTION started (Joe: connect to Google's real
   services, don't rebuild; Atlas commands them). Company account = medicubehub1@gmail.com
   (consumer Gmail → OAuth is the only path for Calendar/Gmail RW; personal account stays out).
