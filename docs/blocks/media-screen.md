@@ -66,6 +66,26 @@ the machine is behind **WAN/SIM NAT** — a server hosted ON the machine (inboun
 reached from the internet (cellular = carrier NAT, campus WAN = firewalled). So "machine as FTP server"
 only works on a LOCAL network, NOT remotely across campuses. NAT-friendly = the machine must PULL
 (outbound), not be pushed to. So the remote answer is NOT ES-as-server.
+### ⭐ BREAKTHROUGH FROM SETTINGS/APP-DRAWER PHOTOS (2026-08-21)
+- **The router is a Teltonika RUT241** (machine Wi-Fi SSID `RUT241_ED94`). This is an INDUSTRIAL 4G
+  router with **Teltonika RMS (Remote Management System)** + **VPN (OpenVPN/WireGuard) + port-forwarding
+  + remote-access-to-LAN-devices**. IT IS JOE'S OWN EQUIPMENT (no TCN gatekeeping). → This SOLVES the NAT
+  problem: via RMS or a router VPN/port-forward we can reach the machine's LAN REMOTELY. So "ES-as-server"
+  is back ON the table — the ROUTER is the way in, not the public internet directly.
+- **The kiosk is NOT total.** App drawer shows utility apps coexisting with TcnVending: **ES File Explorer,
+  Chrome, ComAssistant, Host (TeamViewer Host = unattended), QuickSupport (TeamViewer), Gallery, Music,
+  Camera, Calculator, Settings** — 15 apps. So TCN-approved/whitelisted apps survive; only Joe's UNKNOWN
+  sideloaded agent got removed. TeamViewer **Host** is persistent (outbound, beats NAT) — proven channel.
+- **Constraints:** Storage 4.09 GB (1.56 used) and RAM ~1.9 GB total → keep ad video files MODEST.
+  Android **7.1.2**, user = "Owner", TZ Pacific. "System Reboot" available in Settings.
+
+### ⭐ THE REMOTE PIPELINE THIS UNLOCKS (no new app, no TCN, no rogue agent)
+**Teltonika RUT241 (RMS/VPN/port-forward) → reach the machine's LAN remotely → ES File Explorer's built-in
+FTP/"Remote Manager" (already on the machine, allowed) receives files → drop media into the advert folder +
+write `advert.txt` → ads change.** All Joe's own gear (router + the TCN-approved ES app). Automate the whole
+chain from MCOS. NEEDS: (1) Joe manages the RUT241 (login / Teltonika RMS account); (2) enable ES FTP once;
+(3) advert.txt format. This routes AROUND TCN entirely.
+
 ### THE MAKE-OR-BREAK = advert.txt's format
 - If **advert.txt / config can point at a REMOTE URL** → machine pulls ads outbound from MCOS-hosted
   media (works through NAT, nothing to install, nothing for the watchdog to kill) = SOLVED. Best case.
