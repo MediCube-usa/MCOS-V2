@@ -78,7 +78,11 @@ Fully automated, cloud-side, no browser, no Vercel env. All in **Supabase Edge F
 - Tables: `live_slots` (fleet slots, ~204), `products` (catalog, 49 — ALL with image+desc since
   2026-08-19 cleanup), `ourvend_sync_log`, `secrets` (RLS-locked), plus block tables
   (`facilities`, `contacts`, `templates`, `setup_machines`, `machine_locations`,
-  `warehouse_orders`, `documents`, `campaigns`).
+  `warehouse_orders`, `documents`, `campaigns`, `coil_layout`).
+- **`coil_layout`** (2026-08-21): the shared 40-coil map (coil PK, pitch_mm). Every VC 8010-22S
+  uses the same layout. Pitch→units spec: 28mm=15, 38mm=11, 60mm=7, 70mm=6, 86mm=5,
+  105mm=4 & 130mm=3 (last two never received). Units = true max inventory/coil → feeds
+  Inventory capacity + refill triggers + research fit-check. Editable on Coil Setup tab.
 - Edge functions: `ourvend-login`, `ourvend-refresh`, `ourvend-catalog`, `ourvend-sales`
   (sales reader, built+deployed, feed blocked on a one-time browser capture — see
   product-catalog spec), plus utilities `catalog-thumbs` + `ourvend-sales-probe` (read-only,
@@ -182,6 +186,13 @@ product placement — refreshed every cycle (reconfirmed by Joe 2026-08-20).
 - Boston (Nayax) machines: not set up; planograms may only exist on Nayax (secondary, optional).
 
 ## SESSION LOG (newest first)
+- 2026-08-21: COIL MAP → PITCH MODEL. Every tray made the SAME width (doubles span 2
+  single-units, singles span 1 — 5 doubles = 10 singles, machine-true). Then wired the real
+  data model per Joe: store each coil's physical PITCH (mm), not a vague "5/15-coil". New
+  `coil_layout` table (40 coils seeded, pitch_mm null). CoilMap now interactive — tap a coil
+  (or a whole tray) to set pitch; shows pitch→units per coil + live full-machine capacity;
+  105/130mm greyed (never received). Machine spec card VC 8010-22S added. Spec: 28→15, 38→11,
+  60→7, 70→6, 86→5, 105→4, 130→3. Units feed Inventory capacity + refill triggers + fit-check next.
 - 2026-08-20 (i): NAYAX CONNECTED (Joe's ask; secondary feed, rule 2 intact) — Joe
   generated a Lynx token in Nayax Core (User Tokens → "Lynx token", not App Token) and
   pasted it into secrets as nayax_lynx_token; nayax-lynx edge fn + nayax_machines table

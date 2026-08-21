@@ -234,15 +234,22 @@ sales, where sold/not sold) so launches and pre-orders are staged from here.
 ## COIL-SIZE / FACINGS STRATEGY + RESEARCH FIT-CHECK (Joe brain-dump 2026-08-20) — THE PROFIT ENGINE
 This is core money-making IP. Capture now; wire as Joe supplies the coil sizes.
 
-- **Coil layout = the real machine face.** 51 moves to the BOTTOM row; rows centered/even on
-  both sides so it mirrors the physical machine. (Done in CoilMap.)
-- **Each coil has a SIZE, and size sets how many FACINGS (products deep) that coil holds.**
-  More facings = more units before empty = fewer refills = more profit. A coil only ~5 deep
-  can sell out before it trips a refill → lost sales. So facings drive the refill trigger and
-  the reorder math.
-- **Joe will load the coil sizes** → we populate, per coil: size + facings (units it holds).
-  That also seeds INVENTORY capacity per slot (how many it holds) for the whole inventory/
-  refill algo. First few weeks = manual strategy + teach partner; then algos tune it.
+- **Coil layout = the real machine face.** 51 on the BOTTOM row; every tray the SAME width —
+  top 3 + bottom trays are DOUBLES (each coil spans two single-widths), middle two are SINGLES.
+  (Done in CoilMap.) Machine model = **VC 8010-22S** (22" touch, 40 selections, 6 shelves,
+  5-wide, dual spirals, 485 lb, 49.65"W × 30.35"D × 76.38"H; factory sheet vc8010-22s.pdf).
+- **Each coil stores its physical PITCH (mm), and pitch sets how many UNITS it holds** — the
+  true max inventory per coil. More units = fewer refills = more profit; a low-unit coil can
+  sell out before it trips a refill → lost sales. So units drive the refill trigger + reorder math.
+- **PITCH → UNITS spec (Joe, 2026-08-21):** 28mm=15, 38mm=11, 60mm=7, 70mm=6, 86mm=5,
+  105mm=4 *(never received)*, 130mm=3 *(never received)*. Store the physical pitch, not just
+  "5-coil"/"15-coil" — that's what lets us compute exact fit + true max inventory per machine.
+- **BUILT 2026-08-21:** `coil_layout` table (coil PK, pitch_mm) seeded with all 40 selections;
+  CoilMap is now interactive — tap a coil to set its pitch (or set a whole tray at once), the
+  map shows each coil's `pitch→units`, and a live total = full machine capacity. 105/130 are
+  greyed n/a (not in our fleet). Pitch is independent of double/single (spiral spacing, not width).
+- **Next:** these units seed INVENTORY capacity per slot for the refill/reorder algo, and the
+  Research fit-check compares a product's packaging size against the coil pitches.
 - **Research fit-check (Research tab):** as partner scouts new products, each product carries
   its PACKAGING SIZE + warehouse SKU. Run the product's packaging size against the coil sizes
   → show which coils it fits / doesn't. Maximizes product count (pick the size/brand/packaging
