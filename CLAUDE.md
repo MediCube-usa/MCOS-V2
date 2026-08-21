@@ -175,9 +175,18 @@ Joe's HAR gave every remaining OurVend write (full recipes in `docs/blocks/ourve
 - **Selection/ClMachine** = clone a machine = **apply a planogram** (Piece D)
 - **PickUpCode/MassProductionCode** (+ListJsoin) = generate/read **pickup codes**
 Build these into `ourvend-write` as actions BEHIND per-item approval (hard rule 3, never auto).
-**PICKUP CODES — PARKED FOR JOE'S USE-CASE:** 8-digit per-machine security codes (free-vend /
-promo / refiller-access?). Joe to explain how he uses them → likely becomes the **Vouchers block**.
-Do NOT build the code flow until Joe defines the use.
+**PICKUP CODES = the IMPACT redemption side (Joe defined it 2026-08-21).** 8-digit per-machine
+codes (OurVend MassProductionCode / ListJsoin). They are how a funded IMPACT voucher is redeemed
+at a machine.
+**HARD BOUNDARY — IMPACT is NOT part of MediCube/MCOS.** IMPACT is a SEPARATE product (repo
+`MediCube-usa/Impact` = "IMPACT V1", the simplified clean build; the old `medicube-impact-platform`
+is the deprecated demo/campaign version — do NOT use it). Flow: Funded Program → Approved
+Participant → Voucher → **MCOS redemption** → Impact Report. IMPACT owns donations/participants/
+approvals/vouchers/reporting. **MCOS owns ONLY: the codes, product tracking, and distribution.**
+The two connect through a **SHARED DATABASE used for verification only** — MediCube verifies a
+code/participant against the shared DB, generates/tracks the pickup code, dispenses, confirms
+redemption. Do NOT build IMPACT into MCOS; keep them separate. OPEN: confirm WHERE the shared
+verification DB lives (same Supabase, or a separate shared one) before building the MCOS code side.
 
 **JOE'S LOCKED ROADMAP (2026-08-20 brain-dump — do these in order, don't get lost):**
 1. Atlas chat live on the front (BUILT, needs merge to main + live verify of the key).
