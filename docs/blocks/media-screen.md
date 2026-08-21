@@ -138,6 +138,23 @@ AdSite/AdType/PlayTime/EndTime/AdContent1) → deliver over **ES FTP through the
 player shows it on schedule. MCOS = the ad manager (campaigns, media, machines, schedule, billing)
 that generates advert.txt + pushes files. Nothing installed on the machine; nothing for the watchdog to kill.
 
+### ✅ RECON COMPLETE (2026-08-21) — verified end-to-end
+- Opened `a2f1d5b7-…008b4.png` = it's a **Chinese Alipay "扫码领红包" red-packet QR promo** — a TCN
+  DEFAULT junk ad currently on the screen. Proves advert.txt→file→live-screen chain works; this is
+  exactly what MediCube ads will replace. Confirmed the file exists (ES search) in the ad set.
+- App-update manifest confirms app `com.tcn.tcnstand`, skin `TCN_SKIN_WxOffline_V03.02.20240123.07`,
+  update server `tfs.android.tcnvmms.com:4103` (TCN backend, no customer login) — not needed for ads.
+- EVERYTHING NEEDED IS KNOWN. Stop machine recon. (Only 2-sec nicety still open: exact VideoAndImageRemote
+  path string — assume `/sdcard/VideoAndImageRemote`, confirm on first push.)
+
+### BUILD PLAN — MCOS "Screen Ads" ad-manager
+MCOS block: upload video(.mp4)/image → pick machine(s) → set schedule (PlayTime hours + start/EndTime) →
+advertiser + price (billing). MCOS then: generates `advert.txt` + pushes media into `VideoAndImageRemote`
+over ES Remote-Manager FTP, reached through the **RUT241** router (Teltonika RMS or VPN/port-forward).
+Also mirrors "now playing" back to the Command-Center screen box. Handles Narcan/MediCube ads AND paid
+third-party ads. FIRST MILESTONE: replace the Alipay junk with a MediCube ad on ONE machine, end to end.
+INFRA JOE PROVIDES (his own gear): RUT241 remote access + ES Remote Manager turned on with a user/pass.
+
 ### THE MAKE-OR-BREAK = advert.txt's format
 - If **advert.txt / config can point at a REMOTE URL** → machine pulls ads outbound from MCOS-hosted
   media (works through NAT, nothing to install, nothing for the watchdog to kill) = SOLVED. Best case.
