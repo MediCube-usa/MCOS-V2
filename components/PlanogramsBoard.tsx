@@ -1,4 +1,5 @@
 'use client';
+/* eslint-disable @next/next/no-img-element */
 
 import { useEffect, useMemo, useState } from 'react';
 import { dbSelect, dbInsert, dbUpdate, dbDelete } from '@/lib/db';
@@ -37,7 +38,7 @@ interface Machine {
   assigned_template_id: string | null;
   go_live_confirmed: boolean | null;
 }
-interface Product { barcode: string; name: string; default_price: string | null; }
+interface Product { barcode: string; name: string; default_price: string | null; image_url: string | null; }
 
 const ROLES = ['live', 'new', 'template'];
 const STATUSES = ['draft', 'ready', 'assigned', 'live'];
@@ -73,7 +74,7 @@ export function PlanogramsBoard() {
       const [t, m, p] = await Promise.all([
         dbSelect<Template>('templates', 'select=*&order=name.asc'),
         dbSelect<Machine>('machines', 'select=*&order=role.asc,machine_id.asc'),
-        dbSelect<Product>('products', 'select=barcode,name,default_price&order=name.asc'),
+        dbSelect<Product>('products', 'select=barcode,name,default_price,image_url&order=name.asc'),
       ]);
       setTpls(t.map((r) => ({ ...r, slots: normSlots(r.slots) })));
       setMachines(m);
@@ -89,6 +90,14 @@ export function PlanogramsBoard() {
     machines.forEach((m) => { if (m.assigned_template_id) (map[m.assigned_template_id] ||= []).push(m.machine_id); });
     return map;
   }, [machines]);
+
+  // Catalog image lookup (by product name or barcode) — for visual verification
+  // that each coil's matched product is really what's in the machine.
+  const prodImg = useMemo(() => {
+    const m: Record<string, string> = {};
+    products.forEach((p) => { if (p.image_url) { m[p.name] = p.image_url; if (p.barcode) m[p.barcode] = p.image_url; } });
+    return m;
+  }, [products]);
 
   // ---- templates ----
   const addTpl = async (fromId?: string, nameOverride?: string) => {
@@ -209,12 +218,18 @@ export function PlanogramsBoard() {
                       </div>
 
                       <div className="tpl-slots">
-                        <div className="tpl-row tpl-head"><span>Coil</span><span>Product (catalog only)</span><span>Price</span><span>Fill</span><span /></div>
+                        <div className="tpl-row tpl-head"><span>Coil</span><span /><span>Product (catalog only)</span><span>Price</span><span>Fill</span><span /></div>
                         {COIL_ORDER.map((coil) => {
                           const s = t.slots.find((x) => x.coil === coil) || { coil, product: '', retail_price: '', capacity: '' } as Slot;
+                          const img = s.product ? (prodImg[s.product] || (s.barcode ? prodImg[s.barcode as string] : '')) : '';
                           return (
                             <div key={coil} className="tpl-row">
                               <span className={`coil-cell ${isWide(coil) ? 'wide' : ''}`}>{coil}{isWide(coil) ? ' W' : ''}</span>
+                              <span className="tpl-thumb">
+                                {img
+                                  ? <img src={img} alt={s.product} />
+                                  : s.product ? <span className="tpl-thumb-x" title="not in catalog — no image to verify against">?</span> : null}
+                              </span>
                               <select value={s.product} onChange={(e) => pickProduct(t, coil, e.target.value)}>
                                 <option value="">— empty —</option>
                                 {s.product && !products.some((p) => p.name === s.product) && <option value={s.product}>{s.product} (not in catalog!)</option>}

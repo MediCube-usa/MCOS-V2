@@ -40,6 +40,55 @@ async function sb<T>(q: string): Promise<T[]> {
   }
 }
 
+// ---- Uploads / filing (Atlas "drop box") ----------------------------------
+// The shared physical layout every VC 8010-22S uses — 40 coils. Odd 1–29 and
+// 51–59 are WIDE, 31–50 are narrow. (Same order the Planograms board uses.)
+const COIL_ORDER = [
+  1, 3, 5, 7, 9, 11, 13, 15, 17, 19, 21, 23, 25, 27, 29,
+  31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51,
+  53, 55, 57, 59,
+];
+
+interface PlanogramSlot { coil: number; product: string; barcode: string | null; retail_price: string; capacity: string; gate?: string; }
+function blankLayout(): PlanogramSlot[] {
+  return COIL_ORDER.map((c) => ({ coil: c, product: '', barcode: null, retail_price: '', capacity: '' }));
+}
+
+interface CatalogRow { name: string; barcode: string | null; default_price: string | null; }
+const norm = (s: string) => s.toLowerCase().replace(/[^a-z0-9]+/g, ' ').trim();
+// Match a product name as read off a machine to a catalog row (labels rarely
+// match the catalog spelling exactly — e.g. "Playtex Sport" → "Platex Tampon").
+function matchProduct(nameRaw: string, catalog: CatalogRow[]): { name: string; barcode: string | null; price: string; gate: 'match' | 'missing' } {
+  const q = norm(nameRaw);
+  if (!q) return { name: '', barcode: null, price: '', gate: 'missing' };
+  let hit = catalog.find((c) => norm(c.name) === q);
+  if (!hit) {
+    const qTokens = q.split(' ').filter(Boolean);
+    hit = catalog.find((c) => { const n = norm(c.name); return n.includes(q) || q.includes(n); })
+      || catalog.find((c) => { const n = norm(c.name); return qTokens.some((t) => t.length > 2 && n.includes(t)); });
+  }
+  if (hit) return { name: hit.name, barcode: hit.barcode, price: hit.default_price || '', gate: 'match' };
+  return { name: nameRaw.trim(), barcode: null, price: '', gate: 'missing' };
+}
+
+// Keep an uploaded file in the mcos-docs Storage bucket, return its public URL.
+async function storeAttachment(name: string, mediaType: string, dataBase64: string): Promise<string | null> {
+  try {
+    const bytes = Buffer.from(dataBase64, 'base64');
+    const safe = (name || 'file').replace(/[^a-zA-Z0-9._-]/g, '_').slice(-60);
+    const path = `atlas/${globalThis.crypto.randomUUID()}-${safe}`;
+    const r = await fetch(`${SUPABASE_URL}/storage/v1/object/mcos-docs/${path}`, {
+      method: 'POST',
+      headers: { apikey: SUPABASE_ANON_JWT, Authorization: `Bearer ${SUPABASE_ANON_JWT}`, 'Content-Type': mediaType || 'application/octet-stream', 'x-upsert': 'true' },
+      body: bytes,
+    });
+    if (!r.ok) return null;
+    return `${SUPABASE_URL}/storage/v1/object/public/mcos-docs/${path}`;
+  } catch {
+    return null;
+  }
+}
+
 // Real Google Calendar (company account) via the google-calendar edge function.
 // Our OWN calendar — Atlas writes to it directly (not OurVend/machines/payments),
 // so no approval gate. Best-effort: if Google isn't reachable, callers degrade.
@@ -141,11 +190,19 @@ DATA RULES (these matter — trust has been burned before):
 4. set_reminder — files a date on a block AND drops it on the real MediCube Google Calendar in one shot (shows on the ⏰ badge, the block's alerts, and the actual Google Calendar). Use it whenever Joe mentions a date, visit, deadline, or follow-up — capture who/where in the title/location/notes. Confirm what you set, with the date; the tool tells you if it also reached Google Calendar.
 5. list_calendar_events — reads what's actually on the Google Calendar. Use it when Joe asks what's coming up / on the schedule. If it says the calendar isn't reachable, tell him plainly (the connection may need a reconnect).
 6. When a question needs a block that is still a shell (parked), say the block isn't built yet.
+7. UPLOADS — Joe can attach photos and files; you are the drop box that files them where they belong:
+   • MACHINE PHOTO → read every coil top-to-bottom. Coils are numbered 01,03,05…29 (wide), 31–50 (narrow), 51,53,55,57,59 (wide) — 40 total. For each coil you can actually SEE, note the product. Then call save_planogram with the machine/campus label as the name and one slot per readable coil. Report: how many coils matched the catalog, which products are NOT in the catalog (they must be loaded before they can go on a machine), which coils were empty, and any coil you could not read clearly — NEVER invent a coil you can't see. Each machine is different; the photo is the truth (not OurVend).
+   • CONTRACT / INVOICE / PAPERWORK / LEASE → call file_document (use the stored URL listed with the attachment as file_url).
+   • If you can't tell where something goes, ask Joe before filing.
+   These writes go to MCOS's own database only — never to OurVend or a machine.
 
 Keep replies under ~150 words unless Joe asks for a full rundown.`;
 }
 
 interface ChatMsg { role: 'user' | 'assistant'; content: string; }
+// A file dropped into the Atlas chat (photo / PDF / other), base64-encoded.
+interface Attachment { name: string; mediaType: string; dataBase64: string; }
+const IMAGE_TYPES = ['image/jpeg', 'image/png', 'image/gif', 'image/webp'];
 
 // A proposed OurVend change — surfaced to the chat as an Approve card. Nothing
 // happens until Joe taps Approve, which POSTs {execute} back here (hard rule 3).
@@ -198,7 +255,7 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ error: 'not signed in' }, { status: 401 });
   }
 
-  let body: { messages?: ChatMsg[]; execute?: PendingAction } = {};
+  let body: { messages?: ChatMsg[]; execute?: PendingAction; attachments?: Attachment[] } = {};
   try { body = await req.json(); } catch { return NextResponse.json({ error: 'bad request' }, { status: 400 }); }
 
   // APPROVE GATE — a live OurVend write happens ONLY here, when Joe taps Approve.
@@ -319,8 +376,153 @@ export async function POST(req: NextRequest) {
       events.map((e) => `- ${e.start}: ${e.summary || '(no title)'}${e.location ? ` @ ${e.location}` : ''}`).join('\n');
   }
 
+  const savePlanogramTool = {
+    name: 'save_planogram',
+    description:
+      "Save a machine's REAL planogram to MCOS from a machine photo Joe attached. List every coil you can read (top to bottom). Products are matched to the catalog automatically. Name it with the machine/campus label (e.g. \"ASU West Glendale\"). Only include coils you can actually see; leave the rest out. This writes to MCOS only (not OurVend).",
+    input_schema: {
+      type: 'object' as const,
+      properties: {
+        name: { type: 'string', description: 'Planogram name — the machine/campus label from the photo or Joe' },
+        machine_id: { type: 'string', description: 'OurVend machine id if known (optional)' },
+        slots: {
+          type: 'array',
+          description: 'One entry per coil you can read',
+          items: {
+            type: 'object',
+            properties: {
+              coil: { type: 'integer', description: 'Coil number (01,03,05… wide; 31–50 narrow; 51–59 wide)' },
+              product: { type: 'string', description: 'Product as seen on the label; matched to the catalog automatically' },
+              price: { type: 'string', description: 'Price if visible (optional)' },
+            },
+            required: ['coil', 'product'],
+          },
+        },
+      },
+      required: ['name', 'slots'],
+    },
+  };
+
+  async function runSavePlanogram(input: Record<string, unknown>): Promise<string> {
+    const name = String(input.name ?? '').trim().slice(0, 120);
+    if (!name) return 'ERROR: a planogram name (machine label) is required';
+    const rawSlots = Array.isArray(input.slots) ? (input.slots as Record<string, unknown>[]) : [];
+    if (!rawSlots.length) return 'ERROR: no coils provided';
+    const catalog = await sb<CatalogRow>('products?select=name,barcode,default_price&order=name.asc');
+    const layout = blankLayout();
+    const byCoil = new Map(layout.map((s) => [s.coil, s]));
+    const matched: string[] = []; const missing: string[] = []; let filled = 0;
+    for (const rs of rawSlots) {
+      const coil = Number(rs.coil);
+      const slot = byCoil.get(coil);
+      if (!slot) continue; // not a real coil on this layout
+      const prodRaw = String(rs.product ?? '').trim();
+      if (!prodRaw) continue;
+      const m = matchProduct(prodRaw, catalog);
+      slot.product = m.name;
+      slot.barcode = m.barcode;
+      slot.gate = m.gate;
+      slot.retail_price = typeof rs.price === 'string' && rs.price ? rs.price : m.price;
+      filled++;
+      if (m.gate === 'match') matched.push(`${coil}:${m.name}`); else missing.push(`${coil}:${prodRaw}`);
+    }
+    if (!filled) return 'ERROR: none of the coils were valid (coils must be 1,3,5…29, 31–50, 51,53,55,57,59)';
+    const slots = Array.from(byCoil.values()).sort((a, b) => a.coil - b.coil);
+    const desc = `Built by Atlas from a machine photo. ${filled}/40 coils filled${input.machine_id ? ` · machine ${input.machine_id}` : ''}.`;
+
+    // Upsert by name: update an existing planogram of the same name, else create.
+    const existing = await sb<{ id: string }>(`templates?select=id&name=eq.${encodeURIComponent(name)}`);
+    let saved = false;
+    if (existing.length) {
+      const r = await fetch(`${SUPABASE_URL}/rest/v1/templates?id=eq.${existing[0].id}`, {
+        method: 'PATCH', headers: { ...sbHeaders, 'Content-Type': 'application/json', Prefer: 'return=minimal' },
+        body: JSON.stringify({ slots, description: desc, updated_at: new Date().toISOString() }),
+      });
+      saved = r.ok;
+    } else {
+      const r = await fetch(`${SUPABASE_URL}/rest/v1/templates`, {
+        method: 'POST', headers: { ...sbHeaders, 'Content-Type': 'application/json', Prefer: 'return=minimal' },
+        body: JSON.stringify({ name, status: 'draft', description: desc, slots }),
+      });
+      saved = r.ok;
+    }
+    if (!saved) return 'ERROR: could not save the planogram to MCOS';
+    return `SAVED planogram "${name}" (${existing.length ? 'updated' : 'created'}) — ${filled}/40 coils. `
+      + `Matched to catalog: ${matched.length}. `
+      + (missing.length ? `NOT in the catalog (need loading before they can go on a machine): ${missing.join(', ')}. ` : '')
+      + `Visible on the Templates block → Planograms. Tell Joe the count, list what is not in the catalog, and note any coils he should double-check.`;
+  }
+
+  const fileDocumentTool = {
+    name: 'file_document',
+    description:
+      'File an uploaded document (contract, invoice, paperwork, lease, or other) into the Documents block, linking the stored copy. Use the stored URL listed for the attachment as file_url.',
+    input_schema: {
+      type: 'object' as const,
+      properties: {
+        title: { type: 'string', description: 'Short title, e.g. "ASU West lease" or "TCN invoice #1234"' },
+        doc_type: { type: 'string', description: 'contract | invoice | paperwork | lease | other' },
+        party: { type: 'string', description: 'Who it is with (supplier, campus, etc.)' },
+        file_url: { type: 'string', description: 'The stored URL of the uploaded file (from the attachment list)' },
+        notes: { type: 'string', description: 'Anything worth keeping' },
+      },
+      required: ['title'],
+    },
+  };
+
+  async function runFileDocument(input: Record<string, unknown>): Promise<string> {
+    const title = String(input.title ?? '').trim().slice(0, 160);
+    if (!title) return 'ERROR: a document title is required';
+    const row = {
+      title,
+      doc_type: typeof input.doc_type === 'string' ? input.doc_type.slice(0, 40) : 'other',
+      party: typeof input.party === 'string' ? input.party.slice(0, 120) : null,
+      link: typeof input.file_url === 'string' ? input.file_url.slice(0, 500) : null,
+      status: 'filed',
+      notes: typeof input.notes === 'string' ? input.notes.slice(0, 500) : null,
+    };
+    const r = await fetch(`${SUPABASE_URL}/rest/v1/documents`, {
+      method: 'POST', headers: { ...sbHeaders, 'Content-Type': 'application/json', Prefer: 'return=minimal' },
+      body: JSON.stringify(row),
+    });
+    if (!r.ok) return `ERROR: could not file the document (${r.status})`;
+    return `FILED "${title}" (${row.doc_type}) into the Documents block${row.link ? ' with the uploaded file linked' : ''}.`;
+  }
+
   const pending: PendingAction[] = [];
   const messages: Anthropic.Beta.BetaMessageParam[] = history.map((m) => ({ role: m.role, content: m.content }));
+
+  // Attachments ride on the LAST user message: readable ones (images, PDFs) go
+  // to Claude as content blocks so Atlas can SEE them; every file is also kept in
+  // Storage so Atlas can file a link. The stored URLs are listed for the model.
+  const attachments = (body.attachments ?? []).filter((a) => a && a.dataBase64).slice(0, 6);
+  const storedFiles: { name: string; url: string | null }[] = [];
+  if (attachments.length) {
+    const blocks: Anthropic.Beta.BetaContentBlockParam[] = [];
+    const lastText = history[history.length - 1].content;
+    if (lastText) blocks.push({ type: 'text', text: lastText });
+    const unreadable: string[] = [];
+    for (const a of attachments) {
+      const url = await storeAttachment(a.name, a.mediaType, a.dataBase64);
+      storedFiles.push({ name: a.name, url });
+      if (IMAGE_TYPES.includes(a.mediaType)) {
+        blocks.push({ type: 'image', source: { type: 'base64', media_type: a.mediaType as 'image/jpeg', data: a.dataBase64 } });
+      } else if (a.mediaType === 'application/pdf') {
+        blocks.push({ type: 'document', source: { type: 'base64', media_type: 'application/pdf', data: a.dataBase64 } });
+      } else {
+        unreadable.push(a.name);
+      }
+    }
+    const urlList = storedFiles.filter((f) => f.url).map((f) => `- ${f.name}: ${f.url}`).join('\n');
+    const notes = [
+      `[${attachments.length} file(s) attached.`,
+      urlList ? `Stored copies (use these URLs when filing with file_document):\n${urlList}` : 'Storage of the files failed — you can still read the images/PDFs above.',
+      unreadable.length ? `You CANNOT read the contents of: ${unreadable.join(', ')} — file them by name, or ask Joe what they are.` : '',
+      `]`,
+    ].filter(Boolean).join('\n');
+    blocks.push({ type: 'text', text: notes });
+    messages[messages.length - 1] = { role: 'user', content: blocks };
+  }
 
   try {
     let reply = '';
@@ -335,7 +537,7 @@ export async function POST(req: NextRequest) {
           { type: 'text', text: staticSystem(), cache_control: { type: 'ephemeral' } },
           { type: 'text', text: `LIVE SNAPSHOT (fetched for this message):\n\n${snapshot}` },
         ],
-        tools: [setReminderTool, listCalendarTool, proposeChangeTool],
+        tools: [setReminderTool, listCalendarTool, proposeChangeTool, savePlanogramTool, fileDocumentTool],
         messages,
       });
 
@@ -357,6 +559,10 @@ export async function POST(req: NextRequest) {
             out = await runSetReminder(block.input as Record<string, unknown>);
           } else if (block.name === 'list_calendar_events') {
             out = await runListCalendar(block.input as Record<string, unknown>);
+          } else if (block.name === 'save_planogram') {
+            out = await runSavePlanogram(block.input as Record<string, unknown>);
+          } else if (block.name === 'file_document') {
+            out = await runFileDocument(block.input as Record<string, unknown>);
           } else if (block.name === 'propose_ourvend_change') {
             const inp = block.input as Record<string, unknown>;
             const code = String(inp.product_code ?? '').trim();

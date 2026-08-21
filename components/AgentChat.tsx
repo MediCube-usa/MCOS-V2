@@ -21,8 +21,24 @@ export function AgentChat({ greeting }: { greeting: string }) {
   const [listening, setListening] = useState(false);
   const [speak, setSpeak] = useState(false);
   const [voiceSupported, setVoiceSupported] = useState(false);
+  const [files, setFiles] = useState<{ name: string; mediaType: string; dataUrl: string }[]>([]);
   const logRef = useRef<HTMLDivElement>(null);
   const recRef = useRef<unknown>(null);
+  const fileRef = useRef<HTMLInputElement>(null);
+
+  // Read picked photos/files into base64 data URLs (max 6, ~12MB each).
+  const onPick = (list: FileList | null) => {
+    if (!list) return;
+    Array.from(list).slice(0, 6).forEach((f) => {
+      if (f.size > 12 * 1024 * 1024) { alert(`${f.name} is too big (max 12MB).`); return; }
+      const reader = new FileReader();
+      reader.onload = () => {
+        const dataUrl = String(reader.result || '');
+        if (dataUrl) setFiles((xs) => [...xs, { name: f.name, mediaType: f.type || 'application/octet-stream', dataUrl }].slice(0, 6));
+      };
+      reader.readAsDataURL(f);
+    });
+  };
 
   useEffect(() => {
     logRef.current?.scrollTo({ top: logRef.current.scrollHeight });
@@ -105,17 +121,20 @@ export function AgentChat({ greeting }: { greeting: string }) {
 
   const send = async () => {
     const text = input.trim();
-    if (!text || busy) return;
-    const next: Msg[] = [...msgs, { role: 'user', content: text }];
+    if ((!text && files.length === 0) || busy) return;
+    const tag = files.length ? `${text ? text + '\n' : ''}📎 ${files.map((f) => f.name).join(', ')}` : text;
+    const next: Msg[] = [...msgs, { role: 'user', content: tag }];
     setMsgs(next);
+    const attachments = files.map((f) => ({ name: f.name, mediaType: f.mediaType, dataBase64: f.dataUrl.split(',')[1] || '' }));
     setInput('');
+    setFiles([]);
     setPending([]);
     setBusy(true);
     try {
       const r = await fetch('/api/agent', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ messages: next }),
+        body: JSON.stringify({ messages: next, attachments }),
       });
       const j = (await r.json().catch(() => ({}))) as { reply?: string; error?: string; pending?: PendingAction[] };
       const reply = j.reply || j.error || `No answer came back (${r.status}).`;
@@ -164,7 +183,31 @@ export function AgentChat({ greeting }: { greeting: string }) {
             </div>
           </div>
         ))}
+        {files.length > 0 && (
+          <div className="atlas-files">
+            {files.map((f, i) => (
+              <span key={i} className="atlas-file">
+                📎 {f.name.length > 22 ? f.name.slice(0, 19) + '…' : f.name}
+                <button onClick={() => setFiles((xs) => xs.filter((_, j) => j !== i))} title="Remove">×</button>
+              </span>
+            ))}
+          </div>
+        )}
         <div className="atlas-row">
+          <input
+            ref={fileRef}
+            type="file"
+            accept="image/*,application/pdf"
+            multiple
+            style={{ display: 'none' }}
+            onChange={(e) => { onPick(e.target.files); e.target.value = ''; }}
+          />
+          <button
+            className="atlas-attach"
+            onClick={() => fileRef.current?.click()}
+            disabled={busy}
+            title="Upload an image or PDF"
+          >📎</button>
           {voiceSupported && (
             <button
               className={`atlas-mic ${listening ? 'live' : ''}`}
@@ -180,7 +223,7 @@ export function AgentChat({ greeting }: { greeting: string }) {
             placeholder={listening ? 'Listening…' : 'Ask, or tap the mic and talk'}
             disabled={busy}
           />
-          <button className="atlas-send" onClick={send} disabled={busy || !input.trim()}>Ask</button>
+          <button className="atlas-send" onClick={send} disabled={busy || (!input.trim() && files.length === 0)}>Ask</button>
         </div>
       </div>
     </div>
