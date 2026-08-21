@@ -188,6 +188,23 @@ code/participant against the shared DB, generates/tracks the pickup code, dispen
 redemption. Do NOT build IMPACT into MCOS; keep them separate. OPEN: confirm WHERE the shared
 verification DB lives (same Supabase, or a separate shared one) before building the MCOS code side.
 
+### ⭐ COMPANY'S #1 + #2 REMAINING NEEDS (Joe, 2026-08-21 late) — see docs/blocks/media-screen.md
+1. **MACHINE ANDROID AD-SCREEN MEDIA PLAYER** — remote load + SCHEDULE videos + CHARGE for ads.
+   Today: media is dropped into the "ES folder" via ES Explorer (USB or TeamViewer, manual/crappy);
+   new machines got an ES Explorer EPK; NO remote control today; the dev couldn't crack it. Screen =
+   Android (TCN/Yunshu "YS"). PATHS (see doc): (A) CHECK OurVend for an Advertisement/Media module →
+   reverse-engineer like the rest [cheapest]; (B) build our own MediCube "Screen" APK installed once
+   per machine — pulls playlist+schedule from MCOS, reports what's playing (also feeds the command
+   "mirror" box), logs plays → ad-manager/billing [the real product]; (C) FTP/cloud-sync ES Explorer
+   or TeamViewer automation [bridge]. NEED FROM JOE: check OurVend ad section; send ES Explorer EPK +
+   YS/TCN Android manual + photos of the ad folder/schedule settings; one test machine. We do NOT have
+   the YS/TCN Android manual yet. This is on-device Android (harder than the OurVend web API) but solvable.
+2. **DIGITAL LOCKBOX CODE FOR REFILLS** — real electronic lockbox on the service door, refiller opens
+   with a code. MCOS has a lockbox-generate stub; make it real = integrate the actual lock hardware.
+   OPEN: what lockbox brand/model + does it have an app/API?
+After these two, Joe: "it's just me and you filling out all the empty spaces." (Progress note: OurVend
+private API, MCOS, and IMPACT are largely built — these two are the big rocks left.)
+
 ### COMMAND-PAGE "SCREEN FEED" BOX (Joe, 2026-08-21 — updated goodnight)
 DROPPED: the in-window TeamViewer + Weiner's-shop embed idea — Joe has another way, don't build it.
 NEW ask for the Screen Feed box (where the video placeholder is now), best → acceptable:
