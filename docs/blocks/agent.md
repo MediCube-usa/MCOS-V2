@@ -92,3 +92,13 @@ what makes giving Atlas power safe on live partner machines — approve fast, bu
 
 ## VOICE (2026-08-20)
 Atlas box has 🎤 dictation (browser SpeechRecognition; phone keyboard mic is the universal fallback) + 🔊 spoken-reply toggle (SpeechSynthesis reads Atlas answers aloud). Front-end only, no extra service/cost, works on phone. Mic button only shows where the browser supports speech-to-text.
+
+## OPERATOR MODE v1 LIVE (2026-08-20) — Atlas can act, gated
+Atlas now has propose_ourvend_change (price / description / name / size, by product CODE).
+It NEVER writes directly: the tool only proposes → the chat shows an Approve/Cancel card →
+Joe's tap POSTs {execute} to /api/agent → server calls ourvend-write editProductByCode
+(read-modify-write: ListJson finds PrID, GetProductData loads current fields, EditCI saves).
+This is the hard-rule-3 gate in code: the LLM cannot fire a live write; only Joe's tap can.
+Catalog snapshot now includes each product's CODE so Atlas can reference it.
+Next actions to add the same way: add/delete product, then restock + purchase orders.
+NOT yet: planogram/coil/per-machine price (needs the slot capture).

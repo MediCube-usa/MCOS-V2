@@ -102,8 +102,8 @@ Fully automated, cloud-side, no browser, no Vercel env. All in **Supabase Edge F
 - Site is password-gated (`app/api/login`, `lib/auth.ts`) — separate from OurVend login.
 - **Atlas agent**: `app/api/agent/route.ts` (server route, behind the gate) + Anthropic API.
   Key = `ANTHROPIC_API_KEY` env var on Vercel `mcos-v2-site` ONLY (Joe added 2026-08-20;
-  never in repo/browser). Fresh Supabase snapshot per message; one write tool
-  (`set_reminder` → `appointments`).
+  never in repo/browser). Fresh Supabase snapshot per message. Write tools: set_reminder (appointments) +
+  propose_ourvend_change (price/desc/name/size, by code) behind an Approve/Cancel gate → ourvend-write. LLM never writes directly; only Joe's tap fires it (hard rule 3).
 - **`gateway/` = the MCOS↔TCN/Yunshu machine-protocol server (FunCodes 1000–5001).
   DO NOT TOUCH IT (Joe, 2026-08-20)** — separate from the website; its field names are
   vendor-exact on purpose.

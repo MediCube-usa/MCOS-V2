@@ -15,7 +15,7 @@ import { NextResponse } from 'next/server';
 import type { NextRequest } from 'next/server';
 import Anthropic from '@anthropic-ai/sdk';
 import { AUTH_COOKIE, AUTH_TOKEN } from '@/lib/auth';
-import { SUPABASE_URL, SUPABASE_KEY } from '@/lib/config';
+import { SUPABASE_URL, SUPABASE_KEY, SUPABASE_ANON_JWT } from '@/lib/config';
 import { getLiveFleet, syncedAgo } from '@/lib/live-slots';
 import { neverSynced } from '@/lib/fleet';
 import { blockDepartments } from '@/lib/departments';
@@ -56,7 +56,7 @@ function rowsText(title: string, rows: object[], max = 40): string {
 async function liveSnapshot(): Promise<string> {
   const [fleet, products, machines, restock, setup, locations, orders, appts, templates, nayax] = await Promise.all([
     getLiveFleet(),
-    sb<{ name: string; default_price: string | null }>('products?select=name,default_price&order=name.asc'),
+    sb<{ name: string; barcode: string | null; default_price: string | null }>('products?select=name,barcode,default_price&order=name.asc'),
     sb<object>('machines?select=machine_id,label,role,assigned_template_id&order=machine_id.asc'),
     sb<object>('restock_tasks?select=id,machine_id,status,scheduled_date,scheduled_time,accepted,onsite_verified,reoffer_date&status=not.eq.done'),
     sb<object>('setup_machines?select=name,stage,eta,pickup_date,campus_ship_date,follow_up_date,arrived_date,warehouse_date'),
@@ -85,7 +85,7 @@ async function liveSnapshot(): Promise<string> {
     `TODAY (Vegas time): ${today}`,
     `FLEET — live slot data ${fleet.live ? `from OurVend, synced ${syncedAgo(fleet.syncedAt)}` : 'UNAVAILABLE right now (showing last committed snapshot — say so if asked about stock)'}:`,
     fleetLines.join('\n'),
-    rowsText('CATALOG PRODUCTS (name @ default price)', products.map((p) => ({ n: p.name, p: p.default_price })), 60),
+    rowsText('CATALOG PRODUCTS (name · code · default price — use the CODE to propose an OurVend change)', products.map((p) => ({ name: p.name, code: p.barcode, price: p.default_price })), 60),
     rowsText('MACHINE REGISTRY (roles/planogram assignment)', machines, 20),
     rowsText('OPEN RESTOCK TASKS', restock),
     rowsText('MACHINE SETUP PIPELINE', setup, 25),
@@ -107,14 +107,46 @@ ${blocks}
 DATA RULES (these matter — trust has been burned before):
 1. Answer ONLY from the live snapshot in this conversation. Every number you give must come from it. If the snapshot doesn't contain something, say plainly "that's not in my data yet" — NEVER estimate or invent a figure.
 2. The snapshot refreshes from the OurVend connection about every 20 minutes. Quote the sync age when talking about stock.
-3. You are READ-ONLY toward OurVend and the machines. You cannot change prices, products, planograms, or anything on a machine — only Joe does that, in OurVend. If asked, say so.
-4. Your ONE write ability: set_reminder — it files a reminder/appointment on a block. It appears on the site calendar, as a ⏰ badge on that block's box, and in that block's alert list. Use it whenever Joe mentions a date, a visit, a deadline, a follow-up, or asks to be reminded — capture WHO it involves and WHERE it's going in the title/location/notes. Confirm what you set, with the date.
+3. You can PROPOSE changes to a product in OurVend — price, description, name, or size — with the propose_ourvend_change tool, using the product's exact CODE from the catalog snapshot. This does NOT change anything itself: it shows Joe an Approve button, and only his tap makes it live. So NEVER say you changed something — say you've "put it up for approval" and let the card do the rest. You still cannot touch planograms, coils/slots, or per-machine prices yet (not built) — say so if asked.
+4. set_reminder — files a reminder/appointment on a block (shows on the calendar, the ⏰ badge, and the block's alerts). Use it whenever Joe mentions a date, visit, deadline, or follow-up — capture who/where in the title/location/notes. Confirm what you set, with the date.
 5. When a question needs a block that is still a shell (parked), say the block isn't built yet.
 
 Keep replies under ~150 words unless Joe asks for a full rundown.`;
 }
 
 interface ChatMsg { role: 'user' | 'assistant'; content: string; }
+
+// A proposed OurVend change — surfaced to the chat as an Approve card. Nothing
+// happens until Joe taps Approve, which POSTs {execute} back here (hard rule 3).
+type OurVendChange = 'price' | 'description' | 'name' | 'size';
+interface PendingAction { code: string; name: string; change: OurVendChange; value: string; }
+
+async function executeAction(a: PendingAction): Promise<Response> {
+  const code = String(a.code || '').trim();
+  const change = a.change;
+  const value = String(a.value ?? '');
+  if (!code || !['price', 'description', 'name', 'size'].includes(change)) {
+    return NextResponse.json({ reply: 'That action was malformed — nothing changed.' });
+  }
+  if (change === 'price' && !/^\d+(\.\d{1,2})?$/.test(value)) {
+    return NextResponse.json({ reply: 'A price has to be a number like 3.99 — nothing changed.' });
+  }
+  try {
+    const r = await fetch(`${SUPABASE_URL}/functions/v1/ourvend-write`, {
+      method: 'POST',
+      headers: { apikey: SUPABASE_ANON_JWT, Authorization: `Bearer ${SUPABASE_ANON_JWT}`, 'Content-Type': 'application/json' },
+      body: JSON.stringify({ action: 'editProductByCode', code, set: { [change]: value } }),
+    });
+    const j = (await r.json().catch(() => ({}))) as { ok?: boolean; error?: string; before?: Record<string, string> };
+    if (j?.ok) {
+      const was = j.before?.[change];
+      return NextResponse.json({ reply: `✅ Done in OurVend — ${a.name || code}: ${change} is now "${value}"${was ? ` (was "${was}")` : ''}.` });
+    }
+    return NextResponse.json({ reply: `⚠️ Could not make that change: ${j?.error || 'OurVend did not confirm'}. Nothing was changed.` });
+  } catch {
+    return NextResponse.json({ reply: '⚠️ Could not reach OurVend just now — nothing was changed. Try again in a moment.' });
+  }
+}
 
 // Find the Anthropic key even if it was saved under a different NAME in Vercel —
 // the value is recognizable (Anthropic keys start with sk-ant-). Values never
@@ -134,6 +166,13 @@ export async function POST(req: NextRequest) {
   if (req.cookies.get(AUTH_COOKIE)?.value !== AUTH_TOKEN) {
     return NextResponse.json({ error: 'not signed in' }, { status: 401 });
   }
+
+  let body: { messages?: ChatMsg[]; execute?: PendingAction } = {};
+  try { body = await req.json(); } catch { return NextResponse.json({ error: 'bad request' }, { status: 400 }); }
+
+  // APPROVE GATE — a live OurVend write happens ONLY here, when Joe taps Approve.
+  if (body.execute) return executeAction(body.execute);
+
   const found = findAnthropicKey();
   if (!found.key) {
     const seen = found.nearMisses.length
@@ -144,15 +183,9 @@ export async function POST(req: NextRequest) {
     });
   }
 
-  let history: ChatMsg[] = [];
-  try {
-    const body = (await req.json()) as { messages?: ChatMsg[] };
-    history = (body.messages ?? [])
-      .filter((m) => (m.role === 'user' || m.role === 'assistant') && typeof m.content === 'string' && m.content.trim())
-      .slice(-24);
-  } catch {
-    return NextResponse.json({ error: 'bad request' }, { status: 400 });
-  }
+  const history: ChatMsg[] = (body.messages ?? [])
+    .filter((m) => (m.role === 'user' || m.role === 'assistant') && typeof m.content === 'string' && m.content.trim())
+    .slice(-24);
   if (history.length === 0 || history[history.length - 1].role !== 'user') {
     return NextResponse.json({ error: 'last message must be from the user' }, { status: 400 });
   }
@@ -206,6 +239,23 @@ export async function POST(req: NextRequest) {
     return `SAVED: "${title}" on ${date}${time ? ` at ${time}` : ''} → ${dept} block (calendar + badge + alerts).`;
   }
 
+  const proposeChangeTool = {
+    name: 'propose_ourvend_change',
+    description:
+      "Propose a change to a product in OurVend — price, description, name, or size. This does NOT change anything; it shows Joe an Approve button and only his tap makes it live. Use the product's exact CODE from the catalog snapshot.",
+    input_schema: {
+      type: 'object' as const,
+      properties: {
+        product_code: { type: 'string', description: 'The OurVend product code (from the catalog snapshot)' },
+        product_name: { type: 'string', description: 'Product name, for the confirmation card' },
+        change: { type: 'string', enum: ['price', 'description', 'name', 'size'], description: 'What to change' },
+        new_value: { type: 'string', description: 'The new value (a price is a number like 3.99)' },
+      },
+      required: ['product_code', 'change', 'new_value'],
+    },
+  };
+
+  const pending: PendingAction[] = [];
   const messages: Anthropic.Beta.BetaMessageParam[] = history.map((m) => ({ role: m.role, content: m.content }));
 
   try {
@@ -221,7 +271,7 @@ export async function POST(req: NextRequest) {
           { type: 'text', text: staticSystem(), cache_control: { type: 'ephemeral' } },
           { type: 'text', text: `LIVE SNAPSHOT (fetched for this message):\n\n${snapshot}` },
         ],
-        tools: [setReminderTool],
+        tools: [setReminderTool, proposeChangeTool],
         messages,
       });
 
@@ -238,10 +288,24 @@ export async function POST(req: NextRequest) {
         const results: Anthropic.Beta.BetaToolResultBlockParam[] = [];
         for (const block of resp.content) {
           if (block.type !== 'tool_use') continue;
-          const out =
-            block.name === 'set_reminder'
-              ? await runSetReminder(block.input as Record<string, unknown>)
-              : `ERROR: unknown tool ${block.name}`;
+          let out: string;
+          if (block.name === 'set_reminder') {
+            out = await runSetReminder(block.input as Record<string, unknown>);
+          } else if (block.name === 'propose_ourvend_change') {
+            const inp = block.input as Record<string, unknown>;
+            const code = String(inp.product_code ?? '').trim();
+            const change = String(inp.change ?? '');
+            const value = String(inp.new_value ?? '');
+            const name = String(inp.product_name ?? '');
+            if (code && ['price', 'description', 'name', 'size'].includes(change) && value) {
+              pending.push({ code, name, change: change as OurVendChange, value });
+              out = `Proposed ${change} of "${name || code}" → "${value}". Shown to Joe with an Approve button — NOT applied yet.`;
+            } else {
+              out = 'ERROR: propose needs product_code, change (price|description|name|size), and new_value';
+            }
+          } else {
+            out = `ERROR: unknown tool ${block.name}`;
+          }
           results.push({ type: 'tool_result', tool_use_id: block.id, content: out, is_error: out.startsWith('ERROR') });
         }
         messages.push({ role: 'user', content: results });
@@ -255,7 +319,7 @@ export async function POST(req: NextRequest) {
         .trim();
       break;
     }
-    return NextResponse.json({ reply: reply || 'I ran out of turns before finishing — try asking again.' });
+    return NextResponse.json({ reply: reply || (pending.length ? 'Ready for your approval below.' : 'I ran out of turns before finishing — try asking again.'), pending });
   } catch (err) {
     if (err instanceof Anthropic.AuthenticationError) {
       return NextResponse.json({ reply: 'My API key was rejected — check the ANTHROPIC_API_KEY value in Vercel (Settings → Environment Variables) and redeploy.' });
