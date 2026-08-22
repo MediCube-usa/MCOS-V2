@@ -66,7 +66,16 @@ dashboard. (This confusion cost a whole evening on 2026-08-19.)
    syncs down to us. That is the final number — not an estimate, not sales math.
    ⇒ Therefore the **sales feed is business intelligence, NOT an inventory dependency** (what
    sells, what a location earns). Nice to have; never on the critical path.
-4. **DEPENDENCY: the truth loop only closes when the MACHINE IS ONLINE.** An offline machine
+4. **OURVEND IS THE ONLY THING COUNTING INVENTORY** (Joe, 2026-08-22). Of everything in the
+   stack — the card readers (Nayax/Cantaloupe), the machine itself, MCOS — **only OurVend keeps
+   an inventory ledger.** Card readers track money, not stock; the machine shows what is loaded
+   but keeps no running count. So OurVend being wrong is not a reporting annoyance: it is the
+   only stock record being wrong. That is the whole weight behind the one-time reset.
+   ⇒ **MCOS is the durable record underneath it.** `slot_history` snapshots every coil on every
+   machine at :05/:25/:45 (42,595 rows since 2026-08-19). OurVend shows only NOW; MCOS keeps the
+   HISTORY — what a coil held last week, how fast it emptied, when a count went wrong. That is
+   the backup, the audit trail, and where refill timing comes from without the sales feed.
+5. **DEPENDENCY: the truth loop only closes when the MACHINE IS ONLINE.** An offline machine
    cannot push the refiller's count to OurVend — exactly what created today's mismatch (machines
    offline → everything loaded at the screens → OurVend never saw it). "Is this machine online"
    is an operational check that matters, not a footnote. Surface it on Machine Ops.
