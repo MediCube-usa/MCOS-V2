@@ -40,6 +40,22 @@ dashboard. (This confusion cost a whole evening on 2026-08-19.)
    builds (vercel.json + dashboard setting). The new blueprints live in this repo's
    `docs/blocks/`. Joe archives/deletes the old shells himself; nothing here depends on them.
 
+## THE TWO LOAD PATHS — WHY OURVEND AND THE MACHINES DISAGREE (Joe, 2026-08-22)
+- **Load AT the machine (ES folder):** shows on the machine → flows to the card reader
+  (Nayax / Cantaloupe / whoever) → **but NEVER appears in OurVend.** Most machines were offline,
+  so everything got loaded at the screens this way. That is the whole reason OurVend's records
+  disagree with what is physically in the machines.
+- **Load INTO OurVend:** OurVend → **down into the machine** → then to the card readers.
+  So **an OurVend write is a real change to a live machine**, not bookkeeping. Treat every push
+  as touching the customer-facing machine.
+- Therefore the fix direction is: photo = truth → MCOS → **OurVend** → machine. Never the reverse.
+- **PUSH RULE:** one coil at a time, verified — write, read back, compare, continue; stop on the
+  first mismatch. Never a blind 40-coil sweep (it changes live machines, and OurVend sits behind
+  Aliyun's bot wall).
+- **Fleet shape:** the first 13 machines are each DIFFERENT — per-machine planograms from photos,
+  and one-at-a-time product loading, **this time only**. Every machine after these is identical,
+  so templates / clone become the normal path from then on.
+
 ## HOW WE WORK
 - **Block by block.** For each dashboard block: (a) Joe brain-dumps, (b) write/append its spec
   in `docs/blocks/<block>.md` BEFORE coding, (c) build it, (d) verify live, (e) next block.
