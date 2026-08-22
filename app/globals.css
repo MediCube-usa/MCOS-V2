@@ -630,7 +630,37 @@ a { color: inherit; text-decoration: none; }
 .video-play { width: 34px; height: 34px; display: flex; align-items: center; justify-content: center; border-radius: 50%;
   color: #b366ff; border: 1px solid rgba(179,102,255,.6); font-size: 13px; padding-left: 3px;
   box-shadow: 0 0 14px rgba(179,102,255,.35); }
-.video-note { font-size: 9.5px; color: var(--muted); padding: 5px 10px 7px; }
+.video-note { font-size: 9.5px; color: var(--muted); padding: 5px 10px 7px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+
+/* ---- Screen Feed: a real player. Media fills the screen area; the controls sit
+   in the header so the picture is never covered. ---- */
+.video-screen { position: relative; overflow: hidden; }
+.video-screen > video, .video-screen > iframe, .video-screen > img {
+  position: absolute; inset: 0; width: 100%; height: 100%; border: 0;
+  object-fit: contain; background: #05070f; border-radius: 6px; }
+.video-actions { display: flex; gap: 4px; align-items: center; }
+.video-actions button { background: rgba(179,102,255,.16); color: #d9c2ff; cursor: pointer;
+  border: 1px solid rgba(179,102,255,.45); border-radius: 4px; width: 20px; height: 17px;
+  line-height: 1; padding: 0; font-size: 10px; }
+.video-actions button:hover { background: rgba(179,102,255,.34); color: #fff; }
+.video-empty { display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 5px;
+  width: 100%; height: 100%; background: none; border: 0; cursor: pointer; color: #b366ff; }
+.video-empty b { font-size: 10.5px; letter-spacing: .4px; text-transform: uppercase; }
+.video-empty i { font-size: 9px; font-style: normal; color: var(--muted); }
+.video-add { position: absolute; inset: 0; z-index: 2; display: flex; flex-direction: column; gap: 5px;
+  padding: 8px; background: rgba(5,7,15,.94); border-radius: 6px; }
+.video-add input { width: 100%; font-size: 10.5px; padding: 4px 6px; border-radius: 4px;
+  background: #0b1226; color: #eaf2ff; border: 1px solid rgba(179,102,255,.4); }
+.video-add-row { display: flex; gap: 5px; }
+.video-add-row button { flex: 1; font-size: 9.5px; padding: 4px 6px; border-radius: 4px; cursor: pointer;
+  background: rgba(179,102,255,.18); color: #d9c2ff; border: 1px solid rgba(179,102,255,.45); }
+.video-add-row button:disabled { opacity: .45; cursor: default; }
+.video-list { display: flex; flex-direction: column; gap: 2px; overflow: auto; margin-top: 2px; }
+.video-list span { display: flex; align-items: center; gap: 3px; }
+.video-list button { background: none; border: 0; cursor: pointer; color: var(--muted);
+  font-size: 9.5px; text-align: left; padding: 1px 2px; flex: 1; }
+.video-list span.on button { color: #b366ff; font-weight: 700; }
+.video-list button.x { flex: none; color: #ff6b8a; width: 12px; }
 @media (max-width: 900px) { .side-stack { width: 100%; } .side-stack .calpanel, .video-box { width: 100%; } }
 .atlas-band .agent-card { align-items: stretch; }
 

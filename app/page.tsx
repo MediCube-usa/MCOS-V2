@@ -5,6 +5,7 @@ import { AgentChat } from '@/components/AgentChat';
 import { BoxAlertCount } from '@/components/BoxAlertCount';
 import { BoxAtlasCount } from '@/components/BoxAtlasCount';
 import { CalendarPanel } from '@/components/CalendarPanel';
+import { ScreenFeed } from '@/components/ScreenFeed';
 import { blockDepartments } from '@/lib/departments';
 import { FLEET, neverSynced } from '@/lib/fleet';
 
@@ -114,11 +115,7 @@ export default async function CommandCenter() {
             <AgentChat greeting={`${ready} live, ${building} in build, ${shell} parked. Tell me what to do and I'll do it — e.g. "upload" a machine photo and I'll build its planogram, "put Halls on coil 59 at 6.99", "push ASU West Campus 1 to machine 2303220332", "find a cheaper Liquid IV supplier", or "remind me Thursday to call ASU".`} />
           </div>
           <div className="side-stack">
-            <div className="video-box">
-              <div className="video-head"><span>📺 Screen Feed</span><span className="video-tag">NATIONWIDE</span></div>
-              <div className="video-screen"><span className="video-play">▶</span></div>
-              <div className="video-note">placeholder — will mirror what&apos;s playing on the machine screens</div>
-            </div>
+            <ScreenFeed />
             <CalendarPanel />
           </div>
         </div>
