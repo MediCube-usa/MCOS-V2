@@ -3,6 +3,7 @@ import { Sidebar } from '@/components/Sidebar';
 import { ScopeMap } from '@/components/ScopeMap';
 import { RecordBoard, type BoardConfig } from '@/components/RecordBoard';
 import { BlockAlerts } from '@/components/BlockAlerts';
+import { AtlasDock } from '@/components/AtlasDock';
 
 const COLOR = '#00ffea';
 
@@ -28,6 +29,7 @@ export default function MarketingOutreach() {
       <Sidebar active="marketing-outreach" />
       <main className="main">
         <div className="deptpage" style={{ ['--c' as string]: COLOR, maxWidth: 1100 }}>
+          <AtlasDock dept="marketing-outreach" />
           <div className="crumb"><Link href="/">Command Center</Link> / GROWTH</div>
           <h1>Marketing &amp; Outreach</h1>
           <p className="blurb">School launches, announcements, and new-facility onboarding — tied to each facility&apos;s go-live.</p>

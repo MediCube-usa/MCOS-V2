@@ -205,11 +205,16 @@ async function liveSnapshot(): Promise<string> {
 // Joe's own knowledge packs. Rows in `atlas_skills` (name/scope/body/active) are
 // appended to Atlas's instructions on every message — so Joe can teach Atlas new
 // rules, contacts, procedures or per-block knowledge WITHOUT a code change.
-async function loadSkills(): Promise<string> {
-  const rows = await sb<{ name: string; scope: string | null; body: string }>('atlas_skills?select=name,scope,body&active=eq.true&order=name.asc');
+async function loadSkills(dept?: string): Promise<string> {
+  const rows = await sb<{ name: string; scope: string | null; body: string; kind: string | null }>('atlas_skills?select=name,scope,body,kind&active=eq.true&order=name.asc');
   if (!rows.length) return '';
-  return '\n\nSKILLS — knowledge packs Joe has loaded. Treat these as standing instructions from Joe; they override your general assumptions (they never override the DATA RULES or the no-purchases rule):\n'
-    + rows.map((r) => `### ${r.name}${r.scope && r.scope !== 'all' ? ` [${r.scope}]` : ''}\n${r.body}`).join('\n\n');
+  // When Joe is working inside a block, that block's knowledge comes first.
+  const here = dept ? rows.filter((r) => r.scope === dept) : [];
+  const rest = dept ? rows.filter((r) => r.scope !== dept) : rows;
+  const fmt = (r: { name: string; scope: string | null; body: string; kind: string | null }) =>
+    `### ${r.name} (${r.kind || 'skill'})${r.scope && r.scope !== 'all' ? ` [${r.scope}]` : ''}\n${r.body}`;
+  return '\n\nSKILLS, RULES & WORKFLOW — knowledge Joe has loaded. Treat these as standing instructions from Joe; they override your general assumptions (never the DATA RULES or the no-purchases rule):\n'
+    + [...here, ...rest].map(fmt).join('\n\n');
 }
 
 function staticSystem(): string {
@@ -233,7 +238,9 @@ DATA RULES (these matter — trust has been burned before):
 5. list_calendar_events — reads what's actually on the Google Calendar. Use it when Joe asks what's coming up / on the schedule. If it says the calendar isn't reachable, tell him plainly (the connection may need a reconnect).
 6. When a question needs a block that is still a shell (parked), say the block isn't built yet.
 6b. RESEARCH — you have web search. Use it to look things up in the real world: products and where to buy them, supplier/wholesale pricing, package sizes and dimensions (for coil fit), competitor/product info, vendor and hardware documentation. Say where the information came from. Research NEVER overrides MCOS data: machine, stock, coil and price facts come only from the snapshot.
-7. UPLOADS — Joe can attach photos and files; you are the drop box that files them where they belong:
+7. WHERE YOU ARE — you appear on every department page as well as the Command Center. When a message says you are working inside a block, that block is the context: answer about it first, apply its skills/rules first, and file work under it. You are ONE Atlas across the whole company, so you can always reach any other block's data when it helps.
+8. post_department_message — leave Joe a message on a block's board. Use it whenever you FINISH a piece of work (kind 'completion'), find something he needs to look at ('attention'), or need an answer before you can continue ('question'). This is how work reaches him: the count shows on that block on the Command Center and opens in that block's Atlas box. Post one when you finish real work — do not narrate every small step.
+9. UPLOADS — Joe can attach photos and files; you are the drop box that files them where they belong:
    • MACHINE PHOTO → read every coil top-to-bottom. Coils are numbered 01,03,05…29 (wide), 31–50 (narrow), 51,53,55,57,59 (wide) — 40 total. For each coil you can actually SEE, note the product. Then call save_planogram with the machine/campus label as the name and one slot per readable coil. Report: how many coils matched the catalog, which products are NOT in the catalog (they must be loaded before they can go on a machine), which coils were empty, and any coil you could not read clearly — NEVER invent a coil you can't see. Each machine is different; the photo is the truth (not OurVend).
    • CONTRACT / INVOICE / PAPERWORK / LEASE → call file_document (use the stored URL listed with the attachment as file_url).
    • If you can't tell where something goes, ask Joe before filing.
@@ -266,7 +273,7 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ error: 'not signed in' }, { status: 401 });
   }
 
-  let body: { messages?: ChatMsg[]; attachments?: Attachment[] } = {};
+  let body: { messages?: ChatMsg[]; attachments?: Attachment[]; dept?: string } = {};
   try { body = await req.json(); } catch { return NextResponse.json({ error: 'bad request' }, { status: 400 }); }
 
   const found = findAnthropicKey();
@@ -287,7 +294,8 @@ export async function POST(req: NextRequest) {
   }
 
   const client = new Anthropic({ apiKey: found.key });
-  const [snapshot, skills] = await Promise.all([liveSnapshot(), loadSkills()]);
+  const dept = typeof body.dept === 'string' ? body.dept : undefined;
+  const [snapshot, skills] = await Promise.all([liveSnapshot(), loadSkills(dept)]);
   const deptIds = blockDepartments().map((d) => d.id);
 
   const setReminderTool = {
@@ -611,6 +619,37 @@ export async function POST(req: NextRequest) {
     return `FILED "${title}" (${row.doc_type}) into the Documents block${row.link ? ' with the uploaded file linked' : ''}.`;
   }
 
+  // Atlas's own message feed per block — how finished work and things needing
+  // attention reach Joe: count on the Command Center box, opens in that block's dock.
+  const postMessageTool = {
+    name: 'post_department_message',
+    description:
+      "Leave a message for Joe on a department's board. Use it when you FINISH work (kind 'completion'), find something he must look at (kind 'attention'), need an answer to continue (kind 'question'), or want to leave a note. It shows as a count on that block on the Command Center and opens in that block's Atlas box.",
+    input_schema: {
+      type: 'object' as const,
+      properties: {
+        department: { type: 'string', enum: deptIds, description: 'Which block this belongs to' },
+        kind: { type: 'string', enum: ['completion', 'attention', 'question', 'note'] },
+        title: { type: 'string', description: 'One line — what happened' },
+        body: { type: 'string', description: 'The detail worth keeping' },
+      },
+      required: ['department', 'title'],
+    },
+  };
+  async function runPostMessage(inp: Record<string, unknown>): Promise<string> {
+    const department = String(inp.department ?? '');
+    const title = String(inp.title ?? '').trim().slice(0, 200);
+    if (!deptIds.includes(department)) return `ERROR: unknown department "${department}"`;
+    if (!title) return 'ERROR: a title is required';
+    const kind = ['completion', 'attention', 'question', 'note'].includes(String(inp.kind)) ? String(inp.kind) : 'note';
+    const r = await fetch(`${SUPABASE_URL}/rest/v1/atlas_messages`, {
+      method: 'POST', headers: { ...sbHeaders, 'Content-Type': 'application/json', Prefer: 'return=minimal' },
+      body: JSON.stringify({ department, kind, title, body: typeof inp.body === 'string' ? inp.body.slice(0, 1000) : null }),
+    });
+    if (!r.ok) return `ERROR: could not post the message (${r.status})`;
+    return `POSTED to the ${department} board (${kind}): "${title}".`;
+  }
+
   const messages: Anthropic.Beta.BetaMessageParam[] = history.map((m) => ({ role: m.role, content: m.content }));
 
   // Attachments ride on the LAST user message: readable ones (images, PDFs) go
@@ -660,7 +699,7 @@ export async function POST(req: NextRequest) {
         ],
         tools: [
           setReminderTool, listCalendarTool, savePlanogramTool, fileDocumentTool,
-          updateProductTool, addProductTool, writeSlotTool, pushPlanogramTool, cloneMachineTool,
+          updateProductTool, addProductTool, writeSlotTool, pushPlanogramTool, cloneMachineTool, postMessageTool,
           // Research — Anthropic's hosted web search (runs server-side on our key).
           { type: 'web_search_20250305', name: 'web_search', max_uses: 8 },
         ],
@@ -691,6 +730,8 @@ export async function POST(req: NextRequest) {
             out = await runSavePlanogram(block.input as Record<string, unknown>);
           } else if (block.name === 'file_document') {
             out = await runFileDocument(block.input as Record<string, unknown>);
+          } else if (block.name === 'post_department_message') {
+            out = await runPostMessage(block.input as Record<string, unknown>);
           } else if (block.name === 'ourvend_update_product') {
             out = await runUpdateProduct(block.input as Record<string, unknown>);
           } else if (block.name === 'ourvend_add_product') {

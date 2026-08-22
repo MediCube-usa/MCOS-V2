@@ -5,6 +5,7 @@ import { ScopeMap } from '@/components/ScopeMap';
 import { MapConsole } from '@/components/MapConsole';
 import { MapCards } from '@/components/MapCards';
 import { BlockAlerts } from '@/components/BlockAlerts';
+import { AtlasDock } from '@/components/AtlasDock';
 
 const COLOR = '#2fd2ff';
 
@@ -23,6 +24,7 @@ export default function MapsDistribution() {
       <Sidebar active="maps-distribution" />
       <main className="main">
         <div className="deptpage" style={{ ['--c' as string]: COLOR, maxWidth: 1280 }}>
+          <AtlasDock dept="maps-distribution" />
           <div className="crumb"><Link href="/">Command Center</Link> / OPERATIONS</div>
           <h1>Maps &amp; Routes</h1>
           <p className="blurb">Every machine pinned by hand on the live map. A campus gets mapped here the moment it&apos;s approved — before a machine is ordered or set up.</p>

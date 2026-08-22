@@ -1,4 +1,5 @@
 import Link from 'next/link';
+import { Suspense } from 'react';
 import { Sidebar } from '@/components/Sidebar';
 import { AtlasSkills } from '@/components/AtlasSkills';
 
@@ -28,7 +29,9 @@ export default function AtlasSkillsPage() {
             The one thing Atlas never does is spend money.
           </div>
 
-          <AtlasSkills />
+          <Suspense fallback={<div className="section"><p>Loading…</p></div>}>
+            <AtlasSkills />
+          </Suspense>
         </div>
       </main>
     </div>

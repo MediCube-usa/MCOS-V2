@@ -4,6 +4,7 @@ import { ScopeMap } from '@/components/ScopeMap';
 import { RefreshOurVend } from '@/components/RefreshOurVend';
 import { getLiveFleet, syncedAgo } from '@/lib/live-slots';
 import { BlockAlerts } from '@/components/BlockAlerts';
+import { AtlasDock } from '@/components/AtlasDock';
 
 // Always render against the freshest live_slots (edge function keeps it current).
 export const dynamic = 'force-dynamic';
@@ -18,6 +19,7 @@ export default async function MachineOperations() {
       <Sidebar active="machine-operations" />
       <main className="main">
         <div className="deptpage" style={{ ['--c' as string]: '#ff3df2', maxWidth: 1200 }}>
+          <AtlasDock dept="machine-operations" />
           <div className="crumb"><Link href="/">Command Center</Link> / OPERATIONS</div>
           <h1>Machine Operations</h1>
           <p className="blurb">Every machine on the account, read live from OurVend. Click a machine to see its slots, prices, and stock.</p>

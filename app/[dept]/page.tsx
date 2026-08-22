@@ -5,6 +5,7 @@ import { DEPARTMENTS, getDepartment } from '@/lib/departments';
 import { ScopeMap } from '@/components/ScopeMap';
 import { AgentBadge } from '@/components/AgentBadge';
 import { BlockAlerts } from '@/components/BlockAlerts';
+import { AtlasDock } from '@/components/AtlasDock';
 
 // Departments that have their own custom page file (app/<id>/page.tsx). The
 // generic [dept] route must NOT pre-generate these, or it shadows the real page.
@@ -58,6 +59,7 @@ export default async function DepartmentPage({ params }: { params: Promise<{ dep
       <Sidebar active={d.id} />
       <main className="main">
         <div className="deptpage" style={{ ['--c' as string]: d.color }}>
+          <AtlasDock dept={d.id} />
           <div className="crumb"><Link href="/">Command Center</Link> / {d.group}</div>
           <h1>{d.name}</h1>
           <p className="blurb">{d.blurb}</p>

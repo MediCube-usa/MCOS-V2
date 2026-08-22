@@ -3,6 +3,7 @@ import { Sidebar } from '@/components/Sidebar';
 import { ScopeMap } from '@/components/ScopeMap';
 import { RecordBoard, type BoardConfig } from '@/components/RecordBoard';
 import { BlockAlerts } from '@/components/BlockAlerts';
+import { AtlasDock } from '@/components/AtlasDock';
 
 const COLOR = '#3d7cff';
 
@@ -29,6 +30,7 @@ export default function WarehousePurchasing() {
       <Sidebar active="warehouse-purchasing" />
       <main className="main">
         <div className="deptpage" style={{ ['--c' as string]: COLOR, maxWidth: 1100 }}>
+          <AtlasDock dept="warehouse-purchasing" />
           <div className="crumb"><Link href="/">Command Center</Link> / COMPANY</div>
           <h1>Warehouse &amp; Purchasing</h1>
           <p className="blurb">Supplier ordering and receiving — triggered by inventory need, bundled into economic orders, tracked to the shelf.</p>

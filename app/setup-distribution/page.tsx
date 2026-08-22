@@ -3,6 +3,7 @@ import { Sidebar } from '@/components/Sidebar';
 import { ScopeMap } from '@/components/ScopeMap';
 import { SetupBoard } from '@/components/SetupBoard';
 import { BlockAlerts } from '@/components/BlockAlerts';
+import { AtlasDock } from '@/components/AtlasDock';
 
 const COLOR = '#ffb000';
 
@@ -16,6 +17,7 @@ export default function SetupDistribution() {
       <Sidebar active="setup-distribution" />
       <main className="main">
         <div className="deptpage" style={{ ['--c' as string]: COLOR, maxWidth: 1280 }}>
+          <AtlasDock dept="setup-distribution" />
           <div className="crumb"><Link href="/">Command Center</Link> / OPERATIONS</div>
           <h1>Machine Setup</h1>
           <p className="blurb">The fleet pipeline — every machine from TCN order to verified, coast to coast. Each colored tab is a stage: open it to see exactly what it holds, what completes it, and the machines sitting there.</p>

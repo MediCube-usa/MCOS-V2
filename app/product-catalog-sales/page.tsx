@@ -4,6 +4,7 @@ import { ScopeMap } from '@/components/ScopeMap';
 import { ProductHub } from '@/components/ProductHub';
 import { FLEET } from '@/lib/fleet';
 import { BlockAlerts } from '@/components/BlockAlerts';
+import { AtlasDock } from '@/components/AtlasDock';
 
 const COLOR = '#00ffaa';
 
@@ -29,6 +30,7 @@ export default function ProductCatalogSales() {
       <Sidebar active="product-catalog-sales" />
       <main className="main">
         <div className="deptpage" style={{ ['--c' as string]: COLOR, maxWidth: 1200 }}>
+          <AtlasDock dept="product-catalog-sales" />
           <div className="crumb"><Link href="/">Command Center</Link> / OPERATIONS</div>
           <h1>Product Catalog &amp; Sales</h1>
           <p className="blurb">The product hub — everything to do with products, sales, research and promo

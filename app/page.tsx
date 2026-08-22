@@ -3,6 +3,7 @@ import { Sidebar } from '@/components/Sidebar';
 import { AgentBadge } from '@/components/AgentBadge';
 import { AgentChat } from '@/components/AgentChat';
 import { BoxAlertCount } from '@/components/BoxAlertCount';
+import { BoxAtlasCount } from '@/components/BoxAtlasCount';
 import { CalendarPanel } from '@/components/CalendarPanel';
 import { blockDepartments } from '@/lib/departments';
 import { FLEET, neverSynced } from '@/lib/fleet';
@@ -135,6 +136,7 @@ export default async function CommandCenter() {
                   <div className="block-side">
                     {d.agent && d.agent !== '—' && <AgentBadge name={d.agent} color={d.color} size={30} />}
                     <BoxAlertCount dept={d.id} />
+                    <BoxAtlasCount dept={d.id} />
                   </div>
                 </div>
 

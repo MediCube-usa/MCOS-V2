@@ -3,6 +3,7 @@ import { Sidebar } from '@/components/Sidebar';
 import { ScopeMap } from '@/components/ScopeMap';
 import { RecordBoard, type BoardConfig } from '@/components/RecordBoard';
 import { BlockAlerts } from '@/components/BlockAlerts';
+import { AtlasDock } from '@/components/AtlasDock';
 
 const COLOR = '#ff66a8';
 
@@ -28,6 +29,7 @@ export default function Documents() {
       <Sidebar active="documents" />
       <main className="main">
         <div className="deptpage" style={{ ['--c' as string]: COLOR, maxWidth: 1100 }}>
+          <AtlasDock dept="documents" />
           <div className="crumb"><Link href="/">Command Center</Link> / COMPANY</div>
           <h1>Documents &amp; Compliance</h1>
           <p className="blurb">Contracts, licenses, and compliance deadlines. The record and its status live here; the signed file lives in a secure vault, linked — never pasted raw.</p>

@@ -3,6 +3,7 @@ import { Sidebar } from '@/components/Sidebar';
 import { ScopeMap } from '@/components/ScopeMap';
 import { PlanogramsBoard } from '@/components/PlanogramsBoard';
 import { BlockAlerts } from '@/components/BlockAlerts';
+import { AtlasDock } from '@/components/AtlasDock';
 
 const COLOR = '#8b5cff';
 
@@ -15,6 +16,7 @@ export default function TemplatesConfig() {
       <Sidebar active="templates-config" />
       <main className="main">
         <div className="deptpage" style={{ ['--c' as string]: COLOR, maxWidth: 1100 }}>
+          <AtlasDock dept="templates-config" />
           <div className="crumb"><Link href="/">Command Center</Link> / OPERATIONS</div>
           <h1>Planograms &amp; Templates</h1>
           <p className="blurb">Author planograms on the shared 40-coil layout, flag machine roles, assign

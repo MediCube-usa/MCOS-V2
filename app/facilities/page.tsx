@@ -3,6 +3,7 @@ import { Sidebar } from '@/components/Sidebar';
 import { ScopeMap } from '@/components/ScopeMap';
 import { FacilitiesBoard } from '@/components/FacilitiesBoard';
 import { BlockAlerts } from '@/components/BlockAlerts';
+import { AtlasDock } from '@/components/AtlasDock';
 
 const COLOR = '#4dff88';
 
@@ -15,6 +16,7 @@ export default function Facilities() {
       <Sidebar active="facilities" />
       <main className="main">
         <div className="deptpage" style={{ ['--c' as string]: COLOR, maxWidth: 1200 }}>
+          <AtlasDock dept="facilities" />
           <div className="crumb"><Link href="/">Command Center</Link> / COMPANY</div>
           <h1>Facilities</h1>
           <p className="blurb">Each campus and its rules — contacts, reporting, restrictions, access. Other departments read these rules instead of keeping their own copy.</p>

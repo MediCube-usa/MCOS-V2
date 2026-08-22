@@ -3,6 +3,7 @@ import { Sidebar } from '@/components/Sidebar';
 import { ScopeMap } from '@/components/ScopeMap';
 import { ContactsBoard } from '@/components/ContactsBoard';
 import { BlockAlerts } from '@/components/BlockAlerts';
+import { AtlasDock } from '@/components/AtlasDock';
 
 const COLOR = '#a6b5ff';
 
@@ -15,6 +16,7 @@ export default function Contacts() {
       <Sidebar active="contacts" />
       <main className="main">
         <div className="deptpage" style={{ ['--c' as string]: COLOR, maxWidth: 1100 }}>
+          <AtlasDock dept="contacts" />
           <div className="crumb"><Link href="/">Command Center</Link> / GROWTH</div>
           <h1>Contacts</h1>
           <p className="blurb">Central directory — every contact lives once, linked by role. Refillers, facility contacts, TCN reps, logistics, vendors, payments — all in one place.</p>

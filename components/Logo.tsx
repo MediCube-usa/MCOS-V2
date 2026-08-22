@@ -31,7 +31,7 @@ const MASK: CSSProperties = {
 // A recolored mark with a white outline: a white copy of the knot sits slightly
 // larger behind the colored copy, so white shows as an edge all the way around.
 function OutlinedMark({ size, fill, glow }: { size: number; fill: string; glow: string }) {
-  const grow = 1 + Math.max(0.1, 8 / size); // thicker outline at small sizes
+  const grow = 1 + Math.max(0.055, 4.5 / size); // thin white edge (kept, just lighter)
   return (
     <span
       aria-label="MCOS"
@@ -46,7 +46,7 @@ function OutlinedMark({ size, fill, glow }: { size: number; fill: string; glow: 
 
 // Rainbow mark (Atlas) — the knot filled with a full-spectrum sweep, white outline.
 export function LogoRainbow({ size = 54 }: { size?: number }) {
-  const grow = 1 + Math.max(0.1, 8 / size);
+  const grow = 1 + Math.max(0.055, 4.5 / size);
   return (
     <span aria-label="MCOS" role="img" style={{ position: 'relative', display: 'inline-block', width: size, height: size, filter: `drop-shadow(0 0 ${size / 5}px rgba(150,120,255,.55))` }}>
       <span style={{ ...MASK, background: '#ffffff', transform: `scale(${grow})`, transformOrigin: 'center' }} />
