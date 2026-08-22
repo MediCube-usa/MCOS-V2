@@ -723,15 +723,23 @@ body::before {
     radial-gradient(1.6px 1.6px at 70px 160px, #ffffff, transparent),
     radial-gradient(1px 1px at 200px 50px, #bcd6ff, transparent),
     radial-gradient(1px 1px at 260px 200px, #ffffff, transparent),
-    radial-gradient(1.4px 1.4px at 320px 120px, #eaf7ff, transparent);
-  background-size: 250px 185px; opacity: .42; animation: starsFar 120s linear infinite;
+    radial-gradient(1.4px 1.4px at 320px 120px, #eaf7ff, transparent),
+    radial-gradient(1px 1px at 95px 15px, #ffffff, transparent),
+    radial-gradient(1.2px 1.2px at 165px 205px, #cfefff, transparent),
+    radial-gradient(1px 1px at 240px 130px, #ffffff, transparent),
+    radial-gradient(1.3px 1.3px at 35px 110px, #d6ecff, transparent),
+    radial-gradient(1px 1px at 290px 165px, #ffffff, transparent);
+  background-size: 250px 185px; opacity: .55; animation: starsFar 120s linear infinite;
 }
 body::after {
   background-image:
     radial-gradient(1.8px 1.8px at 50px 80px, #ffffff, transparent),
     radial-gradient(2px 2px at 180px 160px, #d8ecff, transparent),
-    radial-gradient(1.6px 1.6px at 300px 40px, #ffffff, transparent);
-  background-size: 300px 230px; opacity: .58; animation: starsNear 60s linear infinite;
+    radial-gradient(1.6px 1.6px at 300px 40px, #ffffff, transparent),
+    radial-gradient(1.7px 1.7px at 120px 20px, #ffffff, transparent),
+    radial-gradient(1.9px 1.9px at 235px 195px, #e6f4ff, transparent),
+    radial-gradient(1.5px 1.5px at 20px 175px, #ffffff, transparent);
+  background-size: 300px 230px; opacity: .72; animation: starsNear 60s linear infinite;
 }
 @keyframes starsFar { from { background-position: 0 0; } to { background-position: 0 -2600px; } }
 @keyframes starsNear { from { background-position: 0 0; } to { background-position: 0 -3200px; } }
@@ -818,8 +826,9 @@ body::after {
   box-shadow: 0 0 22px color-mix(in srgb, var(--c) 35%, transparent);
   padding: 10px 12px 11px; position: relative; z-index: 2;
 }
-.dock-head { display: flex; align-items: center; gap: 9px; }
-.dock-head .dock-tabs { margin-left: 0; margin-right: auto; }
+.dock-head { display: flex; align-items: center; gap: 8px; min-width: 0; }
+.dock-head .dock-tabs { margin-right: auto; min-width: 0; flex-shrink: 1; }
+.dock-head .skill-dot, .dock-head .dock-logo { flex: none; }
 .dock-logo { display: flex; align-items: center; justify-content: center; position: relative;
   text-decoration: none; border-radius: 10px; padding: 2px; flex: none; }
 .dock-logo:hover { background: rgba(255,255,255,.07); }
@@ -836,12 +845,13 @@ body::after {
 .skill-dot.off em { background: #ff0030; box-shadow: 0 0 9px #ff0030; }
 .skill-dot:hover { filter: brightness(1.25); }
 
-.dock-tabs { display: flex; gap: 6px; }
-.dock-tabs button { background: #050d1a; border: 1px solid rgba(255,255,255,.14); border-radius: 9px;
-  color: #9fb0cc; font-size: 13px; padding: 6px 11px; cursor: pointer; display: inline-flex; align-items: center; gap: 5px; }
-.dock-tabs button b { font-size: 10.5px; font-weight: 800; letter-spacing: .3px; text-transform: uppercase; }
-.dock-tabs button span { font-size: 11px; font-weight: 900; min-width: 15px; text-align: center;
-  background: rgba(255,255,255,.09); border-radius: 999px; padding: 0 5px; }
+.dock-tabs { display: flex; gap: 7px; }
+.dock-tabs button { background: #050d1a; border: 1px solid rgba(255,255,255,.16); border-radius: 10px;
+  color: #9fb0cc; cursor: pointer; display: flex; flex-direction: column; align-items: center;
+  justify-content: center; gap: 1px; width: 58px; padding: 7px 4px; line-height: 1.15; }
+.dock-tabs button em { font-style: normal; font-size: 15px; }
+.dock-tabs button b { font-size: 9.5px; font-weight: 800; letter-spacing: .4px; text-transform: uppercase; }
+.dock-tabs button span { font-size: 12px; font-weight: 900; }
 .dock-tabs button.on { border-color: var(--c); color: #eaf2ff; background: color-mix(in srgb, var(--c) 16%, #050d1a); }
 .dock-tabs button.hasnew { color: #ffd84d; border-color: rgba(255,216,77,.55); }
 

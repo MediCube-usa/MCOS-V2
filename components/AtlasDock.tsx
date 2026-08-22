@@ -41,10 +41,21 @@ export function AtlasDock({ dept }: { dept: string }) {
   const fileRef = useRef<HTMLInputElement>(null);
   const recRef = useRef<unknown>(null);
 
-  // Everything this block needs: Atlas's messages, its due dates, its skills.
-  useEffect(() => {
+  const loadNotes = () =>
     dbSelect<AtlasMessage>('atlas_messages', `select=*&department=eq.${dept}&order=created_at.desc&limit=25`)
       .then(setNotes).catch(() => setNotes([]));
+
+  // Tapping a tab twice comes back to the chat. Messages refresh only when that
+  // tab is opened — the chat never polls on its own.
+  const openTab = (t: Tab) => {
+    const next = tab === t ? 'chat' : t;
+    setTab(next);
+    if (next === 'msgs') loadNotes();
+  };
+
+  // Everything this block needs: Atlas's messages, its due dates, its skills.
+  useEffect(() => {
+    loadNotes();
     dbSelect<SkillRow>('atlas_skills', `select=id,name,active,kind&or=(scope.eq.${dept},scope.eq.all)`)
       .then(setSkills).catch(() => setSkills([]));
     fetchCalendar(dept).then((all) => setCal(all.filter((i) => alertLevel(i) !== 'later'))).catch(() => setCal([]));
@@ -118,9 +129,6 @@ export function AtlasDock({ dept }: { dept: string }) {
       });
       const j = (await r.json().catch(() => ({}))) as { reply?: string; error?: string };
       setMsgs((xs) => [...xs, { role: 'assistant', content: j.reply || j.error || `No answer came back (${r.status}).` }]);
-      // Atlas may have filed a message while working — pick it up.
-      dbSelect<AtlasMessage>('atlas_messages', `select=*&department=eq.${dept}&order=created_at.desc&limit=25`)
-        .then(setNotes).catch(() => {});
     } catch {
       setMsgs((xs) => [...xs, { role: 'assistant', content: 'Could not reach the server — check the connection and try again.' }]);
     } finally { setBusy(false); }
@@ -138,12 +146,19 @@ export function AtlasDock({ dept }: { dept: string }) {
     <aside className="atlas-dock" style={{ ['--c' as string]: color }}>
       <div className="dock-head">
         <div className="dock-tabs">
-          <button className={tab === 'chat' ? 'on' : ''} onClick={() => setTab('chat')} title="Talk to Atlas">💬 <b>Chat</b></button>
-          <button className={`${tab === 'msgs' ? 'on' : ''} ${unread ? 'hasnew' : ''}`} onClick={() => setTab('msgs')} title="Messages from Atlas">
-            ✉ <b>Messages</b><span>{unread || notes.length}</span>
+          <button
+            className={`${tab === 'msgs' ? 'on' : ''} ${unread ? 'hasnew' : ''}`}
+            onClick={() => openTab('msgs')}
+            title="Messages from Atlas"
+          >
+            <em>✉</em><b>Msgs</b><span>{unread || notes.length}</span>
           </button>
-          <button className={`${tab === 'cal' ? 'on' : ''} ${cal.length ? 'hasnew' : ''}`} onClick={() => setTab('cal')} title="Calendar alerts for this block">
-            ⏰ <b>Calendar</b><span>{cal.length}</span>
+          <button
+            className={`${tab === 'cal' ? 'on' : ''} ${cal.length ? 'hasnew' : ''}`}
+            onClick={() => openTab('cal')}
+            title="Calendar alerts for this block"
+          >
+            <em>⏰</em><b>Cal</b><span>{cal.length}</span>
           </button>
         </div>
         {/* The logo IS the button — opens this department's skills & rules. */}
@@ -217,8 +232,7 @@ export function AtlasDock({ dept }: { dept: string }) {
         )}
         <input className="dock-input" value={input} onChange={(e) => setInput(e.target.value)}
           onKeyDown={(e) => { if (e.key === 'Enter') send(); }}
-          placeholder={listening ? 'Listening…' : 'Ask or tell Atlas…'} disabled={busy} />
-        <button className="dock-send" onClick={send} disabled={busy || (!input.trim() && files.length === 0)}>Ask</button>
+          placeholder={listening ? 'Listening…' : 'Ask or tell Atlas — press Enter'} disabled={busy} />
       </div>
     </aside>
   );
