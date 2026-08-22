@@ -213,3 +213,46 @@ Each needs name + image + size + description loaded into OurVend before its plan
 
 Housekeeping: **"MCOS TEST 2" (PrCode 999002)** is still sitting in the live OurVend catalog —
 leftover from testing, should be deleted.
+
+
+## 2026-08-22 (later) — WHAT OURVEND DEMANDS TO CREATE A PRODUCT (read from the portal's own JS)
+
+Tested `addProduct` live: OurVend returned **`No`** (a clean rejection — nothing junk was
+created). Reading `/CommodityInfo/Index`'s own script gave the real contract.
+
+### The AddCI payload the portal actually sends
+```
+PrAdultLimit · PrAliAdultLimit · ProductCode · ProductName · PrSpecification ·
+PrRetailPrice · Manufacturers · CiType · PrCostPrice ·
+PrPromotionPrice · PrMemberPrice · PrDiscount · PrTaxRate ·      <- we were omitting these 4
+QualityPeriod · ImgPath · PrContent
+```
+Success is the literal string `OK`.
+
+### 🔴 AN IMAGE IS MANDATORY — this answers Joe's "image issue"
+The page refuses to submit without one:
+```js
+if ($("#ImgPath").val() == "") { Modal_Message("Prompt box", "Please choose a commodity image"); return; }
+```
+So a product **cannot** be created now and have its picture attached later. Every new product
+needs a real product image at the moment of creation. A shelf photo will not do — the form has a
+**cropper** (`cropper.min.js`), i.e. it expects a single-product image the user crops.
+
+### Required fields (red `*` in the form)
+size (`PrSpecification`) · unit price (`PrRetailPrice`) · **supplier (`Manufacturers`)** ·
+**type (`CiType`)** · plus the image. Product code must be letters/numbers only.
+
+Our failed attempt sent `Manufacturers: ""` and `CiType: ""` because the dropdown lookups
+(`GetManufacturer` / `GetCitype`) returned nothing — those select elements are empty in the HTML
+and filled by JS from an endpoint we have not identified. **Joe's "add a product" capture gives
+us all of it at once**: the supplier + type ids, the image encoding, and the full payload.
+
+### Clone is NOT the answer for this fleet
+Cloning copies one machine's layout onto another. Every machine currently holds something
+different, and each gets its own planogram from its own photo — so clone does not fit the job.
+Also the empty template machines are **not online** (Joe, 2026-08-22), so they cannot stand in
+for a real test. The per-coil write is the real critical path.
+
+### Still the one blocker
+`POST /Selection/Edit` 404s. Everything else in the push path is proven. One DevTools capture of
+saving a single coil resolves it.
