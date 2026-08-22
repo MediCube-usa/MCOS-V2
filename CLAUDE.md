@@ -244,6 +244,25 @@ product placement — refreshed every cycle (reconfirmed by Joe 2026-08-20).
 - Boston (Nayax) machines: not set up; planograms may only exist on Nayax (secondary, optional).
 
 ## SESSION LOG (newest first)
+- 2026-08-22: ⭐ **ATLAS OPENED UP — FULL OURVEND READ + WRITE, NO APPROVAL GATE** (Joe, firm,
+  asked 3×: "Atlas is to have full access to complete any task except purchases… I am not going
+  to have Atlas tell me what I need to do all day, that's the opposite of what this is").
+  **HARD RULE 3 IS REPLACED** — the old per-item-approval rule was Claude's, not Joe's. Atlas now
+  ACTS. `ourvend-write` v3 deployed with the full recipe set: editProductByCode, addProduct,
+  **editSlot** (coil = product placement + price + capacity/stock), **cloneMachine**. /api/agent
+  tools: ourvend_update_product, ourvend_add_product, ourvend_write_slot, **ourvend_push_planogram**
+  (walks a saved MCOS planogram onto a machine coil-by-coil = MCOS truth → OurVend), ourvend_clone_machine.
+  Approve/Cancel card + executeAction REMOVED. Every write logs to new **`atlas_actions`** table
+  (review, never blocks). ONLY limit = no purchases/spending.
+  **RESEARCH:** Atlas has Anthropic hosted web_search (products, suppliers, specs, pricing);
+  research never overrides the live snapshot.
+  **SKILLS = how Joe teaches Atlas** (his ask): new **`atlas_skills`** table + **/atlas-skills** page
+  (＋Skills link on the Atlas card). Joe writes knowledge packs in plain words, scoped all/per-block,
+  active toggle → appended to Atlas's instructions on EVERY message. No rebuild to add a skill.
+  NEXT PER JOE: the calendar load is about to get very heavy (appointments, follow-ups, fulfilments)
+  — deepen calendar-through-Atlas; and the **VOUCHER/IMPACT (Narcan) mission is the big one** — get
+  MCOS operational enough for the partner, Atlas to work the flow/info for a week. Also open: the
+  ad-screen "viewer".
 - 2026-08-21 (e): ATLAS = DROP BOX (upload photos/files) — BUILT + merged to main.
   AgentChat got a 📎 upload button (images + PDF, UPLOAD ONLY — no camera per Joe);
   /api/agent now reads images (vision) + PDFs, stores every file in the mcos-docs
