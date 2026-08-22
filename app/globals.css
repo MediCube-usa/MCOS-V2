@@ -819,6 +819,7 @@ body::after {
   padding: 10px 12px 11px; position: relative; z-index: 2;
 }
 .dock-head { display: flex; align-items: center; gap: 9px; }
+.dock-head .dock-tabs { margin-left: 0; margin-right: auto; }
 .dock-logo { display: flex; align-items: center; justify-content: center; position: relative;
   text-decoration: none; border-radius: 10px; padding: 2px; flex: none; }
 .dock-logo:hover { background: rgba(255,255,255,.07); }
@@ -835,14 +836,16 @@ body::after {
 .skill-dot.off em { background: #ff0030; box-shadow: 0 0 9px #ff0030; }
 .skill-dot:hover { filter: brightness(1.25); }
 
-.dock-tabs { margin-left: auto; display: flex; gap: 5px; }
-.dock-tabs button { background: #050d1a; border: 1px solid rgba(255,255,255,.14); border-radius: 8px;
-  color: #9fb0cc; font-size: 12px; padding: 4px 8px; cursor: pointer; display: inline-flex; align-items: center; gap: 4px; }
-.dock-tabs button span { font-size: 10px; font-weight: 800; }
+.dock-tabs { display: flex; gap: 6px; }
+.dock-tabs button { background: #050d1a; border: 1px solid rgba(255,255,255,.14); border-radius: 9px;
+  color: #9fb0cc; font-size: 13px; padding: 6px 11px; cursor: pointer; display: inline-flex; align-items: center; gap: 5px; }
+.dock-tabs button b { font-size: 10.5px; font-weight: 800; letter-spacing: .3px; text-transform: uppercase; }
+.dock-tabs button span { font-size: 11px; font-weight: 900; min-width: 15px; text-align: center;
+  background: rgba(255,255,255,.09); border-radius: 999px; padding: 0 5px; }
 .dock-tabs button.on { border-color: var(--c); color: #eaf2ff; background: color-mix(in srgb, var(--c) 16%, #050d1a); }
 .dock-tabs button.hasnew { color: #ffd84d; border-color: rgba(255,216,77,.55); }
 
-.dock-body { margin-top: 8px; height: 132px; overflow-y: auto; display: flex; flex-direction: column;
+.dock-body { margin-top: 9px; height: 168px; overflow-y: auto; display: flex; flex-direction: column;
   gap: 5px; padding-right: 4px; }
 .dock-msg { font-size: 12px; line-height: 1.42; padding: 6px 9px; border-radius: 8px; max-width: 93%;
   white-space: pre-wrap; word-break: break-word; }
@@ -872,6 +875,8 @@ body::after {
 .dock-btn:hover { border-color: var(--c); }
 .dock-btn.live { border-color: #ff5078; box-shadow: 0 0 10px rgba(255,80,120,.5); }
 .dock-btn:disabled { opacity: .5; cursor: default; }
+.dock-btn.talk { display: inline-flex; align-items: center; gap: 5px; }
+.dock-btn.talk b { font-size: 10px; font-weight: 800; letter-spacing: .3px; text-transform: uppercase; }
 .dock-input { flex: 1; min-width: 0; background: #050d1a; border: 1px solid rgba(255,255,255,.16);
   border-radius: 8px; color: #eaf2ff; font-size: 12px; padding: 6px 9px; outline: none; }
 .dock-input:focus { border-color: var(--c); }
@@ -925,3 +930,21 @@ body::after {
 .baseline-grid li { font-size: 11.5px; color: #9fb0cc; line-height: 1.55; }
 .baseline-foot { color: var(--muted); font-size: 11px; margin: 10px 0 0; }
 @media (max-width: 760px) { .baseline-grid { grid-template-columns: 1fr; } }
+
+/* ---- Page content must not run UNDER the Atlas dock. The page header (crumb,
+   title, blurb) sits beside it; everything after clears it. ---- */
+.deptpage > *:not(.crumb):not(h1):not(.blurb):not(.atlas-dock) { clear: right; }
+
+/* ---- Every department page wears its own colour all the way down.
+   --c is set per page, so one rule tints the whole column. ---- */
+.deptpage .section,
+.deptpage .tablewrap,
+.deptpage .tpl-card {
+  border-color: color-mix(in srgb, var(--c) 42%, transparent);
+}
+.deptpage .section h3 { color: color-mix(in srgb, var(--c) 82%, #ffffff); }
+.deptpage .dtable th { color: color-mix(in srgb, var(--c) 70%, #cdd8ec); }
+.deptpage .dtable th, .deptpage .dtable td { border-bottom-color: color-mix(in srgb, var(--c) 16%, transparent); }
+.deptpage .dtable tbody tr:hover { background: color-mix(in srgb, var(--c) 7%, transparent); }
+.deptpage .dtable a { color: color-mix(in srgb, var(--c) 78%, #ffffff); }
+.deptpage .hub-note { border-left: 2px solid color-mix(in srgb, var(--c) 45%, transparent); padding-left: 10px; }

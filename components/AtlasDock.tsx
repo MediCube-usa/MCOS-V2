@@ -12,7 +12,7 @@
 // department it is standing in, so its answers and its skills are that block's.
 
 import { useEffect, useRef, useState } from 'react';
-import { LogoTint } from '@/components/Logo';
+import { LogoRainbow } from '@/components/Logo';
 import { dbSelect, dbUpdate } from '@/lib/db';
 import { getDepartment } from '@/lib/departments';
 import { alertLevel, fetchCalendar, fmtWhen, CalItem } from '@/lib/appointments';
@@ -137,11 +137,16 @@ export function AtlasDock({ dept }: { dept: string }) {
   return (
     <aside className="atlas-dock" style={{ ['--c' as string]: color }}>
       <div className="dock-head">
+        <div className="dock-tabs">
+          <button className={tab === 'chat' ? 'on' : ''} onClick={() => setTab('chat')} title="Talk to Atlas">💬 <b>Chat</b></button>
+          <button className={`${tab === 'msgs' ? 'on' : ''} ${unread ? 'hasnew' : ''}`} onClick={() => setTab('msgs')} title="Messages from Atlas">
+            ✉ <b>Messages</b><span>{unread || notes.length}</span>
+          </button>
+          <button className={`${tab === 'cal' ? 'on' : ''} ${cal.length ? 'hasnew' : ''}`} onClick={() => setTab('cal')} title="Calendar alerts for this block">
+            ⏰ <b>Calendar</b><span>{cal.length}</span>
+          </button>
+        </div>
         {/* The logo IS the button — opens this department's skills & rules. */}
-        <a className="dock-logo" href={skillsHref} title={`Atlas skills, rules & workflow for ${d?.name || dept}`}>
-          <LogoTint size={38} color={color} />
-          <span className="dock-logo-word">Atlas</span>
-        </a>
         <a
           className={`skill-dot ${activeSkills > 0 ? 'on' : 'off'}`}
           href={skillsHref}
@@ -151,15 +156,10 @@ export function AtlasDock({ dept }: { dept: string }) {
         >
           <em />{activeSkills}
         </a>
-        <div className="dock-tabs">
-          <button className={tab === 'chat' ? 'on' : ''} onClick={() => setTab('chat')} title="Talk to Atlas">💬</button>
-          <button className={`${tab === 'msgs' ? 'on' : ''} ${unread ? 'hasnew' : ''}`} onClick={() => setTab('msgs')} title="Messages from Atlas">
-            ✉<span>{notes.length}</span>
-          </button>
-          <button className={`${tab === 'cal' ? 'on' : ''} ${cal.length ? 'hasnew' : ''}`} onClick={() => setTab('cal')} title="Calendar alerts for this block">
-            ⏰<span>{cal.length}</span>
-          </button>
-        </div>
+        <a className="dock-logo" href={skillsHref} title={`Atlas skills, rules & workflow for ${d?.name || dept}`}>
+          <LogoRainbow size={40} />
+          <span className="dock-logo-word">Atlas</span>
+        </a>
       </div>
 
       <div ref={logRef} className="dock-body">
@@ -213,7 +213,7 @@ export function AtlasDock({ dept }: { dept: string }) {
           onChange={(e) => { onPick(e.target.files); e.target.value = ''; }} />
         <button className="dock-btn" onClick={() => fileRef.current?.click()} disabled={busy} title="Upload an image or PDF">📎</button>
         {voiceSupported && (
-          <button className={`dock-btn ${listening ? 'live' : ''}`} onClick={toggleMic} title={listening ? 'Listening… tap to stop' : 'Tap and speak'}>🎤</button>
+          <button className={`dock-btn talk ${listening ? 'live' : ''}`} onClick={toggleMic} title={listening ? 'Listening… tap to stop' : 'Talk to Atlas'}>🎤 <b>Talk</b></button>
         )}
         <input className="dock-input" value={input} onChange={(e) => setInput(e.target.value)}
           onKeyDown={(e) => { if (e.key === 'Enter') send(); }}
