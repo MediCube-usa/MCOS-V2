@@ -256,3 +256,88 @@ for a real test. The per-coil write is the real critical path.
 ### Still the one blocker
 `POST /Selection/Edit` 404s. Everything else in the push path is proven. One DevTools capture of
 saving a single coil resolves it.
+
+---
+
+# ✅ SOLVED — FIRST VERIFIED COIL WRITE (2026-08-22)
+
+`MCOS → OurVend → machine` is live. `ourvend-write` **v8**.
+
+## What the "/Selection/Edit 404" actually was
+
+Not the endpoint. Not the bot wall. Not the session. **Our payload was malformed.**
+OurVend binds several of those fields server-side as integers; an empty string fails model
+binding and ASP.NET redirects to `default404.html` instead of returning an error. Two days of
+hunting a wrong endpoint that was right all along.
+
+| field | we sent | portal sends |
+|---|---|---|
+| `warmTime` | `""` | `0` |
+| `SelectWarm` | `""` | `0` |
+| `EnableHot` | `"false"` | `0` |
+| `EnablePunch` | `"false"` | `0` |
+| `EnableCustomize` | `"false"` | `0` |
+| `WarningQuantity` | `"2"` | `""` |
+
+**Rule: every numeric field carries a number, never an empty string and never "true"/"false".**
+
+## The real save sequence (what the dialog does)
+
+```
+GET  /Selection/Index
+POST /Selection/getSession                        → "True"
+POST /Selection/SoltInfo    {MachineID, boxId:""}          ← whole machine
+POST /Selection/GetSoltInfo {MachineID, HuoDao:"<coil>"}   ← that coil's current values
+POST /Selection/GetHatintTime | GetselectWarm {Mid, Cid}   ← warmTime / SelectWarm
+POST /Selection/Warm        {Mid}
+POST /Selection/Edit        {…}                   → "OK"
+```
+
+`GetSoltInfo` is both the current state AND the per-coil warm-up — we never made that call before.
+
+## Live proof
+
+Machine `2210280082`, coil 1 (Tide Pods). Read `9.99 / 9.99 / cap 99 / stock 98`, wrote the same
+values back, OurVend answered `OK`, read-back matched on all five fields. A true no-op — nothing
+on the machine moved.
+
+## How `editSlot` behaves (v8)
+
+These are live machines, so it works the way the portal's own dialog does:
+- reads the coil first, **changes only what the caller named**, writes every other value back verbatim
+- posts, then **re-reads and compares** `SiBarCode / SiPrice / SiCustomPrice / SiCapacity / SiExtantQuantity`
+- `verified:false` means stop — do not continue to the next coil
+- `dryRun:true` returns the exact payload without writing
+
+New read-only actions: `readSlot` (one coil, as the dialog loads it), `readSlots` (whole machine),
+`listRefData` (suppliers + types).
+
+## Catalog gate — `addProduct` fixed too (v7)
+
+`pickFirst` was reading `Value`/`ID` keys that OurVend never returns, so supplier and type
+resolved to empty strings every time. Real shapes: `GetManufacturer` → `{MiID, MiName}`,
+`GetCitype` → `{CtID, CtName}`.
+
+- **Suppliers:** `WienerLTD` = `b635f806-6893-42ff-805b-03708f8d48b0` · `Amazon` = `42a42e0d-8759-4e71-a721-bd04dc848d4d`
+- **Types:** `OTC` = `1025148` · `OTC Stuff` = `1025372` · `Neutrogena Wipes` = `1025147`
+- `AddCI` posts four price fields `EditCI` does not: `PrPromotionPrice`, `PrMemberPrice`, `PrDiscount`, `PrTaxRate`
+- Image is the **data URI itself** in `ImgPath` — a 500×500 canvas export, not a URL — and
+  `/WxMallProduct/AuditImge` must answer `OK` first or the save is refused
+- Name ≤ 50 chars, no `@ # $ % \` ; product code must match `^[a-zA-Z0-9]+$`
+
+### Save reply codes — the difference matters operationally
+| reply | meaning |
+|---|---|
+| `True` | saved and live immediately |
+| `OK` | saved, but **queued for platform audit — 1–2 working days before a machine can use it** |
+| `Rest` / `Exist` | duplicate commodity code |
+| `format` | image rejected (NFC goods: jpg/png under 15kb) |
+
+## Other findings from the same HARs
+
+- `POST /<Controller>/getSession` → `"True"` is a cheap session probe; the portal calls it before every write.
+- `/Selection/SoltInfo` returns a **nested** array `[[], [ …rows ]]`, params are just `{MachineID, boxId}`.
+- `/Selection/GetProduct` returns the picker list as `{PrID, PrName}` — cheaper than reading the whole catalog.
+- OurVend product images live at `…/Regular/MediCubeASU1/<uuid>.png`.
+
+**Never commit a HAR — it carries the live session cookie.**

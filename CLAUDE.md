@@ -208,7 +208,12 @@ Fully automated, cloud-side, no browser, no Vercel env. All in **Supabase Edge F
   ＋GCal template links — no OAuth).
 
 ## OPEN / NEXT
-### ⭐ OURVEND WRITE PATH — RECIPES CAPTURED, READY TO BUILD (2026-08-21) — COME BACK TO THIS
+### ✅ OURVEND WRITE PATH — OPEN AND VERIFIED (2026-08-22). See docs/blocks/ourvend-write.md.
+Coil push works (`ourvend-write` v8, `editSlot` with read-back verification). The old 404 was a
+malformed payload, not a missing endpoint. Remaining: the 4 catalog-gate products, then the
+one-time reset machine by machine.
+
+### (historical) OURVEND WRITE PATH — RECIPES CAPTURED (2026-08-21)
 Joe's HAR gave every remaining OurVend write (full recipes in `docs/blocks/ourvend-write.md`):
 - **AddCI** (+AuditImge) = add product + image inline → the **Catalog→OurVend bulk loader** (Piece A)
 - **Selection/Edit** = write a coil (product/price/**SiCapacity**=pitch units/stock) → **slot push** (Piece D)
@@ -284,6 +289,38 @@ product placement — refreshed every cycle (reconfirmed by Joe 2026-08-20).
 - Boston (Nayax) machines: not set up; planograms may only exist on Nayax (secondary, optional).
 
 ## SESSION LOG (newest first)
+- 2026-08-22 (d): ✅ **THE PUSH PATH IS OPEN — MCOS WROTE A COIL INTO OURVEND, VERIFIED.**
+  Joe's two Claude Chrome HARs cracked it. `ourvend-write` **v8** deployed.
+  **The "/Selection/Edit 404" was never the endpoint** — our PAYLOAD was malformed. OurVend binds
+  `warmTime`/`SelectWarm`/`EnableHot`/`EnablePunch`/`EnableCustomize` as INTEGERS; we sent `""` and
+  `"false"`, model binding failed, and ASP.NET redirected to default404 instead of erroring. Rule:
+  every numeric field carries a number, never an empty string. Also missed the per-coil warm-up —
+  the dialog calls `/Selection/GetSoltInfo {MachineID, HuoDao}` before saving.
+  **LIVE PROOF:** machine 2210280082 coil 1 (Tide Pods) — read 9.99/9.99/cap 99/stock 98, wrote the
+  same back, OurVend said `OK`, read-back matched all five fields. A true no-op; nothing moved.
+  **`editSlot` now works like the portal's dialog:** reads the coil, changes ONLY what it was told
+  to change, writes the rest back verbatim, then re-reads and compares — `verified:false` means
+  stop, don't continue to the next coil. `dryRun:true` returns the payload without writing.
+  New read-only actions: `readSlot`, `readSlots` (fixed — SoltInfo returns a NESTED array and takes
+  `{MachineID, boxId}`), `listRefData`.
+  **`addProduct` fixed too (v7):** it was resolving supplier/type to empty strings because it read
+  `Value`/`ID` keys OurVend never returns. Real: `GetManufacturer`→`{MiID,MiName}`,
+  `GetCitype`→`{CtID,CtName}`. WienerLTD=`b635f806-6893-42ff-805b-03708f8d48b0`, OTC=`1025148`.
+  Added the four AddCI-only price fields; image is the data URI itself in `ImgPath` (500×500) and
+  `/WxMallProduct/AuditImge` must answer OK first.
+  ⚠️ **AUDIT DELAY FOUND:** AddCI/EditCI answer `True` = live now, but `OK` = **queued for platform
+  audit, 1–2 working days before a machine can use it.** Matters with school in 3 days.
+  **AD SCREEN:** partner showed the real `advert.txt` — two slots, `AdSite` 2 and 6, `AdType:2`,
+  `PlayTime:"0-24"`, `EndTime:"2099-12-30"`, `AdContent1:"<uuid>.png"`. Checked: neither ad GUID is
+  in OurVend's catalog or our `products` (0 hits) — **the ad screen is NOT gated by the catalog or
+  the audit.** It's just files in a folder listed by name. Partner has **no RMS account** (buys a
+  router, installs it, stops), so MediCube creates its own RMS company and owns fleet management:
+  needs name + serial + LAN MAC + router admin password per device; 30-day trial free per device,
+  first 5 GB Connect data free. Router UI `192.168.1.1`/`admin`, reachable from a desk via
+  TeamViewer → Chrome ON the machine (the Android is on that router's LAN). Full detail in
+  `docs/blocks/ourvend-write.md` + `docs/blocks/media-screen.md`.
+  NEXT: load the 4 remaining catalog-gate products, then walk ASU West Campus 1 onto its machine
+  coil-by-coil; switch the three paused OurVend crons back on.
 - 2026-08-22 (c): ⭐ **OURVEND WRITE PATH — LIVE TESTED. Three bugs fixed, one real blocker found.**
   Tested via `pg_net` from inside Postgres (this sandbox's proxy blocks supabase.co — use pg_net,
   not curl). Details in `docs/blocks/ourvend-write.md`.
