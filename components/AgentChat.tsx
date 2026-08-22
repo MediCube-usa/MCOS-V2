@@ -129,12 +129,16 @@ export function AgentChat({ greeting }: { greeting: string }) {
       <div className="agent-card-body">
         <div className="t">
           Command Agent
-          <a className="atlas-skills-link" href="/atlas-skills" title="Teach Atlas — rules, procedures, knowledge">＋ Skills</a>
+          <a className="atlas-skills-link" href="/atlas-skills" title="Teach Atlas — rules, procedures, knowledge you want it to have">⚡ Teach Atlas</a>
           <button
             className={`atlas-speak ${speak ? 'on' : ''}`}
             onClick={() => { setSpeak((s) => !s); if (speak && window.speechSynthesis) window.speechSynthesis.cancel(); }}
             title={speak ? 'Atlas is reading replies aloud — tap to mute' : 'Tap so Atlas reads replies aloud'}
           >{speak ? '🔊' : '🔇'}</button>
+        </div>
+        <div className="atlas-cando">
+          Atlas <b>does</b> the work: upload a machine photo → planogram · change products, coils,
+          prices &amp; inventory in OurVend · research products &amp; suppliers · set calendar reminders.
         </div>
         <div ref={logRef} className="atlas-log">
           <div className="atlas-msg bot">{greeting}</div>
@@ -167,7 +171,7 @@ export function AgentChat({ greeting }: { greeting: string }) {
             onClick={() => fileRef.current?.click()}
             disabled={busy}
             title="Upload an image or PDF"
-          >📎</button>
+          >📎 Upload</button>
           {voiceSupported && (
             <button
               className={`atlas-mic ${listening ? 'live' : ''}`}

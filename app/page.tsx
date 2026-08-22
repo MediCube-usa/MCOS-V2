@@ -110,7 +110,7 @@ export default async function CommandCenter() {
                 <div className="sub">MEDICUBE HEALTH · LIVE OPERATIONS</div>
               </div>
             </div>
-            <AgentChat greeting={`${ready} live, ${building} in build, ${shell} parked. Ask me about the fleet, stock, or any date — or say "remind me…" and I'll put it on the calendar.`} />
+            <AgentChat greeting={`${ready} live, ${building} in build, ${shell} parked. Tell me what to do and I'll do it — e.g. "upload" a machine photo and I'll build its planogram, "put Halls on coil 59 at 6.99", "push ASU West Campus 1 to machine 2303220332", "find a cheaper Liquid IV supplier", or "remind me Thursday to call ASU".`} />
           </div>
           <div className="side-stack">
             <div className="video-box">
