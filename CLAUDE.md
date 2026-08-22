@@ -289,6 +289,36 @@ product placement — refreshed every cycle (reconfirmed by Joe 2026-08-20).
 - Boston (Nayax) machines: not set up; planograms may only exist on Nayax (secondary, optional).
 
 ## SESSION LOG (newest first)
+- 2026-08-22 (e): **WHILE JOE WAS OUT — four things closed.**
+  **(1) DATA FIXED.** Deleted the duplicate Beast Bites (`1051`; kept Joe's `1101`). Backfilled
+  the planogram barcodes that existed in the catalog but were never re-resolved: **ASU West
+  Campus 1 is now 35/35 pushable**, UNLV Tonopah 1 is 38/40. My earlier "6 missing products" was
+  wrong — coils 5 and 37 were always resolved (Platex Tampon, Excedrin); only **Clearblue Ultra
+  Early and ChapStick Classic Cherry** are genuinely missing.
+  **(2) ATLAS UNTHROTTLED.** It was capped at 5 tool rounds / 2k output tokens — enough to start
+  a job, never to finish one ("load two products" = search, add, search, add, report). Now 14
+  rounds, 8k tokens, 16 web searches. Storage (mcos-docs), vision, PDFs and web search were all
+  already present and are verified working.
+  **(3) THE SCREEN FEED BOX IS A REAL PLAYER** (Joe's #2 ask, live on main): autoplay + muted +
+  looping, Picture-in-Picture pop-out, add by pasting a link OR uploading a file. Playlist lives
+  in the new **`screen_media`** table so what plays changes with no rebuild. Handles video files,
+  YouTube links and stills. Atlas got a **`screen_media`** tool to manage it.
+  **(4) AD SCREEN — the half that needed nobody is built.** New **`machine-screen`** edge fn:
+  `advertTxt {machineId}` emits the exact advert.txt plus the filenames each media must be saved
+  as; `status` reports what is still missing; `rmsDevices` lists routers once a token exists.
+  Detail in `docs/blocks/media-screen.md`.
+  ⚠️ **STILL BLOCKED ON THREE VALUES, none of them a build** — `secrets.machine_ad_folder` (the
+  folder path holding advert.txt, read off ES File Explorer over TeamViewer), `secrets.rms_token`
+  (MediCube's own RMS Personal Access Token), and optionally `machine_ftp_user`/`_password`.
+  **`push_planogram` HARDENED:** it now re-resolves each coil's barcode against the LIVE catalog
+  at push time (so a coil fixed in the catalog stops being silently skipped — that is exactly how
+  today went in circles), and it HALTS on the first coil that does not read back correctly rather
+  than carrying a fault across a live machine.
+  **CRONS BACK ON** (I had paused three for Joe's HAR recording and left them off too long):
+  fleet-sync, auto-login, catalog-sync all active; catalog re-pulled to 55 products.
+  ⚠️ Cost of that outage: `slot-history-snapshot` kept copying a frozen `live_slots`, writing
+  **4,968 rows across 24 snapshots** all carrying the same 04:20 numbers — the audit trail shows
+  a flat line for 8 hours. Worth cleaning.
 - 2026-08-22 (d): ✅ **THE PUSH PATH IS OPEN — MCOS WROTE A COIL INTO OURVEND, VERIFIED.**
   Joe's two Claude Chrome HARs cracked it. `ourvend-write` **v8** deployed.
   **The "/Selection/Edit 404" was never the endpoint** — our PAYLOAD was malformed. OurVend binds

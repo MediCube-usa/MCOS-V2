@@ -209,3 +209,65 @@ A digital/electronic lockbox on the machine service door that a refiller opens w
 already has a "lockbox generate" stub on Machine Ops. To make it REAL = integrate the actual lockbox
 hardware's code system. **OPEN: what lockbox hardware is it?** (keypad smart-lock brand / model / any app
 or API?) Once we know the device, we generate + assign + expire codes from MCOS like the OurVend pickup codes.
+
+---
+
+# 2026-08-22 — the ad screen, halved
+
+## What the machine actually reads (partner showed the live file)
+
+`advert.txt` in the ES folder on the machine's Android. A JSON array, one entry per ad slot.
+**Two slots exist: `AdSite` 2 and `AdSite` 6.**
+
+```json
+[{"AdSite":2,"AdType":2,"DefaultAds":"true","IsDefault":"0","PlayTime":"0-24",
+  "EndTime":"2099-12-30T00:00:00","AdContent1":"a2f1d5b7-2291-4fa5-8fa3-1385218008a4.png"},
+ {"AdSite":6,"AdType":2,"DefaultAds":"true","IsDefault":"0","PlayTime":"0-24",
+  "EndTime":"2099-12-30T00:00:00","AdContent1":"46d3a954-ec76-4f45-8696-e153b4ef48be.png"}]
+```
+
+Media files sit **beside** `advert.txt` and are referenced **by filename**.
+
+**Checked, not assumed:** neither ad GUID appears in OurVend's catalog or in our `products`
+(0 hits each). So the ad screen is **not gated by the catalog, the image screen, or the 1–2 day
+product audit**. It is files in a folder, listed by name. That makes it far easier than the
+product path — the hard part is only *reaching* the folder.
+
+## Built (2026-08-22)
+
+- **`screen_media` table** — one playlist model for both the Command Center Screen Feed box and
+  each machine's ad screen (`machine_id` null = the box; set = that machine, with `ad_site`).
+- **`components/ScreenFeed.tsx`** — the box is a real player now: autoplay, muted, looping,
+  Picture-in-Picture pop-out, add-by-link or upload. No rebuild to change what plays.
+- **Atlas `screen_media` tool** — list / add / remove on either playlist.
+- **`machine-screen` edge function** —
+  - `advertTxt {machineId}` → the exact `advert.txt` string plus the filenames each media must
+    be saved as, and the drop instructions.
+  - `status` → what is configured, what is still missing.
+  - `rmsDevices` → lists routers once an RMS token exists.
+
+## Still missing — all paste-a-value, none of it a build
+
+| secret | what it is | how to get it |
+|---|---|---|
+| `machine_ad_folder` | full path of the folder holding `advert.txt` | TeamViewer → ES File Explorer → read the path off the top |
+| `rms_token` | RMS Personal Access Token | create MediCube's own RMS company, generate once (shown once) |
+| `machine_ftp_user` / `_password` | on-device FTP login | only if the drop goes over ES File Explorer's Remote Manager |
+
+**There is no partner RMS account** — the partner buys a router, installs it, stops. So MediCube
+creates its own RMS company and owns fleet management. Registering a router needs name + serial
++ LAN MAC + the router's admin password; serial and MAC come off the sticker or the router WebUI
+at `http://192.168.1.1` (user `admin`), which is reachable from a desk by opening **Chrome on the
+machine** through TeamViewer — the Android sits on that router's LAN. 30-day trial free per
+device; first 5 GB of Connect data free per company.
+
+## The remote pipeline once those exist
+
+```
+MCOS → RMS API (PAT) → RMS Connect HTTP/FTP tunnel → RUT241
+     → machine Android (ES File Explorer "Remote Manager" FTP)
+     → drop the media + rewrite advert.txt → reboot screen
+```
+
+**One gotcha already seen:** a previous attempt left **two** `advert.txt` files in the folder —
+the new one landed beside the old instead of replacing it. There must be exactly one.
