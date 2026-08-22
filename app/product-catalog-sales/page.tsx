@@ -4,8 +4,9 @@ import { ScopeMap } from '@/components/ScopeMap';
 import { ProductHub } from '@/components/ProductHub';
 import { FLEET } from '@/lib/fleet';
 import { AtlasDock } from '@/components/AtlasDock';
+import { getDepartment } from '@/lib/departments';
 
-const COLOR = '#00ffaa';
+const COLOR = getDepartment('product-catalog-sales')!.color;
 
 // which machines carry each product (by barcode), from the live fleet snapshot
 function buildCarriers(): Record<string, string[]> {

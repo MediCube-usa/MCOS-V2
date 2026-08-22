@@ -3,6 +3,7 @@ import { Sidebar } from '@/components/Sidebar';
 import { ScopeMap } from '@/components/ScopeMap';
 import { RestockBoard } from '@/components/RestockBoard';
 import { AtlasDock } from '@/components/AtlasDock';
+import { getDepartment } from '@/lib/departments';
 
 // Restocking — Joe's flow (docs/blocks/restocking.md): trigger → alert refiller
 // (Instawork/Aramark/student) → accept or roll to next day → map card → QR/push
@@ -13,7 +14,7 @@ export default function Restocking() {
     <div className="shell">
       <Sidebar active="restocking" />
       <main className="main">
-        <div className="deptpage" style={{ ['--c' as string]: '#caff00', maxWidth: 1200 }}>
+        <div className="deptpage" style={{ ['--c' as string]: getDepartment('restocking')!.color, maxWidth: 1200 }}>
           <AtlasDock dept="restocking" />
           <div className="crumb"><Link href="/">Command Center</Link> / OPERATIONS</div>
           <h1>Restocking</h1>

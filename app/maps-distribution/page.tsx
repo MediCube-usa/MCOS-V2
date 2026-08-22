@@ -5,8 +5,9 @@ import { ScopeMap } from '@/components/ScopeMap';
 import { MapConsole } from '@/components/MapConsole';
 import { MapCards } from '@/components/MapCards';
 import { AtlasDock } from '@/components/AtlasDock';
+import { getDepartment } from '@/lib/departments';
 
-const COLOR = '#2fd2ff';
+const COLOR = getDepartment('maps-distribution')!.color;
 
 // Maps is the first real record of a location: a campus is approved, THEN pinned
 // here, THEN a machine is ordered and set up. Pins are dropped by hand on the live

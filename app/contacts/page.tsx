@@ -3,8 +3,9 @@ import { Sidebar } from '@/components/Sidebar';
 import { ScopeMap } from '@/components/ScopeMap';
 import { ContactsBoard } from '@/components/ContactsBoard';
 import { AtlasDock } from '@/components/AtlasDock';
+import { getDepartment } from '@/lib/departments';
 
-const COLOR = '#a6b5ff';
+const COLOR = getDepartment('contacts')!.color;
 
 // Contacts is the central directory: every person lives here once, tagged by
 // category and linked by role. Facilities, Restocking, Setup and Marketing all

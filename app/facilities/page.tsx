@@ -3,8 +3,9 @@ import { Sidebar } from '@/components/Sidebar';
 import { ScopeMap } from '@/components/ScopeMap';
 import { FacilitiesBoard } from '@/components/FacilitiesBoard';
 import { AtlasDock } from '@/components/AtlasDock';
+import { getDepartment } from '@/lib/departments';
 
-const COLOR = '#4dff88';
+const COLOR = getDepartment('facilities')!.color;
 
 // Facilities is the master record and rule center for each campus. Its rules
 // (reporting, restrictions, promo) are read by Setup, Machine Operations,

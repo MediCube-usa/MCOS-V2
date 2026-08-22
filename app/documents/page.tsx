@@ -3,8 +3,9 @@ import { Sidebar } from '@/components/Sidebar';
 import { ScopeMap } from '@/components/ScopeMap';
 import { RecordBoard, type BoardConfig } from '@/components/RecordBoard';
 import { AtlasDock } from '@/components/AtlasDock';
+import { getDepartment } from '@/lib/departments';
 
-const COLOR = '#ff66a8';
+const COLOR = getDepartment('documents')!.color;
 
 const CONFIG: BoardConfig = {
   table: 'documents',

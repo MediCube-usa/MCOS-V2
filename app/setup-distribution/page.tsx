@@ -3,8 +3,9 @@ import { Sidebar } from '@/components/Sidebar';
 import { ScopeMap } from '@/components/ScopeMap';
 import { SetupBoard } from '@/components/SetupBoard';
 import { AtlasDock } from '@/components/AtlasDock';
+import { getDepartment } from '@/lib/departments';
 
-const COLOR = '#ffb000';
+const COLOR = getDepartment('setup-distribution')!.color;
 
 // Machine Setup is the pre-live lifecycle: a machine is ordered from TCN, tracked
 // through shipping and the warehouse, scheduled, placed, and verified before it

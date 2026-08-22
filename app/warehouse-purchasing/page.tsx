@@ -3,8 +3,9 @@ import { Sidebar } from '@/components/Sidebar';
 import { ScopeMap } from '@/components/ScopeMap';
 import { RecordBoard, type BoardConfig } from '@/components/RecordBoard';
 import { AtlasDock } from '@/components/AtlasDock';
+import { getDepartment } from '@/lib/departments';
 
-const COLOR = '#3d7cff';
+const COLOR = getDepartment('warehouse-purchasing')!.color;
 
 const CONFIG: BoardConfig = {
   table: 'warehouse_orders',

@@ -3,8 +3,9 @@ import { Sidebar } from '@/components/Sidebar';
 import { ScopeMap } from '@/components/ScopeMap';
 import { PlanogramsBoard } from '@/components/PlanogramsBoard';
 import { AtlasDock } from '@/components/AtlasDock';
+import { getDepartment } from '@/lib/departments';
 
-const COLOR = '#8b5cff';
+const COLOR = getDepartment('templates-config')!.color;
 
 // Planograms & Templates — authoring, machine roles, assignment, go-live tracking.
 // Spec: docs/blocks/planograms.md. Push to OurVend is CLONE-A-MACHINE ONLY and stays

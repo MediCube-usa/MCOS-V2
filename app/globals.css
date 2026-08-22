@@ -678,7 +678,7 @@ a { color: inherit; text-decoration: none; }
 
 /* ---- Atlas voice controls ---- */
 .agent-card .t { display: flex; align-items: center; justify-content: space-between; }
-.atlas-speak { background: none; border: 1px solid rgba(0,229,255,.35); border-radius: 7px; cursor: pointer;
+.atlas-speak { margin-left: auto; background: none; border: 1px solid rgba(0,229,255,.35); border-radius: 7px; cursor: pointer;
   font-size: 13px; line-height: 1; padding: 4px 8px; }
 .atlas-speak.on { border-color: var(--cyan); box-shadow: 0 0 10px rgba(0,229,255,.3); }
 .atlas-mic { flex: none; background: #050d1a; border: 1px solid rgba(0,229,255,.35); border-radius: 8px;
@@ -687,7 +687,7 @@ a { color: inherit; text-decoration: none; }
   color: var(--cyan); font-size: 11.5px; font-weight: 800; letter-spacing: .4px; text-transform: uppercase;
   padding: 8px 12px; cursor: pointer; white-space: nowrap; }
 .atlas-attach:hover { background: rgba(0,229,255,.22); }
-.atlas-skills-link { margin-left: auto; margin-right: 8px; font-size: 10.5px; letter-spacing: .5px;
+.atlas-skills-link { margin-left: 8px; margin-right: 0; font-size: 10.5px; letter-spacing: .5px;
   text-transform: uppercase; font-weight: 800; color: #d8ccff; text-decoration: none;
   background: rgba(185,166,255,.18); border: 1px solid rgba(185,166,255,.75); border-radius: 999px;
   padding: 3px 10px; white-space: nowrap; }
@@ -949,9 +949,23 @@ body::after {
    --c is set per page, so one rule tints the whole column. ---- */
 .deptpage .section,
 .deptpage .tablewrap,
-.deptpage .tpl-card {
+.deptpage .tpl-card,
+.deptpage .scope-card,
+.deptpage .fac-card,
+.deptpage .con-card,
+.deptpage .cat-card,
+.deptpage .rec-card,
+.deptpage .sup-card,
+.deptpage .req-card,
+.deptpage .sb-card,
+.deptpage .sb-col,
+.deptpage .mapconsole-side,
+.deptpage .mapconsole-map {
   border-color: color-mix(in srgb, var(--c) 42%, transparent);
 }
+.deptpage .hub-tab { border-color: color-mix(in srgb, var(--c) 38%, transparent); }
+.deptpage .hub-tab.active { border-color: var(--c); color: #eaf2ff;
+  background: color-mix(in srgb, var(--c) 16%, var(--panel)); }
 .deptpage .section h3 { color: color-mix(in srgb, var(--c) 82%, #ffffff); }
 .deptpage .dtable th { color: color-mix(in srgb, var(--c) 70%, #cdd8ec); }
 .deptpage .dtable th, .deptpage .dtable td { border-bottom-color: color-mix(in srgb, var(--c) 16%, transparent); }

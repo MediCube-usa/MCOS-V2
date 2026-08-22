@@ -4,6 +4,7 @@ import { ScopeMap } from '@/components/ScopeMap';
 import { RefreshOurVend } from '@/components/RefreshOurVend';
 import { getLiveFleet, syncedAgo } from '@/lib/live-slots';
 import { AtlasDock } from '@/components/AtlasDock';
+import { getDepartment } from '@/lib/departments';
 
 // Always render against the freshest live_slots (edge function keeps it current).
 export const dynamic = 'force-dynamic';
@@ -17,7 +18,7 @@ export default async function MachineOperations() {
     <div className="shell">
       <Sidebar active="machine-operations" />
       <main className="main">
-        <div className="deptpage" style={{ ['--c' as string]: '#ff3df2', maxWidth: 1200 }}>
+        <div className="deptpage" style={{ ['--c' as string]: getDepartment('machine-operations')!.color, maxWidth: 1200 }}>
           <AtlasDock dept="machine-operations" />
           <div className="crumb"><Link href="/">Command Center</Link> / OPERATIONS</div>
           <h1>Machine Operations</h1>

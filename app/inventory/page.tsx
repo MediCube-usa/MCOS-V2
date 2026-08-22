@@ -4,6 +4,7 @@ import { neverSynced } from '@/lib/fleet';
 import { getLiveFleet, syncedAgo } from '@/lib/live-slots';
 import { ScopeMap } from '@/components/ScopeMap';
 import { AtlasDock } from '@/components/AtlasDock';
+import { getDepartment } from '@/lib/departments';
 
 // Render against the freshest live_slots on every request.
 export const dynamic = 'force-dynamic';
@@ -37,7 +38,7 @@ export default async function Inventory() {
     <div className="shell">
       <Sidebar active="inventory" />
       <main className="main">
-        <div className="deptpage" style={{ ['--c' as string]: '#ff8c1a', maxWidth: 1200 }}>
+        <div className="deptpage" style={{ ['--c' as string]: getDepartment('inventory')!.color, maxWidth: 1200 }}>
           <AtlasDock dept="inventory" />
           <div className="crumb"><Link href="/">Command Center</Link> / OPERATIONS</div>
           <h1>Inventory</h1>

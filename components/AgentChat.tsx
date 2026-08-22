@@ -121,20 +121,15 @@ export function AgentChat({ greeting }: { greeting: string }) {
 
   return (
     <div className="agent-card">
-      <div className="agentbadge">
-        <LogoRainbow size={56} />
-        <span className="agent-name">Atlas</span>
-        <span className="agent-sub" style={{ color: '#b9a6ff' }}>Executive</span>
-      </div>
       <div className="agent-card-body">
         <div className="t">
           Command Agent
-          <a className="atlas-skills-link" href="/atlas-skills" title="Teach Atlas — rules, procedures, knowledge you want it to have">⚡ Teach Atlas</a>
           <button
             className={`atlas-speak ${speak ? 'on' : ''}`}
             onClick={() => { setSpeak((s) => !s); if (speak && window.speechSynthesis) window.speechSynthesis.cancel(); }}
             title={speak ? 'Atlas is reading replies aloud — tap to mute' : 'Tap so Atlas reads replies aloud'}
           >{speak ? '🔊' : '🔇'}</button>
+          <a className="atlas-skills-link" href="/atlas-skills" title="Teach Atlas — rules, procedures, knowledge you want it to have">⚡ Teach Atlas</a>
         </div>
         <div className="atlas-cando">
           Atlas <b>does</b> the work: upload a machine photo → planogram · change products, coils,
@@ -184,11 +179,15 @@ export function AgentChat({ greeting }: { greeting: string }) {
             value={input}
             onChange={(e) => setInput(e.target.value)}
             onKeyDown={(e) => { if (e.key === 'Enter') send(); }}
-            placeholder={listening ? 'Listening…' : 'Ask, or tap the mic and talk'}
+            placeholder={listening ? 'Listening…' : 'Ask or tell Atlas — press Enter'}
             disabled={busy}
           />
-          <button className="atlas-send" onClick={send} disabled={busy || (!input.trim() && files.length === 0)}>Ask</button>
         </div>
+      </div>
+      <div className="agentbadge">
+        <LogoRainbow size={56} />
+        <span className="agent-name">Atlas</span>
+        <span className="agent-sub" style={{ color: '#b9a6ff' }}>Executive</span>
       </div>
     </div>
   );
