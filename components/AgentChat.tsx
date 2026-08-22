@@ -10,14 +10,11 @@ import { useEffect, useRef, useState } from 'react';
 import { LogoRainbow } from '@/components/Logo';
 
 interface Msg { role: 'user' | 'assistant'; content: string; }
-interface PendingAction { code: string; name: string; change: 'price' | 'description' | 'name' | 'size'; value: string; }
 
 export function AgentChat({ greeting }: { greeting: string }) {
   const [msgs, setMsgs] = useState<Msg[]>([]);
   const [input, setInput] = useState('');
   const [busy, setBusy] = useState(false);
-  const [pending, setPending] = useState<PendingAction[]>([]);
-  const [approving, setApproving] = useState(false);
   const [listening, setListening] = useState(false);
   const [speak, setSpeak] = useState(false);
   const [voiceSupported, setVoiceSupported] = useState(false);
@@ -95,30 +92,6 @@ export function AgentChat({ greeting }: { greeting: string }) {
     rec.start();
   };
 
-  const approve = async (a: PendingAction) => {
-    if (approving) return;
-    setApproving(true);
-    try {
-      const r = await fetch('/api/agent', {
-        method: 'POST', headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ execute: a }),
-      });
-      const j = (await r.json().catch(() => ({}))) as { reply?: string };
-      const reply = j.reply || 'Done.';
-      setMsgs((xs) => [...xs, { role: 'assistant', content: reply }]);
-      say(reply);
-    } catch {
-      setMsgs((xs) => [...xs, { role: 'assistant', content: '⚠️ Could not reach the server — nothing was changed.' }]);
-    } finally {
-      setPending([]);
-      setApproving(false);
-    }
-  };
-  const cancel = () => {
-    setPending([]);
-    setMsgs((xs) => [...xs, { role: 'assistant', content: 'Okay — cancelled, nothing changed.' }]);
-  };
-
   const send = async () => {
     const text = input.trim();
     if ((!text && files.length === 0) || busy) return;
@@ -128,7 +101,6 @@ export function AgentChat({ greeting }: { greeting: string }) {
     const attachments = files.map((f) => ({ name: f.name, mediaType: f.mediaType, dataBase64: f.dataUrl.split(',')[1] || '' }));
     setInput('');
     setFiles([]);
-    setPending([]);
     setBusy(true);
     try {
       const r = await fetch('/api/agent', {
@@ -136,10 +108,9 @@ export function AgentChat({ greeting }: { greeting: string }) {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ messages: next, attachments }),
       });
-      const j = (await r.json().catch(() => ({}))) as { reply?: string; error?: string; pending?: PendingAction[] };
+      const j = (await r.json().catch(() => ({}))) as { reply?: string; error?: string };
       const reply = j.reply || j.error || `No answer came back (${r.status}).`;
       setMsgs((xs) => [...xs, { role: 'assistant', content: reply }]);
-      if (Array.isArray(j.pending) && j.pending.length) setPending(j.pending);
       say(reply);
     } catch {
       setMsgs((xs) => [...xs, { role: 'assistant', content: 'Could not reach the server — check the connection and try again.' }]);
@@ -158,6 +129,7 @@ export function AgentChat({ greeting }: { greeting: string }) {
       <div className="agent-card-body">
         <div className="t">
           Command Agent
+          <a className="atlas-skills-link" href="/atlas-skills" title="Teach Atlas — rules, procedures, knowledge">＋ Skills</a>
           <button
             className={`atlas-speak ${speak ? 'on' : ''}`}
             onClick={() => { setSpeak((s) => !s); if (speak && window.speechSynthesis) window.speechSynthesis.cancel(); }}
@@ -171,18 +143,6 @@ export function AgentChat({ greeting }: { greeting: string }) {
           ))}
           {busy && <div className="atlas-thinking">Atlas is checking the live data…</div>}
         </div>
-        {pending.map((a, i) => (
-          <div key={i} className="atlas-approve">
-            <div className="atlas-approve-text">
-              <b>Approve change to OurVend?</b>
-              <span>{a.name || a.code} — set <b>{a.change}</b> to “{a.value}”</span>
-            </div>
-            <div className="atlas-approve-btns">
-              <button className="atlas-yes" onClick={() => approve(a)} disabled={approving}>{approving ? '…' : 'Approve'}</button>
-              <button className="atlas-no" onClick={cancel} disabled={approving}>Cancel</button>
-            </div>
-          </div>
-        ))}
         {files.length > 0 && (
           <div className="atlas-files">
             {files.map((f, i) => (

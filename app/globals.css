@@ -685,6 +685,13 @@ a { color: inherit; text-decoration: none; }
   color: #eaf2ff; font-size: 14px; padding: 8px 11px; cursor: pointer; }
 .atlas-attach { flex: none; background: #050d1a; border: 1px solid rgba(0,229,255,.35); border-radius: 8px;
   color: #eaf2ff; font-size: 14px; padding: 8px 11px; cursor: pointer; }
+.atlas-skills-link { margin-left: auto; margin-right: 8px; font-size: 10px; letter-spacing: .4px;
+  text-transform: uppercase; font-weight: 800; color: #b9a6ff; text-decoration: none;
+  border: 1px solid rgba(185,166,255,.4); border-radius: 999px; padding: 2px 8px; }
+.atlas-skills-link:hover { background: rgba(185,166,255,.15); }
+.skill-body { background: #0a1626; border: 1px solid var(--line); border-radius: 8px; padding: 10px 12px;
+  color: #dbe6ff; font-size: 12.5px; font-family: inherit; line-height: 1.5; resize: vertical; width: 100%; }
+.skill-body:focus { outline: none; border-color: #b9a6ff; }
 .atlas-attach:disabled { opacity: .5; cursor: default; }
 .atlas-files { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 8px; }
 .atlas-file { display: inline-flex; align-items: center; gap: 6px; background: rgba(0,229,255,.12);

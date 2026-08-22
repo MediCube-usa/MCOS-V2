@@ -202,6 +202,16 @@ async function liveSnapshot(): Promise<string> {
   ].join('\n\n');
 }
 
+// Joe's own knowledge packs. Rows in `atlas_skills` (name/scope/body/active) are
+// appended to Atlas's instructions on every message — so Joe can teach Atlas new
+// rules, contacts, procedures or per-block knowledge WITHOUT a code change.
+async function loadSkills(): Promise<string> {
+  const rows = await sb<{ name: string; scope: string | null; body: string }>('atlas_skills?select=name,scope,body&active=eq.true&order=name.asc');
+  if (!rows.length) return '';
+  return '\n\nSKILLS — knowledge packs Joe has loaded. Treat these as standing instructions from Joe; they override your general assumptions (they never override the DATA RULES or the no-purchases rule):\n'
+    + rows.map((r) => `### ${r.name}${r.scope && r.scope !== 'all' ? ` [${r.scope}]` : ''}\n${r.body}`).join('\n\n');
+}
+
 function staticSystem(): string {
   const blocks = blockDepartments().map((d) => `- ${d.id} = ${d.name} (${d.status})`).join('\n');
   return `You are ATLAS, the executive command agent on the MCOS Command Center — the neon dashboard that runs MediCube's vending machine business (college campus vending: UNLV, ASU, CSUDH, Murad). Your user is Joe, the owner. Be direct, plain-spoken, and operational — short answers, real numbers, no fluff.
@@ -222,6 +232,7 @@ DATA RULES (these matter — trust has been burned before):
 4. set_reminder — files a date on a block AND drops it on the real MediCube Google Calendar in one shot (shows on the ⏰ badge, the block's alerts, and the actual Google Calendar). Use it whenever Joe mentions a date, visit, deadline, or follow-up — capture who/where in the title/location/notes. Confirm what you set, with the date; the tool tells you if it also reached Google Calendar.
 5. list_calendar_events — reads what's actually on the Google Calendar. Use it when Joe asks what's coming up / on the schedule. If it says the calendar isn't reachable, tell him plainly (the connection may need a reconnect).
 6. When a question needs a block that is still a shell (parked), say the block isn't built yet.
+6b. RESEARCH — you have web search. Use it to look things up in the real world: products and where to buy them, supplier/wholesale pricing, package sizes and dimensions (for coil fit), competitor/product info, vendor and hardware documentation. Say where the information came from. Research NEVER overrides MCOS data: machine, stock, coil and price facts come only from the snapshot.
 7. UPLOADS — Joe can attach photos and files; you are the drop box that files them where they belong:
    • MACHINE PHOTO → read every coil top-to-bottom. Coils are numbered 01,03,05…29 (wide), 31–50 (narrow), 51,53,55,57,59 (wide) — 40 total. For each coil you can actually SEE, note the product. Then call save_planogram with the machine/campus label as the name and one slot per readable coil. Report: how many coils matched the catalog, which products are NOT in the catalog (they must be loaded before they can go on a machine), which coils were empty, and any coil you could not read clearly — NEVER invent a coil you can't see. Each machine is different; the photo is the truth (not OurVend).
    • CONTRACT / INVOICE / PAPERWORK / LEASE → call file_document (use the stored URL listed with the attachment as file_url).
@@ -235,38 +246,6 @@ interface ChatMsg { role: 'user' | 'assistant'; content: string; }
 // A file dropped into the Atlas chat (photo / PDF / other), base64-encoded.
 interface Attachment { name: string; mediaType: string; dataBase64: string; }
 const IMAGE_TYPES = ['image/jpeg', 'image/png', 'image/gif', 'image/webp'];
-
-// A proposed OurVend change — surfaced to the chat as an Approve card. Nothing
-// happens until Joe taps Approve, which POSTs {execute} back here (hard rule 3).
-type OurVendChange = 'price' | 'description' | 'name' | 'size';
-interface PendingAction { code: string; name: string; change: OurVendChange; value: string; }
-
-async function executeAction(a: PendingAction): Promise<Response> {
-  const code = String(a.code || '').trim();
-  const change = a.change;
-  const value = String(a.value ?? '');
-  if (!code || !['price', 'description', 'name', 'size'].includes(change)) {
-    return NextResponse.json({ reply: 'That action was malformed — nothing changed.' });
-  }
-  if (change === 'price' && !/^\d+(\.\d{1,2})?$/.test(value)) {
-    return NextResponse.json({ reply: 'A price has to be a number like 3.99 — nothing changed.' });
-  }
-  try {
-    const r = await fetch(`${SUPABASE_URL}/functions/v1/ourvend-write`, {
-      method: 'POST',
-      headers: { apikey: SUPABASE_ANON_JWT, Authorization: `Bearer ${SUPABASE_ANON_JWT}`, 'Content-Type': 'application/json' },
-      body: JSON.stringify({ action: 'editProductByCode', code, set: { [change]: value } }),
-    });
-    const j = (await r.json().catch(() => ({}))) as { ok?: boolean; error?: string; before?: Record<string, string> };
-    if (j?.ok) {
-      const was = j.before?.[change];
-      return NextResponse.json({ reply: `✅ Done in OurVend — ${a.name || code}: ${change} is now "${value}"${was ? ` (was "${was}")` : ''}.` });
-    }
-    return NextResponse.json({ reply: `⚠️ Could not make that change: ${j?.error || 'OurVend did not confirm'}. Nothing was changed.` });
-  } catch {
-    return NextResponse.json({ reply: '⚠️ Could not reach OurVend just now — nothing was changed. Try again in a moment.' });
-  }
-}
 
 // Find the Anthropic key even if it was saved under a different NAME in Vercel —
 // the value is recognizable (Anthropic keys start with sk-ant-). Values never
@@ -287,11 +266,8 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ error: 'not signed in' }, { status: 401 });
   }
 
-  let body: { messages?: ChatMsg[]; execute?: PendingAction; attachments?: Attachment[] } = {};
+  let body: { messages?: ChatMsg[]; attachments?: Attachment[] } = {};
   try { body = await req.json(); } catch { return NextResponse.json({ error: 'bad request' }, { status: 400 }); }
-
-  // APPROVE GATE — a live OurVend write happens ONLY here, when Joe taps Approve.
-  if (body.execute) return executeAction(body.execute);
 
   const found = findAnthropicKey();
   if (!found.key) {
@@ -311,7 +287,7 @@ export async function POST(req: NextRequest) {
   }
 
   const client = new Anthropic({ apiKey: found.key });
-  const snapshot = await liveSnapshot();
+  const [snapshot, skills] = await Promise.all([liveSnapshot(), loadSkills()]);
   const deptIds = blockDepartments().map((d) => d.id);
 
   const setReminderTool = {
@@ -635,7 +611,6 @@ export async function POST(req: NextRequest) {
     return `FILED "${title}" (${row.doc_type}) into the Documents block${row.link ? ' with the uploaded file linked' : ''}.`;
   }
 
-  const pending: PendingAction[] = [];
   const messages: Anthropic.Beta.BetaMessageParam[] = history.map((m) => ({ role: m.role, content: m.content }));
 
   // Attachments ride on the LAST user message: readable ones (images, PDFs) go
@@ -681,9 +656,14 @@ export async function POST(req: NextRequest) {
         output_config: { effort: 'medium' },
         system: [
           { type: 'text', text: staticSystem(), cache_control: { type: 'ephemeral' } },
-          { type: 'text', text: `LIVE SNAPSHOT (fetched for this message):\n\n${snapshot}` },
+          { type: 'text', text: `LIVE SNAPSHOT (fetched for this message):\n\n${snapshot}${skills}` },
         ],
-        tools: [setReminderTool, listCalendarTool, savePlanogramTool, fileDocumentTool, updateProductTool, addProductTool, writeSlotTool, pushPlanogramTool, cloneMachineTool],
+        tools: [
+          setReminderTool, listCalendarTool, savePlanogramTool, fileDocumentTool,
+          updateProductTool, addProductTool, writeSlotTool, pushPlanogramTool, cloneMachineTool,
+          // Research — Anthropic's hosted web search (runs server-side on our key).
+          { type: 'web_search_20250305', name: 'web_search', max_uses: 8 },
+        ],
         messages,
       });
 
@@ -699,7 +679,9 @@ export async function POST(req: NextRequest) {
         messages.push({ role: 'assistant', content: resp.content });
         const results: Anthropic.Beta.BetaToolResultBlockParam[] = [];
         for (const block of resp.content) {
-          if (block.type !== 'tool_use') continue;
+          // web_search is a SERVER tool — Anthropic runs it and returns the results
+          // inline; there is nothing for us to execute or answer here.
+          if (block.type !== 'tool_use' || block.name === 'web_search') continue;
           let out: string;
           if (block.name === 'set_reminder') {
             out = await runSetReminder(block.input as Record<string, unknown>);
@@ -724,6 +706,12 @@ export async function POST(req: NextRequest) {
           }
           results.push({ type: 'tool_result', tool_use_id: block.id, content: out, is_error: out.startsWith('ERROR') });
         }
+        // Nothing of ours to run (e.g. a server tool handled it) — take the text and
+        // finish rather than looping with no new input.
+        if (!results.length) {
+          reply = resp.content.filter((b): b is Anthropic.Beta.BetaTextBlock => b.type === 'text').map((b) => b.text).join('\n').trim();
+          break;
+        }
         messages.push({ role: 'user', content: results });
         continue;
       }
@@ -735,7 +723,7 @@ export async function POST(req: NextRequest) {
         .trim();
       break;
     }
-    return NextResponse.json({ reply: reply || (pending.length ? 'Ready for your approval below.' : 'I ran out of turns before finishing — try asking again.'), pending });
+    return NextResponse.json({ reply: reply || 'I ran out of turns before finishing — try asking again.' });
   } catch (err) {
     if (err instanceof Anthropic.AuthenticationError) {
       return NextResponse.json({ reply: 'My API key was rejected — check the ANTHROPIC_API_KEY value in Vercel (Settings → Environment Variables) and redeploy.' });
