@@ -908,3 +908,20 @@ body::after {
 .skill-state.on em { background: #00ff6e; box-shadow: 0 0 8px #00ff6e; }
 .skill-state.off { color: #ff7d92; background: rgba(255,0,48,.13); border: 1px solid rgba(255,0,48,.55); }
 .skill-state.off em { background: #ff0030; box-shadow: 0 0 8px #ff0030; }
+
+/* Skills page — the built-in scope Atlas already has for a block (read-only). */
+.baseline { border: 1px solid rgba(0,229,255,.3); background: rgba(0,229,255,.05);
+  border-radius: 10px; padding: 12px 14px; margin-bottom: 14px; }
+.baseline-top { display: flex; align-items: baseline; gap: 10px; flex-wrap: wrap; }
+.baseline-top b { color: var(--cyan); font-size: 13px; }
+.baseline-top span { font-size: 10px; text-transform: uppercase; letter-spacing: .5px; font-weight: 800;
+  color: #6bff9e; background: rgba(0,255,110,.14); border: 1px solid rgba(0,255,110,.5);
+  border-radius: 999px; padding: 1px 8px; }
+.baseline-purpose { color: #cdd8ec; font-size: 12.5px; line-height: 1.5; margin: 8px 0 10px; }
+.baseline-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+.baseline-grid > div > span { display: block; font-size: 10px; text-transform: uppercase; letter-spacing: .5px;
+  font-weight: 800; color: var(--muted); margin-bottom: 4px; }
+.baseline-grid ul, .baseline-grid ol { margin: 0; padding-left: 18px; }
+.baseline-grid li { font-size: 11.5px; color: #9fb0cc; line-height: 1.55; }
+.baseline-foot { color: var(--muted); font-size: 11px; margin: 10px 0 0; }
+@media (max-width: 760px) { .baseline-grid { grid-template-columns: 1fr; } }

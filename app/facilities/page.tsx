@@ -2,7 +2,6 @@ import Link from 'next/link';
 import { Sidebar } from '@/components/Sidebar';
 import { ScopeMap } from '@/components/ScopeMap';
 import { FacilitiesBoard } from '@/components/FacilitiesBoard';
-import { BlockAlerts } from '@/components/BlockAlerts';
 import { AtlasDock } from '@/components/AtlasDock';
 
 const COLOR = '#4dff88';
@@ -21,7 +20,6 @@ export default function Facilities() {
           <h1>Facilities</h1>
           <p className="blurb">Each campus and its rules — contacts, reporting, restrictions, access. Other departments read these rules instead of keeping their own copy.</p>
 
-          <BlockAlerts dept="facilities" />
 
           <div className="banner" style={{ border: '1px solid rgba(77,255,136,.35)', background: 'rgba(77,255,136,.07)', color: '#a7ffc8' }}>
             <b>Your four live campuses are already here.</b> Open one to fill in its address, rules, restrictions (e.g. &quot;no Plan B&quot;), and contacts. Set a facility to <b>approved</b> and that&apos;s the trigger to map it and order a machine.

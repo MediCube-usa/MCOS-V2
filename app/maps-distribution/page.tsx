@@ -4,7 +4,6 @@ import { FLEET } from '@/lib/fleet';
 import { ScopeMap } from '@/components/ScopeMap';
 import { MapConsole } from '@/components/MapConsole';
 import { MapCards } from '@/components/MapCards';
-import { BlockAlerts } from '@/components/BlockAlerts';
 import { AtlasDock } from '@/components/AtlasDock';
 
 const COLOR = '#2fd2ff';
@@ -29,7 +28,6 @@ export default function MapsDistribution() {
           <h1>Maps &amp; Routes</h1>
           <p className="blurb">Every machine pinned by hand on the live map. A campus gets mapped here the moment it&apos;s approved — before a machine is ordered or set up.</p>
 
-          <BlockAlerts dept="maps-distribution" />
 
           <div className="banner" style={{ border: '1px solid rgba(47,210,255,.35)', background: 'rgba(47,210,255,.07)', color: '#a9e6ff' }}>
             <b>How to map a machine:</b> pick it from the list, then click its exact spot on the map — inside the building, at the real placement. Drag the pin to fine-tune. It saves instantly and everyone sees it.

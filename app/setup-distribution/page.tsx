@@ -2,7 +2,6 @@ import Link from 'next/link';
 import { Sidebar } from '@/components/Sidebar';
 import { ScopeMap } from '@/components/ScopeMap';
 import { SetupBoard } from '@/components/SetupBoard';
-import { BlockAlerts } from '@/components/BlockAlerts';
 import { AtlasDock } from '@/components/AtlasDock';
 
 const COLOR = '#ffb000';
@@ -22,7 +21,6 @@ export default function SetupDistribution() {
           <h1>Machine Setup</h1>
           <p className="blurb">The fleet pipeline — every machine from TCN order to verified, coast to coast. Each colored tab is a stage: open it to see exactly what it holds, what completes it, and the machines sitting there.</p>
 
-          <BlockAlerts dept="setup-distribution" />
 
           <SetupBoard />
 

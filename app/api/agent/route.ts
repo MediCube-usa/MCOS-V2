@@ -18,7 +18,8 @@ import { AUTH_COOKIE, AUTH_TOKEN } from '@/lib/auth';
 import { SUPABASE_URL, SUPABASE_KEY, SUPABASE_ANON_JWT } from '@/lib/config';
 import { getLiveFleet, syncedAgo } from '@/lib/live-slots';
 import { neverSynced } from '@/lib/fleet';
-import { blockDepartments } from '@/lib/departments';
+import { blockDepartments, getDepartment } from '@/lib/departments';
+import { DEPT_SPECS } from '@/lib/dept-specs';
 
 export const dynamic = 'force-dynamic';
 export const maxDuration = 60; // Claude + tools can take longer than the 10s default
@@ -215,6 +216,29 @@ async function loadSkills(dept?: string): Promise<string> {
     `### ${r.name} (${r.kind || 'skill'})${r.scope && r.scope !== 'all' ? ` [${r.scope}]` : ''}\n${r.body}`;
   return '\n\nSKILLS, RULES & WORKFLOW — knowledge Joe has loaded. Treat these as standing instructions from Joe; they override your general assumptions (never the DATA RULES or the no-purchases rule):\n'
     + [...here, ...rest].map(fmt).join('\n\n');
+}
+
+
+// The block Joe is working in, described from its own scope map. This is Atlas's
+// BASELINE knowledge of a department — always current, because it is the same
+// source the department page renders. Joe's atlas_skills are additions on top.
+function deptContext(dept?: string): string {
+  if (!dept) return '';
+  const d = getDepartment(dept);
+  const spec = DEPT_SPECS[dept];
+  if (!d) return '';
+  const lines = [`\n\nYOU ARE WORKING IN: ${d.name} (${dept}) — status ${d.status}.`];
+  if (spec) {
+    lines.push(
+      `PURPOSE: ${spec.purpose}`,
+      `THIS BLOCK OWNS (source of truth): ${spec.owns.join(' · ')}`,
+      `WORKFLOW, IN ORDER: ${spec.workflow.map((w, i) => `${i + 1}) ${w}`).join(' → ')}`,
+      `HANDS OFF TO / READS FROM: ${spec.connects.join(', ')}`,
+      `NOT BUILT YET (never claim these are done): ${spec.toBuild.join(' · ')}`,
+    );
+  }
+  lines.push('Answer and act for THIS block first, and file work under it. You are still one Atlas — reach into any other block when it helps.');
+  return lines.join('\n');
 }
 
 function staticSystem(): string {
@@ -695,7 +719,7 @@ export async function POST(req: NextRequest) {
         output_config: { effort: 'medium' },
         system: [
           { type: 'text', text: staticSystem(), cache_control: { type: 'ephemeral' } },
-          { type: 'text', text: `LIVE SNAPSHOT (fetched for this message):\n\n${snapshot}${skills}` },
+          { type: 'text', text: `LIVE SNAPSHOT (fetched for this message):\n\n${snapshot}${deptContext(dept)}${skills}` },
         ],
         tools: [
           setReminderTool, listCalendarTool, savePlanogramTool, fileDocumentTool,

@@ -6,7 +6,8 @@
 import { useEffect, useState } from 'react';
 import { useSearchParams } from 'next/navigation';
 import { dbSelect, dbInsert, dbUpdate, dbDelete } from '@/lib/db';
-import { blockDepartments } from '@/lib/departments';
+import { blockDepartments, getDepartment } from '@/lib/departments';
+import { DEPT_SPECS } from '@/lib/dept-specs';
 
 interface Skill {
   id: string;
@@ -107,6 +108,21 @@ export function AtlasSkills() {
                 </div>
               )}
           </div>
+
+          {focus && DEPT_SPECS[focus] && (
+            <div className="baseline">
+              <div className="baseline-top">
+                <b>Atlas already knows this about {getDepartment(focus)?.name || focus}</b>
+                <span>built in — no need to write it</span>
+              </div>
+              <p className="baseline-purpose">{DEPT_SPECS[focus].purpose}</p>
+              <div className="baseline-grid">
+                <div><span>Owns</span><ul>{DEPT_SPECS[focus].owns.map((x) => <li key={x}>{x}</li>)}</ul></div>
+                <div><span>Workflow</span><ol>{DEPT_SPECS[focus].workflow.map((x) => <li key={x}>{x}</li>)}</ol></div>
+              </div>
+              <p className="baseline-foot">Everything you add below stacks on top of this — rules, guidelines, workflow changes, and anything new as you grow.</p>
+            </div>
+          )}
 
           <p className="hub-note">A skill is knowledge you hand Atlas in your own words — rules, procedures,
             who to call, how you want something done, facts about a campus or supplier. Every <b>active</b> skill

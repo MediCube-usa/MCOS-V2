@@ -2,7 +2,6 @@ import Link from 'next/link';
 import { Sidebar } from '@/components/Sidebar';
 import { ScopeMap } from '@/components/ScopeMap';
 import { RestockBoard } from '@/components/RestockBoard';
-import { BlockAlerts } from '@/components/BlockAlerts';
 import { AtlasDock } from '@/components/AtlasDock';
 
 // Restocking — Joe's flow (docs/blocks/restocking.md): trigger → alert refiller
@@ -22,7 +21,6 @@ export default function Restocking() {
             machine → key + refill codes → replenish exactly what the screen says → photo → filed → done.
             Shipping refills add the campus check-in stop first.</p>
 
-          <BlockAlerts dept="restocking" />
 
           <RestockBoard />
 

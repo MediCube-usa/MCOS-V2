@@ -4,7 +4,6 @@ import { Sidebar } from '@/components/Sidebar';
 import { DEPARTMENTS, getDepartment } from '@/lib/departments';
 import { ScopeMap } from '@/components/ScopeMap';
 import { AgentBadge } from '@/components/AgentBadge';
-import { BlockAlerts } from '@/components/BlockAlerts';
 import { AtlasDock } from '@/components/AtlasDock';
 
 // Departments that have their own custom page file (app/<id>/page.tsx). The
@@ -64,7 +63,6 @@ export default async function DepartmentPage({ params }: { params: Promise<{ dep
           <h1>{d.name}</h1>
           <p className="blurb">{d.blurb}</p>
 
-          <BlockAlerts dept={d.id} />
 
           {d.status === 'building' && (
             <div className="banner building">⚙ In development — scope is mapped below so the whole team sees what belongs here. Working sections get built out next.</div>

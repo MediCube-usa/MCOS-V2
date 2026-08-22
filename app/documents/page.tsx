@@ -2,7 +2,6 @@ import Link from 'next/link';
 import { Sidebar } from '@/components/Sidebar';
 import { ScopeMap } from '@/components/ScopeMap';
 import { RecordBoard, type BoardConfig } from '@/components/RecordBoard';
-import { BlockAlerts } from '@/components/BlockAlerts';
 import { AtlasDock } from '@/components/AtlasDock';
 
 const COLOR = '#ff66a8';
@@ -34,7 +33,6 @@ export default function Documents() {
           <h1>Documents &amp; Compliance</h1>
           <p className="blurb">Contracts, licenses, and compliance deadlines. The record and its status live here; the signed file lives in a secure vault, linked — never pasted raw.</p>
 
-          <BlockAlerts dept="documents" />
 
           <div className="banner" style={{ border: '1px solid rgba(255,102,168,.35)', background: 'rgba(255,102,168,.08)', color: '#ffbcd8' }}>
             <b>Every contract and license, tracked to its deadline.</b> Add a document, set its type, party, and expiry, and move it draft → sent → signed. Store only a secure link — never the actual credentials or raw file.
