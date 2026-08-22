@@ -253,7 +253,7 @@ DATA RULES (these matter — trust has been burned before):
 2. The snapshot refreshes from the OurVend connection about every 20 minutes. Quote the sync age when talking about stock.
 3. OURVEND — you have FULL read + write and you ACT on it directly. This is the whole point: DO the work, don't just advise. You can, live and immediately:
    • ourvend_update_product — change a catalog product's price/description/name/size/cost (by CODE)
-   • ourvend_add_product — add a new product to the catalog (for items not yet in it)
+   • ourvend_add_product — add a new product to the catalog (for items not yet in it). An image is MANDATORY: use web search to find the product's own pack shot and pass the direct image link as imageUrl — never ask Joe for a picture. OurVend may answer 'pending-audit' (1-2 working days before a machine can use it) — say so when it does.
    • ourvend_write_slot — set one coil on a machine: product placement + price + inventory (capacity/stock)
    • ourvend_push_planogram — push a saved MCOS planogram to a machine coil-by-coil (make OurVend match the photo-built truth in MCOS)
    • ourvend_clone_machine — copy one machine's layout onto another
@@ -407,24 +407,38 @@ export async function POST(req: NextRequest) {
   const addProductTool = {
     name: 'ourvend_add_product',
     description:
-      "Add a NEW product to the OurVend catalog LIVE. Needs code + name; price/size/description/cost optional. (OurVend pulls the product IMAGE from its preloaded catalog — mention if an image still needs loading.)",
+      "Add a NEW product to the OurVend catalog LIVE. An IMAGE IS MANDATORY — OurVend refuses a product without one. Pass imageUrl: use web search to find the product's own pack shot (the brand's site or a retailer), then give the direct .jpg/.png link and MCOS fetches, squares and uploads it. Do NOT ask Joe for a picture; find one. Product code must be digits/letters only and unused; name max 50 chars. NOTE: OurVend answers 'live' (usable now) or 'pending-audit' (the platform reviews it, 1-2 working days before a machine can use it) — always report which.",
     input_schema: {
       type: 'object' as const,
       properties: {
-        code: { type: 'string' }, name: { type: 'string' }, price: { type: 'string' },
-        size: { type: 'string' }, description: { type: 'string' }, cost: { type: 'string' },
+        code: { type: 'string', description: 'unused product code, digits/letters only' },
+        name: { type: 'string', description: 'product name, max 50 chars, no @ # $ % or backslash' },
+        imageUrl: { type: 'string', description: 'direct link to a png/jpeg pack shot of THIS product' },
+        price: { type: 'string' }, size: { type: 'string' }, description: { type: 'string' },
+        cost: { type: 'string' }, supplier: { type: 'string' }, type: { type: 'string' },
       },
-      required: ['code', 'name'],
+      required: ['code', 'name', 'imageUrl'],
     },
   };
   async function runAddProduct(inp: Record<string, unknown>): Promise<string> {
     const code = String(inp.code ?? '').trim();
     const name = String(inp.name ?? '').trim();
     if (!code || !name) return 'ERROR: need code and name';
-    const product = { code, name, price: String(inp.price ?? ''), size: String(inp.size ?? ''), description: String(inp.description ?? ''), cost: String(inp.cost ?? '') };
-    const r = await ourvendWrite('addProduct', { product });
-    await logAction('addProduct', code, { name }, !!r.ok, JSON.stringify(r));
-    return r.ok ? `DONE (live): added "${name}" (code ${code}) to the OurVend catalog.` : `ERROR: could not add it (${r.error || 'no ok'}).`;
+    const imageUrl = String(inp.imageUrl ?? '').trim();
+    if (!imageUrl) return 'ERROR: OurVend will not create a product without an image. Search the web for this product\'s pack shot and pass its direct .jpg/.png link as imageUrl.';
+    const product = {
+      code, name, price: String(inp.price ?? ''), size: String(inp.size ?? ''),
+      description: String(inp.description ?? ''), cost: String(inp.cost ?? ''),
+      supplier: String(inp.supplier ?? 'WienerLTD'), type: String(inp.type ?? 'OTC'),
+    };
+    const r = await ourvendWrite('addProduct', { product, imageUrl });
+    await logAction('addProduct', code, { name, imageUrl }, !!r.ok, JSON.stringify(r));
+    if (!r.ok) return `ERROR: could not add it (${r.error || r.meaning || 'no ok'}).`;
+    // 'pending-audit' matters operationally — the product cannot go on a coil yet.
+    const state = String(r.state ?? '');
+    return state === 'pending-audit'
+      ? `DONE: added "${name}" (code ${code}) to the OurVend catalog — but OurVend queued it for platform audit, so it is NOT usable on a machine for 1-2 working days.`
+      : `DONE (live now): added "${name}" (code ${code}) to the OurVend catalog.`;
   }
 
   const writeSlotTool = {
