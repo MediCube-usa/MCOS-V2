@@ -244,6 +244,28 @@ product placement — refreshed every cycle (reconfirmed by Joe 2026-08-20).
 - Boston (Nayax) machines: not set up; planograms may only exist on Nayax (secondary, optional).
 
 ## SESSION LOG (newest first)
+- 2026-08-22 (b): ⭐ **ATLAS EVERYWHERE — the dept Atlas dock** (Joe's design, his two markups).
+  Every department page now carries an **AtlasDock** top-right (wide + short, floats into the
+  open space): **the dept LOGO is the button** into that block's skills/rules (small "Atlas" in
+  the mark), a **green/red skill lamp** (green = knowledge active here, red = none on — louder
+  than the rest of the site, no permanent/temp state per Joe), and three tabs — 💬 chat ·
+  ✉ **messages from Atlas** · ⏰ **calendar alerts** — plus 📎 upload + 🎤 mic. Upload works from
+  every window into the same backend. One Atlas, many windows.
+  **`atlas_messages` table + `post_department_message` tool**: Atlas files completions /
+  attention / questions to a block; unread count + skill lamp show on that block on the
+  **Command Center** (`BoxAtlasCount`), you open them in that block's dock. That's Joe's
+  "see it up front, go to the page, open it in the box".
+  **Every agent is now Atlas** (Vesta/Orion/Marcus… retired — they were always cosmetic);
+  parked shells keep '—'. Logo white outline thinned (grow 8/size → 4.5/size).
+  **`/api/agent` is department-aware**: takes `dept`, loads that block's skills first, AND
+  injects the block's real scope (purpose/owns/workflow/connects/not-built-yet) straight from
+  **`lib/dept-specs.ts`** — deliberately NOT seeded into the DB, so it can never drift from the
+  page. The skills page shows that baseline read-only for the focused block; Joe's entries stack
+  on top. Skills gained **kinds** (skill · rule · guideline · workflow) and a `?dept=` focus.
+  **Appointment book REMOVED from dept pages** (Joe: Atlas sets the dates, he won't) — alerts
+  live in the dock's ⏰ tab + the front-page calendar; emails/follow-ups/texts are the channel.
+  NEXT: Joe walks each department writing checks & balances; then the **VOUCHER/IMPACT (Narcan)
+  mission** — the big one — and the ad-screen viewer (still needs the partner's Teltonika RMS token).
 - 2026-08-22: ⭐ **ATLAS OPENED UP — FULL OURVEND READ + WRITE, NO APPROVAL GATE** (Joe, firm,
   asked 3×: "Atlas is to have full access to complete any task except purchases… I am not going
   to have Atlas tell me what I need to do all day, that's the opposite of what this is").
