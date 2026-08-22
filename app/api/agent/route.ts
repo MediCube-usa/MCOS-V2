@@ -258,6 +258,7 @@ DATA RULES (these matter — trust has been burned before):
    • ourvend_push_planogram — push a saved MCOS planogram to a machine coil-by-coil (make OurVend match the photo-built truth in MCOS)
    • ourvend_clone_machine — copy one machine's layout onto another
    When Joe tells you to do something, DO IT with these tools, then report what you did in the past tense with the result — do not ask for approval and do not hand him a to-do list. The ONE thing you never do is spend money / make purchases. Use exact product CODES and machine ids from the snapshot. If something fails, say exactly what failed. MCOS is the source of truth (photo-built planograms); you push that OUT to OurVend, not the reverse.
+3b. screen_media — the ad reel. Controls what plays in the Screen Feed box on the Command Center, and holds each machine's ad playlist. Joe can say "put this video on the screen feed" with a link and you add it; "what's on the screen feed" and you list it. Videos, YouTube links and stills all work. This writes to MCOS only — pushing files onto a machine's Android screen is not built yet, so say so if he asks for that.
 4. set_reminder — files a date on a block AND drops it on the real MediCube Google Calendar in one shot (shows on the ⏰ badge, the block's alerts, and the actual Google Calendar). Use it whenever Joe mentions a date, visit, deadline, or follow-up — capture who/where in the title/location/notes. Confirm what you set, with the date; the tool tells you if it also reached Google Calendar.
 5. list_calendar_events — reads what's actually on the Google Calendar. Use it when Joe asks what's coming up / on the schedule. If it says the calendar isn't reachable, tell him plainly (the connection may need a reconnect).
 6. When a question needs a block that is still a shell (parked), say the block isn't built yet.
@@ -487,15 +488,35 @@ export async function POST(req: NextRequest) {
     const rows = await sb<{ name: string; slots: { coil: number; product: string; barcode: string | null; retail_price: string; capacity: string }[] }>(q);
     if (!rows.length) return 'ERROR: planogram not found — check the name.';
     const tpl = rows[0];
-    const slots = (tpl.slots || []).filter((s) => s.product && s.barcode);
-    if (!slots.length) return 'ERROR: that planogram has no catalog-matched coils to push.';
-    let ok = 0; const fails: number[] = [];
+    // A planogram stores the barcode resolved at save time. If a product was added
+    // to the catalog since, that coil still carries a null and would be silently
+    // skipped — which is how a coil stays "missing" long after it was fixed. So
+    // re-resolve against the LIVE catalog every push.
+    const catalog = await sb<CatalogRow>('products?select=name,barcode,default_price&order=name.asc');
+    const filled = (tpl.slots || []).filter((s) => s.product);
+    const resolved = filled.map((s) => {
+      if (s.barcode) return { ...s, barcode: s.barcode };
+      const m = matchProduct(s.product, catalog);
+      return { ...s, barcode: m.barcode, retail_price: s.retail_price || m.price };
+    });
+    const slots = resolved.filter((s) => s.barcode);
+    const stillMissing = resolved.filter((s) => !s.barcode);
+    if (!slots.length) {
+      return `ERROR: none of "${tpl.name}"'s coils match the catalog. Missing: ${stillMissing.map((s) => `${s.coil} ${s.product}`).join('; ') || 'unknown'}. Add those products first.`;
+    }
+    // Live machines: stop on the first coil that does not read back as written,
+    // rather than carrying a fault down the whole face.
+    let ok = 0; const fails: number[] = []; let halted: string | null = null;
     for (const s of slots) {
       const r = await ourvendWrite('editSlot', { machineId, coil: s.coil, productPrId: s.barcode, machinePrice: String(s.retail_price ?? ''), capacity: String(s.capacity ?? ''), stock: String(s.capacity ?? '') });
-      if (r.ok) ok++; else fails.push(s.coil);
+      if (r.ok && r.verified !== false) { ok++; continue; }
+      fails.push(s.coil);
+      if (r.verified === false) { halted = `coil ${s.coil} saved but did NOT read back correctly — stopped there so the rest of the machine is untouched`; break; }
     }
-    await logAction('pushPlanogram', machineId, { template: tpl.name, coils: slots.length, ok }, fails.length === 0, `ok ${ok}/${slots.length}`);
-    return `Pushed "${tpl.name}" → machine ${machineId}: ${ok}/${slots.length} coils written LIVE${fails.length ? `; failed coils: ${fails.join(', ')}` : ''}. Coils not in the catalog were skipped.`;
+    await logAction('pushPlanogram', machineId, { template: tpl.name, coils: slots.length, ok, halted }, fails.length === 0, `ok ${ok}/${slots.length}`);
+    const missNote = stillMissing.length ? ` ${stillMissing.length} coil(s) skipped — not in the catalog: ${stillMissing.map((s) => `${s.coil} ${s.product}`).join('; ')}.` : '';
+    if (halted) return `Pushed "${tpl.name}" → machine ${machineId}: ${ok}/${slots.length} coils written, then HALTED — ${halted}.${missNote}`;
+    return `Pushed "${tpl.name}" → machine ${machineId}: ${ok}/${slots.length} coils written LIVE and verified${fails.length ? `; failed coils: ${fails.join(', ')}` : ''}.${missNote}`;
   }
 
   const cloneMachineTool = {
@@ -518,6 +539,74 @@ export async function POST(req: NextRequest) {
     const r = await ourvendWrite('cloneMachine', { sourceMachineId: source, targetMachineId: target, startCoil: inp.start_coil ?? 1, endCoil: inp.end_coil ?? '' });
     await logAction('cloneMachine', `${source}->${target}`, { start: inp.start_coil, end: inp.end_coil }, !!r.ok, JSON.stringify(r));
     return r.ok ? `DONE (live): cloned ${source} onto ${target}.` : `ERROR: clone failed (${r.error || 'no ok'}).`;
+  }
+
+  // The Screen Feed box on the Command Center, and the machine ad screens, run off
+  // the same playlist table — so Atlas manages both with one tool.
+  const screenMediaTool = {
+    name: 'screen_media',
+    description:
+      "Manage what plays on the Screen Feed box on the Command Center, and the ad playlist for a machine's screen. action 'list' shows the playlist; 'add' puts a video/image on it (give url + title; machine_id + ad_site only for a machine's ad screen); 'remove' takes one off by id. Videos, YouTube links and stills all work. This is MCOS-side only — it does not push files to a machine yet.",
+    input_schema: {
+      type: 'object' as const,
+      properties: {
+        action: { type: 'string', enum: ['list', 'add', 'remove'] },
+        url: { type: 'string', description: 'direct link to a video, YouTube page, or image' },
+        title: { type: 'string' },
+        machine_id: { type: 'string', description: 'omit for the Command Center box; set for a machine ad screen' },
+        ad_site: { type: 'integer', description: 'machine ad slot — 2 or 6' },
+        duration_sec: { type: 'integer', description: 'how long a still image shows (default 12)' },
+        id: { type: 'string', description: 'row id, for remove' },
+      },
+      required: ['action'],
+    },
+  };
+  async function runScreenMedia(inp: Record<string, unknown>): Promise<string> {
+    const action = String(inp.action ?? 'list');
+    const machineId = String(inp.machine_id ?? '').trim();
+    const where = machineId ? `machine_id=eq.${encodeURIComponent(machineId)}` : 'machine_id=is.null';
+
+    if (action === 'list') {
+      const rows = await sb<{ id: string; title: string; url: string; kind: string; active: boolean }>(
+        `screen_media?select=id,title,url,kind,active&${where}&order=sort.asc`);
+      if (!rows.length) return `Nothing on that playlist yet${machineId ? ` for machine ${machineId}` : ' (Command Center box)'}.`;
+      return rows.map((r, i) => `${i + 1}. ${r.title} [${r.kind}]${r.active ? '' : ' (off)'} — ${r.url} · id ${r.id}`).join('\n');
+    }
+
+    if (action === 'add') {
+      const url = String(inp.url ?? '').trim();
+      if (!url) return 'ERROR: need a url';
+      const yt = /(?:youtube\.com|youtu\.be)/i.test(url);
+      const img = /\.(png|jpe?g|gif|webp|avif)(\?|$)/i.test(url);
+      const row = {
+        title: String(inp.title ?? '').trim() || url.split('/').pop()?.slice(0, 60) || 'Untitled',
+        url,
+        kind: yt ? 'youtube' : img ? 'image' : 'video',
+        machine_id: machineId || null,
+        ad_site: Number.isInteger(inp.ad_site) ? inp.ad_site : null,
+        duration_sec: Number.isInteger(inp.duration_sec) ? inp.duration_sec : 12,
+      };
+      const r = await fetch(`${SUPABASE_URL}/rest/v1/screen_media`, {
+        method: 'POST',
+        headers: { apikey: SUPABASE_ANON_JWT, Authorization: `Bearer ${SUPABASE_ANON_JWT}`, 'Content-Type': 'application/json', Prefer: 'return=minimal' },
+        body: JSON.stringify(row),
+      });
+      if (!r.ok) return `ERROR: could not add it (${r.status} ${await r.text()})`;
+      await logAction('screenMediaAdd', machineId || 'command-box', row, true, 'added');
+      return `DONE: "${row.title}" added to ${machineId ? `machine ${machineId}'s ad playlist` : 'the Screen Feed box'}.`;
+    }
+
+    if (action === 'remove') {
+      const id = String(inp.id ?? '').trim();
+      if (!id) return 'ERROR: need the row id (run list first)';
+      const r = await fetch(`${SUPABASE_URL}/rest/v1/screen_media?id=eq.${encodeURIComponent(id)}`, {
+        method: 'DELETE',
+        headers: { apikey: SUPABASE_ANON_JWT, Authorization: `Bearer ${SUPABASE_ANON_JWT}`, Prefer: 'return=minimal' },
+      });
+      if (!r.ok) return `ERROR: could not remove it (${r.status})`;
+      return `DONE: removed ${id} from the playlist.`;
+    }
+    return `ERROR: unknown action ${action}`;
   }
 
   const listCalendarTool = {
@@ -724,10 +813,13 @@ export async function POST(req: NextRequest) {
 
   try {
     let reply = '';
-    for (let turn = 0; turn < 5; turn++) {
+    // Real jobs are multi-step — "load these two products" is search, add, search, add,
+    // then report. Five rounds and 2k tokens cut Atlas off mid-task and looked like
+    // Atlas failing. Headroom here is what lets it finish a job unattended.
+    for (let turn = 0; turn < 14; turn++) {
       const resp = await client.beta.messages.create({
         model: 'claude-opus-5',
-        max_tokens: 2000,
+        max_tokens: 8000,
         betas: ['server-side-fallback-2026-06-01'],
         fallbacks: [{ model: 'claude-opus-4-8' }],
         output_config: { effort: 'medium' },
@@ -738,8 +830,9 @@ export async function POST(req: NextRequest) {
         tools: [
           setReminderTool, listCalendarTool, savePlanogramTool, fileDocumentTool,
           updateProductTool, addProductTool, writeSlotTool, pushPlanogramTool, cloneMachineTool, postMessageTool,
+          screenMediaTool,
           // Research — Anthropic's hosted web search (runs server-side on our key).
-          { type: 'web_search_20250305', name: 'web_search', max_uses: 8 },
+          { type: 'web_search_20250305', name: 'web_search', max_uses: 16 },
         ],
         messages,
       });
@@ -780,6 +873,8 @@ export async function POST(req: NextRequest) {
             out = await runPushPlanogram(block.input as Record<string, unknown>);
           } else if (block.name === 'ourvend_clone_machine') {
             out = await runCloneMachine(block.input as Record<string, unknown>);
+          } else if (block.name === 'screen_media') {
+            out = await runScreenMedia(block.input as Record<string, unknown>);
           } else {
             out = `ERROR: unknown tool ${block.name}`;
           }
