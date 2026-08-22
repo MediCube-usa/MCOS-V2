@@ -244,6 +244,31 @@ product placement — refreshed every cycle (reconfirmed by Joe 2026-08-20).
 - Boston (Nayax) machines: not set up; planograms may only exist on Nayax (secondary, optional).
 
 ## SESSION LOG (newest first)
+- 2026-08-22 (c): ⭐ **OURVEND WRITE PATH — LIVE TESTED. Three bugs fixed, one real blocker found.**
+  Tested via `pg_net` from inside Postgres (this sandbox's proxy blocks supabase.co — use pg_net,
+  not curl). Details in `docs/blocks/ourvend-write.md`.
+  **FIXED (1) catalog read returned 0 rows** — OurVend grid/save endpoints require the CURRENT
+  session to have just GET-ed the owning page; `ourvend-catalog` did that, `ourvend-write` didn't.
+  **FIXED (2) product identity** — `products.barcode` is OurVend's **PrID GUID**, its own code is
+  **PrCode** (Advil = GUID `D50B8918…`, PrCode `1002`); the write fn matched only PrCode so every
+  Atlas call missed. Now matches either. **FIXED (3) warm-up ordering** — warming the page before a
+  relogin is useless; now ensure-session → relogin → visit → post.
+  **STILL BLOCKED: `POST /Selection/Edit` 404s** (302 → default404) even with a good session,
+  warmed page and resolved PrID — tested twice on empty template machine 2602080931. That is THE
+  one thing standing between us and planogram push. **NEED FROM JOE: one DevTools HAR of saving a
+  single coil in OurVend.** `/Selection/SEdit` + `/Selection/MultiEdit` are the likely real ones.
+  **CATALOG MAPPING STRAIGHTENED** (Joe called it): OurVend keeps SIZE (`PrSpecification`) and
+  DESCRIPTION (`PrContent`) in different fields, and the grid does NOT return PrContent at all —
+  so `description` had been holding the SIZE and real descriptions were never imported. `products`
+  gained **`size`** + **`product_code`**; `category` now comes from `CiType`. Re-imported: 52
+  products, 52 images, 50 sizes, **50 real descriptions (first time)**, 50 categories. Images were
+  always fine — my earlier "all identical" reading was a truncated query, not a data problem.
+  **THE CATALOG GATE (Joe's rule): OurVend refuses a coil whose product isn't already in its
+  catalog, so ONE missing product fails a whole planogram.** Missing today: ASU West Campus 1
+  coil 53 BITES Creatine Gummies; UNLV Tonopah 1 coils 1/7/9/38/43 (Clear Blue, Beast Bites,
+  Creatine Gummies, Dove Bar Soap, Chapstick Cherry). Also: test product **"MCOS TEST 2"
+  (999002)** still live in the OurVend catalog — delete it.
+  **SCHOOL GOES LIVE IN 3 DAYS (Joe, 2026-08-22).**
 - 2026-08-22 (b): ⭐ **ATLAS EVERYWHERE — the dept Atlas dock** (Joe's design, his two markups).
   Every department page now carries an **AtlasDock** top-right (wide + short, floats into the
   open space): **the dept LOGO is the button** into that block's skills/rules (small "Atlas" in

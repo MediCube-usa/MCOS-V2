@@ -135,3 +135,81 @@ Deleted the test product live: action=deleteProduct, prId=582A4DB6-5DB5-4126-AEC
 AXE Spray (1050): capture confirms test bumped 4.99→5.99 then restored to 4.99 w/
 original description — already clean, no action needed.
 Cookie/session is the SAME one the readers use; writes ride it and relogin on expiry.
+
+## 2026-08-22 — LIVE TESTING SESSION: what actually works, and the one thing that doesn't
+
+Tested by calling the edge functions from inside Postgres via `pg_net` (this sandbox's proxy
+blocks supabase.co, so curl is not available here — pg_net is the way to test).
+
+### ✅ FIXED — catalog read was returning ZERO rows
+`ourvend-write.listProducts()` posted straight to `/CommodityInfo/ListJson` and got a
+200-with-no-rows. The reader `ourvend-catalog` worked because it **GETs `/CommodityInfo/Index`
+first** (a browser-style page visit), sends `accept: application/json…`, and uses `PrType=0`.
+Copied that exactly → **52 rows**. RULE: OurVend grid/save endpoints need the CURRENT session
+to have just visited the owning page.
+
+### ✅ FIXED — product identity mismatch
+`products.barcode` stores OurVend's **PrID GUID**; OurVend's own code is **PrCode**
+(Advil = PrID `D50B8918-…`, PrCode `1002`). The write fn matched only PrCode, so every call
+from Atlas (which passes the GUID) missed. Now every lookup matches **PrID OR PrCode**.
+
+### ✅ FIXED — warm-up ordering
+Warming the page BEFORE a relogin is useless — the fresh cookie never visited it. `act()` now
+does: ensure session → relogin if needed → **then** visit the page → then post; retry once.
+
+### ❌ BLOCKED — the slot write `/Selection/Edit` returns 404
+`POST /Selection/Edit` (the recipe in this file) 302s to
+`/default404.html?aspxerrorpath=/Selection/Edit`, even with a valid session, a warmed page and
+a correctly resolved PrID. Tested twice on empty template machine `2602080931`.
+The path IS referenced by `/Selection/Index`, alongside `/Selection/SEdit`,
+`/Selection/MultiEdit`, `/Selection/ClearSoltInfo`, `/Selection/EditWarningQuantity`.
+**NEED FROM JOE: one DevTools HAR of saving a single coil in OurVend** — that gives the exact
+URL + field set. Everything else in the push path is proven and waiting on it.
+(`SEdit` / `MultiEdit` are the likeliest real endpoints — untested.)
+
+### Read-only helpers added
+`ourvend-write` actions `probeProduct` (does this id resolve?) and `readSlots` (what OurVend
+holds for a machine). Plus a separate `ourvend-probe` function that reads a portal page and its
+scripts to discover real endpoint URLs — use it instead of guessing paths.
+
+## 2026-08-22 — CATALOG FIELD MAPPING STRAIGHTENED (Joe: "images and description is not the
+## same load in ourvend, we need that mapping straightened") — he was right.
+
+OurVend's catalog grid returns: PrImgUrl · PrID · PrCode · PrName · CiManufacturer ·
+PrSpecification · CiType · QualityPeriod · CreateDate · PrRetailPrice · PrCostPrice.
+**It does NOT return `PrContent`** — the real description — which only comes back per product
+from `/CommodityInfo/GetProductData`.
+
+WRONG BEFORE → RIGHT NOW:
+- `description` held **PrSpecification** (the SIZE: "10pk", "1.87oz"). Real descriptions were
+  never imported at all.
+- `category` was empty; OurVend had `CiType` all along.
+- there was nowhere to put the size, and no column for the human-readable code.
+
+New mapping (`ourvend-catalog` v8, `products` gained `size` + `product_code`):
+| OurVend | MCOS |
+|---|---|
+| PrID | `barcode` (our key — an internal GUID, NOT a scannable barcode) |
+| PrCode | `product_code` (the short code staff read, e.g. 1002) |
+| PrName | `name` |
+| PrSpecification | **`size`** |
+| PrContent (per-product fetch) | **`description`** |
+| CiType | `category` |
+| CiManufacturer | `supplier` |
+| PrImgUrl | `image_url` (OSS prefix + path) |
+| PrRetailPrice / PrCostPrice | `default_price` / `cost` |
+
+Re-imported: 52 products, 52 images, 50 sizes, **50 real descriptions (first time ever)**,
+50 categories. Images were always fine — an earlier "all images identical" reading was a
+truncated query on my side, not a data problem.
+
+### ⚠️ THE CATALOG GATE — what blocks a planogram push today
+OurVend refuses a coil whose product is not already in its catalog, so ONE missing product
+fails the whole planogram. Currently missing (query `templates` for `gate = 'missing'`):
+- **ASU West Campus 1** — coil 53 BITES Creatine Gummies
+- **UNLV Tonopah 1** — coil 1 Clear Blue Pregnancy Test · coil 7 Beast Bites 30 Gummies ·
+  coil 9 Creatine Gummies 30 gummies · coil 38 Dove Bar Soap · coil 43 Chapstick Cherry
+Each needs name + image + size + description loaded into OurVend before its planogram can push.
+
+Housekeeping: **"MCOS TEST 2" (PrCode 999002)** is still sitting in the live OurVend catalog —
+leftover from testing, should be deleted.
