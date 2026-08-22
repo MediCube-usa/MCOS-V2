@@ -56,6 +56,21 @@ dashboard. (This confusion cost a whole evening on 2026-08-19.)
   and one-at-a-time product loading, **this time only**. Every machine after these is identical,
   so templates / clone become the normal path from then on.
 
+## THE OPERATING MODEL FROM LAUNCH ON (Joe, 2026-08-22) — this is the target state
+1. **ONE-TIME RESET (happening now):** every machine's exact count + layout → MCOS (from the
+   partner's live photos) → copied into OurVend. After that **the machines stay that way.**
+2. **STEADY STATE: all refills, price changes and item swaps go THROUGH MCOS ONLY.** Nothing is
+   changed at the machine any more. MCOS → OurVend → machine → card readers.
+3. **INVENTORY TRUTH = the refiller's on-screen refresher.** At the end of a fill the refiller
+   presses refresh on the machine screen; that count goes **straight to OurVend**, and OurVend
+   syncs down to us. That is the final number — not an estimate, not sales math.
+   ⇒ Therefore the **sales feed is business intelligence, NOT an inventory dependency** (what
+   sells, what a location earns). Nice to have; never on the critical path.
+4. **DEPENDENCY: the truth loop only closes when the MACHINE IS ONLINE.** An offline machine
+   cannot push the refiller's count to OurVend — exactly what created today's mismatch (machines
+   offline → everything loaded at the screens → OurVend never saw it). "Is this machine online"
+   is an operational check that matters, not a footnote. Surface it on Machine Ops.
+
 ## HOW WE WORK
 - **Block by block.** For each dashboard block: (a) Joe brain-dumps, (b) write/append its spec
   in `docs/blocks/<block>.md` BEFORE coding, (c) build it, (d) verify live, (e) next block.

@@ -44,7 +44,11 @@ Pick a date range, let the table fill. Nothing is written.
 *Unblocks:* the sales feed, which has never returned data. We know the call is
 `/SaleSummarize/ListJson` with `Categories · MiGroup · MachineID · boxId · StartDate · EndDate ·
 Statistics`. We send all of them; **`boxId` is the suspect** — the page fills it from its parent
-frame and we send it empty. Sales is what makes inventory draw down instead of being guessed.
+frame and we send it empty.
+
+**NOT on the critical path** (Joe, 2026-08-22): inventory truth comes from the refiller pressing
+the refresher on the machine screen → OurVend → us. Sales is business intelligence — what sells,
+what a location earns. Grab it only if you are already in there with a spare minute.
 
 ---
 
